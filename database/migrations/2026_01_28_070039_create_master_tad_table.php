@@ -14,7 +14,9 @@ class CreateMasterTadTable extends Migration
     public function up()
     {
         Schema::create('master_tad', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('tad_id');
+            $table->string('kode_tad')->unique();
+            $table->string('nama_tad');
             $table->timestamps();
         });
     }

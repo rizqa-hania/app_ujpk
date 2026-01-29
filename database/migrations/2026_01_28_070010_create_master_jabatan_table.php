@@ -14,8 +14,12 @@ class CreateMasterJabatanTable extends Migration
     public function up()
     {
         Schema::create('master_jabatan', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('jabatan_id');
+            $table->string('kode_jabatan')->unique();
+            $table->string('nama_jabatan');
+            $table->enum('status',['aktif','nonaktif'])->default('aktif');
             $table->timestamps();
+            
         });
     }
 

@@ -14,7 +14,16 @@ class CreateMasterProjectTable extends Migration
     public function up()
     {
         Schema::create('master_project', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('project_id');
+            $table->foreignId('unitpln_id')->references('unitpln_id')->on('master_unit_pln');
+            $table->foreignId('jabatan_id')->references('unitpln_id')->on('master_jabatan');
+            //nanti disini tambahin karyawan soalnya relasi ke karyawan juga, sebenernya sih 
+            //ga juga ya kan kalau mereka milih jabatan, unit pln->sub unit itu otomatis nanti dia
+            //tinggal milih project terus pas itu nanti di dashboard karyawan dah tergolong klu dia dapet
+            // project ini kan yaa, nah nanti ketauan tuh siapa aja yang dibagian itu
+            $table->foreignId('sub_id')->references('sub_id')->on('master_sub_unit');
+            $table->string('kode_project')->unique();
+            $table->string('nama_project');
             $table->timestamps();
         });
     }
