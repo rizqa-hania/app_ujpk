@@ -14,8 +14,12 @@ class CreatePenggajianTable extends Migration
     public function up()
     {
         Schema::create('penggajian', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('penggajian_id');
+            $table->tinyInteger('periode_bulan');
+            $table->smallInteger('periode_tahun');
+            $table->enum('status', ['draft', 'approved', 'paid'])->default('draft');
             $table->timestamps();
+            
         });
     }
 
