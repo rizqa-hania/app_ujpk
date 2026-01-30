@@ -15,7 +15,7 @@ class CreateMasterSubUnitTable extends Migration
     {
         Schema::create('master_sub_unit', function (Blueprint $table) {
             $table->bigIncrements('sub_id');
-            $table->foreignId('unitpln_id')->refences('unitpln_id')->on('master_unit_pln');
+            $table->foreignId('unitpln_id')->references('unitpln_id')->on('master_unit_pln');
             $table->string('kode_sub')->unique();
             $table->string('nama_sub');
             $table->timestamps();

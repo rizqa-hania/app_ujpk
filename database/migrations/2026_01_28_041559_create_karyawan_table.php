@@ -14,11 +14,15 @@ class CreateKaryawanTable extends Migration
     public function up()
     {
         Schema::create('karyawan', function (Blueprint $table) {
-            $table->bigIncrements('karyawan_id');
+            $table->bigIncrements('nip',30)->unique();
             // ini nanti yang relasi taro di sini
-            
+            $table->foreignId('unitpln_id')->references('unitpln_id')->on('master_unit_pln');
+            $table->foreignId('jabatan_id')->references('jabatan_id')->on('master_jabatan');
+            $table->foreignId('sub_id')->references('sub_id')->on('master_sub_unit');
+            $table->foreignId('project_id')->references('project_id')->on('master_project');
+            $table->foreingId('pendidikan_id')->references('pendidikan_id')->on('master_pendidikan');
+            $table->foreignId('tad_id')->references('tad_id')->on('master_sub_unit');
             //ini teh bagian identitas dirii asekk ;)
-            $table->string('nip',30)->unique();
             $table->string('nama_depan',100);
             $table->string('nama_belakang',100);
             $table->string('nama_panggilan',100)->nullable();
@@ -62,6 +66,7 @@ class CreateKaryawanTable extends Migration
             $table->string('file_npwp')->nullable();
             // BPJS & KEUANGAN
             $table->string('no_bpjs', 30)->nullable();
+   
             $table->string('file_bpjs')->nullable();
             $table->string('no_bpjstk', 30)->nullable();
             $table->string('no_rek_bpk', 30)->nullable();
