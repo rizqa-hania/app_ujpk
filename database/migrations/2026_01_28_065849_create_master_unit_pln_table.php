@@ -14,7 +14,9 @@ class CreateMasterUnitPlnTable extends Migration
     public function up()
     {
         Schema::create('master_unit_pln', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('unitpln_id');
+            $table->string('kode_unit')->unique();
+            $table->string('nama_unit');
             $table->timestamps();
         });
     }

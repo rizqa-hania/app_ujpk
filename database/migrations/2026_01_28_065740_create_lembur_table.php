@@ -14,7 +14,12 @@ class CreateLemburTable extends Migration
     public function up()
     {
         Schema::create('lembur', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('lembur_id');
+            $table->date('tanggal');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+            $table->enum('status',['proses','disetujui','ditolak']);
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

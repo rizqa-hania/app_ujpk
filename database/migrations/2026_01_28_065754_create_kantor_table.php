@@ -14,7 +14,12 @@ class CreateKantorTable extends Migration
     public function up()
     {
         Schema::create('kantor', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('kantor_id');
+            $table->string('nama_kantor');
+            $table->string('alamat')->nullable();
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude',10,7);
+            $table->integer('radius_meter')->default();
             $table->timestamps();
         });
     }

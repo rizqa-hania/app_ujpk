@@ -14,7 +14,13 @@ class CreateIzinTable extends Migration
     public function up()
     {
         Schema::create('izin', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('izin_id');
+            $table->foreignId('karyawan_id')->references('karyawan_id')->on('karyawan');
+            $table->enum('jenis',['izin','sakit','hamil']);
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->string('bukti_dokumen')->nullable();
+            $table->enum('status',['proses','disetujui','ditolak']);
             $table->timestamps();
         });
     }
