@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggajianController;
+use App\Http\Controllers\LemburController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,10 @@ Route::post('/penggajian', [PenggajianController::class, 'store'])->name('pengga
 Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
 Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
+
+
+//LEMBUR
+Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
+Route::get('/lembur/create', [LemburController::class, 'create'])->name('lembur.create');
+Route::post('/lembur', [LemburController::class, 'store'])->name('lembur.store');
+Route::put('/lembur/{lembur}/status', [LemburController::class, 'updateStatus'])->name('lembur.status');
