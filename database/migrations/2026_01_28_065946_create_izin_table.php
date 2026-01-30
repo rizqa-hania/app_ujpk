@@ -15,12 +15,12 @@ class CreateIzinTable extends Migration
     {
         Schema::create('izin', function (Blueprint $table) {
             $table->bigIncrements('izin_id');
-            $table->foreignId('karyawan_id')->references('karyawan_id')->on('karyawan');
-            $table->enum('jenis',['izin','sakit','hamil']);
+            $table->foreignId('nip')->references('nip')->on('karyawan'); 
+            $table->enum('jenis_izin', ['sakit', 'izin', 'kehamilan']);
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('bukti_dokumen')->nullable();
-            $table->enum('status',['proses','disetujui','ditolak']);
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
