@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKomponenPenggajianTable extends Migration
+class CreateDetailTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateKomponenPenggajianTable extends Migration
      */
     public function up()
     {
-        Schema::create('komponen_penggajian', function (Blueprint $table) {
+        Schema::create('detail', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateKomponenPenggajianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('komponen_penggajian');
+        Schema::dropIfExists('detail_penggajian');
     }
 }
