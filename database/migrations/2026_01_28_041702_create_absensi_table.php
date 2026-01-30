@@ -14,27 +14,28 @@ class CreateAbsensiTable extends Migration
     public function up()
     {
         Schema::create('absensi', function (Blueprint $table) {
-          //  $table->foreignId('pegawai_id')->constrained(); constrained itu dipakai buat menghubungkan ke tabel lain sebagai foreign key
+            $table->bigIncrements('absensi_id');
             $table->foreignId('karyawan_id')->references('karyawan_id')->on('karyawan');
-            $table->foreignId('kantor_id')->references('kantor_id')->on('kantor');
+            $table->foreignId('kantor_id')->references('kantor_id') ->on('kantor');
             $table->date('tanggal');
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();
+
             $table->decimal('lat_masuk', 10, 7)->nullable();
             $table->decimal('long_masuk', 10, 7)->nullable();
             $table->float('jarak_masuk')->nullable();
+
             $table->enum('status', [
             'hadir',
-            'izin',
-            'sakit',
-            'hamil',
             'alpha',
             'lembur'
-        ]);
+            ])->default('alpha');
 
             $table->timestamps();
-             $table->unique(['pegawai_id', 'tanggal']);
+
+            $table->unique(['karyawan_id', 'tanggal']);
         });
+
     }
 
     /**
