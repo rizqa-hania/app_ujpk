@@ -6,29 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLemburTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('lembur', function (Blueprint $table) {
             $table->bigIncrements('lembur_id');
-            $table->date('tanggal');
+
+            $table->string('nip');
+
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->enum('status',['proses','disetujui','ditolak']);
+
+            $table->enum('status', ['pending', 'disetujui', 'ditolak'])
+                  ->default('pending');
+
             $table->text('keterangan')->nullable();
+
             $table->timestamps();
+
+            // aktifkan kalau tabel pegawai sudah fix
+            // $table->foreign('nip')->references('nip')->on('pegawai');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('lembur');
