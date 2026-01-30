@@ -11,7 +11,7 @@ class Absensi extends Model
     protected $primaryKey = 'absensi_id';
 
     protected $fillable = [
-        'karyawan_id',
+        'nip',
         'kantor_id',
         'tanggal',
         'jam_masuk',
@@ -28,7 +28,7 @@ class Absensi extends Model
 
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'karyawan_id', 'karyawan_id');
+        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
     }
 
     public function kantor()

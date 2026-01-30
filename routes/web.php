@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\KomponenController;
-
+use App\Http\Controllers\LemburController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,9 +15,11 @@ use App\Http\Controllers\KomponenController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//LEMBUR
+Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
+Route::get('/lembur/create', [LemburController::class, 'create'])->name('lembur.create');
+Route::post('/lembur', [LemburController::class, 'store'])->name('lembur.store');
+Route::put('/lembur/{lembur}/status', [LemburController::class, 'updateStatus'])->name('lembur.status');
 
 // PENGGAJIAN
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
