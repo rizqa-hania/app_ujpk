@@ -54,7 +54,6 @@ class CreateKaryawanTable extends Migration
             $table->string('ukuran_celana', 10)->nullable();
             $table->integer('ukuran_sepatu')->nullable();
             // PENDIDIKAN
-            $table->string('kode_pendidikan_terakhir', 10)->nullable();
             $table->string('nama_perguruan')->nullable();
             $table->string('file_ijazah')->nullable();
             // IDENTITAS RESMI
@@ -66,7 +65,6 @@ class CreateKaryawanTable extends Migration
             $table->string('file_npwp')->nullable();
             // BPJS & KEUANGAN
             $table->string('no_bpjs', 30)->nullable();
-   
             $table->string('file_bpjs')->nullable();
             $table->string('no_bpjstk', 30)->nullable();
             $table->string('no_rek_bpk', 30)->nullable();

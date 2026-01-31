@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\KomponenController;
 use App\Http\Controllers\LemburController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
