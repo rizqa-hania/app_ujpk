@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="container">
     <h4>Ajukan Lembur</h4>
 
@@ -40,4 +37,3 @@
         <button class="btn btn-success">Ajukan</button>
     </form>
 </div>
-@endsection

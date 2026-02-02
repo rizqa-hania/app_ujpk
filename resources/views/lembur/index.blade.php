@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="container">
     <h4>Data Lembur</h4>
 
@@ -60,4 +57,3 @@
         </tbody>
     </table>
 </div>
-@endsection
