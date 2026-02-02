@@ -12,7 +12,7 @@ class MasterUnitPln extends Model
 
     protected $fillable = [
         'kode_unit',
-        'nama_unit',
+        'nama_unit', 
     ];
 
     /**

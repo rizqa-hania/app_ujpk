@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lembur;
+use App\Lembur;
+use App\Karyawan;
 use Illuminate\Http\Request;
 
 class LemburController extends Controller
 {
     public function index()
     {
-        $data = Lembur::orderBy('created_at', 'desc')->get();
+       $data = Lembur::get();
         return view('lembur.index', compact('data'));
     }
 

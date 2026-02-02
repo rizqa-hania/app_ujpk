@@ -20,8 +20,8 @@ class Lembur extends Model
         'keterangan',
     ];
 
-    public function pegawai()
+    public function karyawan()
     {
-        return $this->belongsTo(Pegawai::class, 'nip', 'nip');
+        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
     }
 }

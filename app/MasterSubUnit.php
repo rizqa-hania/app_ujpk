@@ -16,9 +16,7 @@ class MasterSubUnit extends Model
         'nama_sub',
     ];
 
-    /**
-     * RELATION
-     */
+    //relasi
 
     public function unitPln()
     {
