@@ -15,7 +15,7 @@ class CreateAbsensiTable extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->bigIncrements('absensi_id');
-            $table->foreignId('karyawan_id')->references('karyawan_id')->on('karyawan');
+            $table->foreignId('nip')->references('nip')->on('karyawan');
             $table->foreignId('kantor_id')->references('kantor_id') ->on('kantor');
             $table->date('tanggal');
             $table->time('jam_masuk')->nullable();
@@ -33,7 +33,12 @@ class CreateAbsensiTable extends Migration
         ]);
 
             $table->timestamps();
+<<<<<<< HEAD:database/migrations/2026_01_28_041702_create_absensi_table.php
              $table->unique(['nip', 'tanggal']);
+=======
+
+            $table->unique(['nip', 'tanggal']);
+>>>>>>> 9a6b93d8130c25ca1e42f8ede4404508cc6b8e34:database/migrations/2026_01_28_070109_create_absensi_table.php
         });
     }
 
