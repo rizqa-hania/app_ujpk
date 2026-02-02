@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\KomponenController;
 use App\Http\Controllers\LemburController;
+use App\Http\Controllers\MasterJabatanController;
 
 
 /*
@@ -16,6 +17,11 @@ use App\Http\Controllers\LemburController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// master jabatan
+Route::get('/masterjabatan',[MasterJabatanController::class,'index'])->name('master-jabatan.index');
+Route::get('/masterjabatan/create',[MasterJabatanController::class,'create'])->name('master-jabatan.create');
+Route::post('/masterjabatan',[MasterJabatanController::class,'store'])->name('master-jabatan.store');
 
 //LEMBUR
 Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
