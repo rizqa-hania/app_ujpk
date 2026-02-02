@@ -5,7 +5,7 @@ use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\KomponenController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\MasterJabatanController;
-
+use App\Http\Controllers\MasterProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +18,24 @@ use App\Http\Controllers\MasterJabatanController;
 |
 */
 
+// master project
+Route::get('/masterproject',[MasterProjectController::class,'index'])->name('master_project.index');
+Route::get('/masterproject/create',[MasterProjectController::class,'create'])->name('master_project.create');
+Route::post('/masterproject',[MasterProjectController::class,'store'])->name('master_project.store');
+Route::delete('/masterproject/{id}',[MasterProjectController::class,'destroy'])->name('master_project.destroy');
+
 // master jabatan
-Route::get('/masterjabatan',[MasterJabatanController::class,'index'])->name('master-jabatan.index');
-Route::get('/masterjabatan/create',[MasterJabatanController::class,'create'])->name('master-jabatan.create');
-Route::post('/masterjabatan',[MasterJabatanController::class,'store'])->name('master-jabatan.store');
+Route::get('/masterjabatan', [MasterJabatanController::class, 'index'])->name('master_jabatan.index');
+//Route::get('/masterjabatan-all', [MasterJabatanController::class, 'indexAll'])->name('master_jabatan.all');
+Route::get('/masterjabatan/create', [MasterJabatanController::class, 'create'])->name('master_jabatan.create');
+//Route::patch('/masterjabatan/{id}/status', [MasterJabatanController::class, 'toggleStatus'])->name('master_jabatan.status');
+Route::post('/masterjabatan', [MasterJabatanController::class, 'store'])->name('master_jabatan.store');
+// ini edit Route::get('/masterjabatan/{id}/edit', [MasterJabatanController::class, 'edit'])->name('master_jabatan.edit');
+//Route::put('/masterjabatan/{id}', [MasterJabatanController::class, 'update'])->name('master_jabatan.update');
+Route::delete('/masterjabatan/{id}',[MasterJabatanController::class,'destroy'])->name('master_jabatan.destroy');
+
+
+
 
 //LEMBUR
 Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');

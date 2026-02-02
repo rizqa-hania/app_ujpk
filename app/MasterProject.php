@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,11 +9,7 @@ class MasterProject extends Model
     protected $table = 'master_project';
 
     protected $primaryKey = 'project_id';
-
-    protected $fillable = [
-        'unitpln_id',
-        'jabatan_id',
-        'sub_id',
+     protected $fillable = [
         'kode_project',
         'nama_project',
     ];

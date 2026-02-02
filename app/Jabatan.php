@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MasterJabatan extends Model
+class Jabatan extends Model
 {
     protected $table = 'master_jabatan';
 
