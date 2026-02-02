@@ -20,22 +20,21 @@ class CreateAbsensiTable extends Migration
             $table->date('tanggal');
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();
-
             $table->decimal('lat_masuk', 10, 7)->nullable();
             $table->decimal('long_masuk', 10, 7)->nullable();
             $table->float('jarak_masuk')->nullable();
-
             $table->enum('status', [
             'hadir',
+            'izin',
+            'sakit',
+            'hamil',
             'alpha',
             'lembur'
-            ])->default('alpha');
+        ]);
 
             $table->timestamps();
-
-            $table->unique(['karyawan_id', 'tanggal']);
+             $table->unique(['nip', 'tanggal']);
         });
-
     }
 
     /**

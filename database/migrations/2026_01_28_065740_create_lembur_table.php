@@ -11,7 +11,7 @@ class CreateLemburTable extends Migration
         Schema::create('lembur', function (Blueprint $table) {
             $table->bigIncrements('lembur_id');
 
-            $table->string('nip');
+            $table->foreignId('nip')->references('nip')->on('karyawan');
 
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
