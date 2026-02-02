@@ -6,7 +6,8 @@ use App\Http\Controllers\KomponenController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\MasterJabatanController;
 use App\Http\Controllers\MasterProjectController;
-
+use App\Http\Controllers\MasterPendidikanController;
+use App\Http\Controllers\MasterTadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,22 @@ use App\Http\Controllers\MasterProjectController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+// besok lanjut ke unit pln sama sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
+// lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
+// master tad anjay dah empattttt yeyyy 2 lagi, oke disini eror lagiiii dah ah cape that simple(👉ﾟヮﾟ)👉
+Route::get('/mastertad',[MasterTadController::class,'index'])->name('master_tad.index');
+Route::get('/mastertad/create',[MasterTadController::class,'create'])->name('master_tad.create');
+Route::post('/mastertad',[MasterTadController::class,'store'])->name('master_tad.store');
+Route::delete('/mastertad/{id}',[MasterTadController::class,'destroy'])->name('master_tad.destroy');
+
+// master pendidikan ijikkk dah 3 nih dalam sehari, yang ini eror muluu kapan bisa selesaiin semua create dalam seharii (；′⌒`)
+Route::get('/masterpendidikan',[MasterPendidikanController::class,'index'])->name('master_pendidikan.index');
+Route::get('/masterpendidikan/create',[MasterPendidikanController::class,'create'])->name('master_pendidikan.create');
+Route::post('/masterpendidikan',[MasterPendidikanController::class,'store'])->name('master_pendidikan.store');
+Route::delete('/masterpendidikan/{id}',[MasterPendidikanController::class,'destroy'])->name('master_pendidikan.destroy');
+
 
 // master project
 Route::get('/masterproject',[MasterProjectController::class,'index'])->name('master_project.index');
