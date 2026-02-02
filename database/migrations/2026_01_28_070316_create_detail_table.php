@@ -14,7 +14,13 @@ class CreateDetailTable extends Migration
     public function up()
     {
         Schema::create('detail', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('detail_id');
+            $table->foreignId('penggajian_id')->references('penggajian_id')->on('penggajian');
+            $table->foreignId('nip')->references('nip')->on('karyawan');
+            $table->foreignId('komponen_id')->references('komponen_id')->on('komponen');
+            $table->decimal('total_penghasilan', 15, 2);
+            $table->decimal('total_potongan', 15, 2);
+            $table->decimal('gaji_bersih', 15, 2);
             $table->timestamps();
         });
     }
