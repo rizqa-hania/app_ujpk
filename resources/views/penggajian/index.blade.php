@@ -7,7 +7,7 @@
             <th>Periode Tahun</th>
             <th>Status</th>
             <th>
-                <a href="{{ route('penggajian.create') }}">+ Create Payroll</a>
+                <a href="{{ route('penggajian.create') }}">+ Create Penggajian</a>
             </th>
         </tr>
     </thead>

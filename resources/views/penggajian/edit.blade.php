@@ -1,6 +1,7 @@
 <h3>Form Edit</h3>
 <form action="{{ route('penggajian.update', $dataeditpenggajian->penggajian_id) }}" method="POST">
     {{ csrf_field() }}
+    @method('PUT')
     <label>Periode Bulan:</label>
     <select name="periode_bulan" required>
         @for($i = 1; $i <= 12; $i++)
