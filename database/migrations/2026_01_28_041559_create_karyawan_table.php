@@ -20,7 +20,7 @@ class CreateKaryawanTable extends Migration
             $table->foreignId('jabatan_id')->references('jabatan_id')->on('master_jabatan');
             $table->foreignId('sub_id')->references('sub_id')->on('master_sub_unit');
             $table->foreignId('project_id')->references('project_id')->on('master_project');
-            $table->foreingId('pendidikan_id')->references('pendidikan_id')->on('master_pendidikan');
+            $table->foreignId('pendidikan_id')->references('pendidikan_id')->on('master_pendidikan');
             $table->foreignId('tad_id')->references('tad_id')->on('master_tad');
             //ini teh bagian identitas dirii asekk ;)
             $table->string('nama_depan',100);
