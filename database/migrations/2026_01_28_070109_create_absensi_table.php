@@ -33,7 +33,7 @@ class CreateAbsensiTable extends Migration
 
             $table->timestamps();
 
-            $table->unique(['karyawan_id', 'tanggal']);
+            $table->unique(['nip', 'tanggal']);
         });
 
     }
