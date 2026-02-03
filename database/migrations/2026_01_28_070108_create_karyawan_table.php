@@ -35,7 +35,7 @@ class CreateKaryawanTable extends Migration
             $table->string('suku_bangsa',50)->nullable();
             $table->text('alamat')->nullable();
             //keluarga
-            $table->enum('status_nikah',['belum menikah','sudah menikah','cerai'])->nullable();
+            $table->enum('status_nikah',['belum_menikah','sudah_menikah','cerai'])->nullable();
             $table->integer('jumlah_anak')->default(0);
             //kontak
             $table->string('no_HP_utama', 20)->nullable();
@@ -66,7 +66,9 @@ class CreateKaryawanTable extends Migration
             // BPJS & KEUANGAN
             $table->string('no_bpjs', 30)->nullable();
             $table->string('file_bpjs')->nullable();
-            $table->string('no_bpjstk', 30)->nullable();
+            $table->string('no_bpjstk', 30)->nullable(); 
+            // ini belum lengkap... nanti migrate ulang 
+            $table->string('file_bpjstk')->nullable();
             $table->string('no_rek_bpk', 30)->nullable();
             $table->string('bank', 50)->nullable();
             $table->string('file_buku_tabungan')->nullable();
