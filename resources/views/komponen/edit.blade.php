@@ -2,6 +2,9 @@
 <form action="{{ route('komponen.update', $komponen->komponen_id) }}" method="POST">
     {{ csrf_field() }}
     @method('PUT')
+    <label>Kode Penggajian</label>
+    <input type="text" name="kode" value="{{ $komponen->kode }}" required>
+    <br>
     <label>Komponen</label>
     <input type="text" name="name" value="{{ $komponen->name }}" required>
     <br>
@@ -23,5 +26,5 @@
     <input type="number" name="nilai" value="{{ $komponen->nilai }}" required>
     <br>
     <button type="submit">Update</button>
-    <a href="{{ route('komponen.index') }}">Back</a>
+    <a href="{{ route('komponen.index') }}">Kembali</a>
 </form>

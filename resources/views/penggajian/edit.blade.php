@@ -22,4 +22,5 @@
     </select>
     <br>
     <button type="submit">Update</button>
+    <a href="{{ route('penggajian.index') }}">Kembali</a>
 </form>

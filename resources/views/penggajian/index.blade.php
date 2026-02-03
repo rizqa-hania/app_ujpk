@@ -7,7 +7,7 @@
             <th>Periode Tahun</th>
             <th>Status</th>
             <th>
-                <a href="{{ route('penggajian.create') }}">+ Create Penggajian</a>
+                <a href="{{ route('penggajian.create') }}">+ Penggajian</a>
             </th>
         </tr>
     </thead>
@@ -23,7 +23,7 @@
             {{ csrf_field() }}
             @method('DELETE')
             <a href="{{ route('penggajian.edit', $v->penggajian_id) }}">Edit</a> 
-            <button type="submit" onclick="return confirm('Are you sure want to delete this payroll?')">DELETE</button>
+            <button type="submit" onclick="return confirm('Yakin hapus data ini?')">Hapus</button>
         </form>
         </td>
     </tr>

@@ -3,19 +3,20 @@
     <thead>
         <tr>
             <th>No</th>
+            <th>Kode Penggajian</th>
             <th>Komponen</th>
             <th>Tipe Komponen</th>
             <th>Tipe Penghitungan</th>
             <th>Nilai</th>
             <th>
-                <a href="{{ route('komponen.create') }}">+ Create Komponen</a>
+                <a href="{{ route('komponen.create') }}">+ Komponen</a>
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach ($komponen as $v)
         <tr>
-            <td>{{ $loop->iteration }}</td>
+            <td>{{ $v->kode }}</td>
             <td>{{ $v->name }}</td>
             <td>{{ $v->tipe }}</td>
             <td>{{ $v->tipe_penghitungan }}</td>
@@ -25,7 +26,7 @@
                     {{ csrf_field() }}
                     @method('DELETE')
                     <a href="{{ route('komponen.edit', $v->komponen_id) }}">Edit</a>
-                    <button type="submit" onclick="return conirm('Yakin hapus data ini?')">Delete</button>
+                    <button type="submit" onclick="return conirm('Yakin hapus data ini?')">Hapus</button>
                 </form>
             </td>
         </tr>

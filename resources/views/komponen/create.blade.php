@@ -1,6 +1,9 @@
 <h3>Form Komponen</h3>
     <form action="{{ route('komponen.store') }}" method="POST">
         @csrf
+        <label>Kode Penggajian</label>
+        <input type="text" name="kode">
+        <br>
         <label>Komponen</label>
         <input type="text" name="name" required>
         <br>
@@ -21,6 +24,6 @@
         <label>Nilai</label>
         <input type="number" name="nilai" required>
         <br>
-        <button type="submit">Save</button>
-        <a href="{{ route('komponen.index') }}">Back</a>
+        <button type="submit">Simpan</button>
+        <a href="{{ route('komponen.index') }}">Kembali</a>
     </form>

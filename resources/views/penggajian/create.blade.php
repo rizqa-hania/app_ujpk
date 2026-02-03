@@ -19,5 +19,6 @@
         <option value="paid">Paid</option>
     </select>
     <br>
-    <button type="submit">Save</button>
+    <button type="submit">Simpan</button>
+    <a href="{{ route('penggajian.index') }}">Kembali</a>
 </form>

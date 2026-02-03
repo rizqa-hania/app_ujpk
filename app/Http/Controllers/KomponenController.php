@@ -37,6 +37,7 @@ class KomponenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kode'              => 'required|string',
             'name'              => 'required|string|max:255|unique:komponen',
             'tipe'              => 'required',
             'tipe_penghitungan' => 'required',
@@ -44,6 +45,7 @@ class KomponenController extends Controller
         ]);
 
         Komponen::create([
+            'kode'              => $request->kode,
             'name'              => $request->name,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
@@ -86,7 +88,8 @@ class KomponenController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'              => 'required|string|max:255|unique:komponen,name,' . $id . ',komponen_id',
+            'kode'              => 'required|string|unique:komponen,kode,' . $id . ',kode',
+            'name'              => 'required|string|max:255|unique:komponen,name,',
             'tipe'              => 'required',
             'tipe_penghitungan' => 'required',
             'nilai'             => 'required|numeric',
@@ -95,6 +98,7 @@ class KomponenController extends Controller
         $updatedata = Komponen::findOrFail($id);
 
         $updatedata->update([
+            'kode'              => $request->kode,
             'name'              => $request->name,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
