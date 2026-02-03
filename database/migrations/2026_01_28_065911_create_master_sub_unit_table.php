@@ -14,12 +14,27 @@ class CreateMasterSubUnitTable extends Migration
     public function up()
     {
         Schema::create('master_sub_unit', function (Blueprint $table) {
-            $table->bigIncrements('sub_id');
-            $table->foreignId('unitpln_id')->references('unitpln_id')->on('master_unit_pln');
-            $table->string('kode_sub')->unique();
-            $table->string('nama_sub');
-            $table->timestamps();
-        });
+    $table->bigIncrements('sub_id');
+
+    $table->unsignedBigInteger('unitpln_id');
+    $table->foreign('unitpln_id')
+          ->references('unitpln_id')
+          ->on('master_unit_pln')
+          ->onDelete('cascade');
+
+    $table->string('kode_sub')->unique();
+    $table->string('nama_sub'); // nama kerja sama / sub unit
+    $table->string('nama_mitra'); // perusahaan mitra
+    $table->string('jenis_kerjasama'); // outsourcing, vendor, project, dll
+
+    $table->boolean('is_active')->default(true);
+
+    $table->date('tanggal_mulai')->nullable();
+    $table->date('tanggal_selesai')->nullable();
+
+    $table->timestamps();
+});
+
     }
 
     /**
