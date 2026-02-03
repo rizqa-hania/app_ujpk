@@ -4,15 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MasterSubUnit extends Model
+class MasterKerjaSama extends Model
 {
-    protected $table = 'master_sub_unit';
-    protected $primaryKey = 'sub_unit_id';
+    protected $table = 'master_kerja_sama';
+    protected $primaryKey = 'kerjasama_id';
 
     protected $fillable = [
         'unitpln_id',
-        'kode_sub',
-        'nama_sub_unit',
+        'nama_kerja_sama',
+        'mitra',
+        'jenis_kerjasama',
         'is_active',
     ];
 

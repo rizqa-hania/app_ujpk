@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\MasterSubUnit;
+use App\MasterKerjaSama;
 use App\MasterUnitPln;
 use Illuminate\Http\Request;
 
-class MasterSubUnitController extends Controller
+class SubUnitController extends Controller
 {
     public function index()
     {
-        $data = MasterSubUnit::with('unitPln')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $subUnit   = MasterSubUnit::with('unitPln')->get();
+        $kerjaSama = MasterKerjaSama::with('unitPln')->get();
 
-        return view('master_sub_unit.index', compact('data'));
+        return view('master_sub_unit.index', compact('subUnit', 'kerjaSama'));
     }
 
     public function create()
@@ -26,20 +26,21 @@ class MasterSubUnitController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'unitpln_id'       => 'required|exists:master_unit_pln,unitpln_id',
-            'kode_sub'         => 'required|unique:master_sub_unit,kode_sub',
-            'nama_sub'         => 'required',
-            'nama_mitra'       => 'required',
-            'jenis_kerjasama'  => 'required',
-            'tanggal_mulai'    => 'nullable|date',
-            'tanggal_selesai'  => 'nullable|date|after_or_equal:tanggal_mulai',
+            'unitpln_id'     => 'required|exists:master_unit_pln,unitpln_id',
+            'kode_sub'       => 'required|unique:master_sub_unit,kode_sub',
+            'nama_sub_unit'  => 'required',
         ]);
 
-        MasterSubUnit::create($request->all());
+        MasterSubUnit::create([
+            'unitpln_id'    => $request->unitpln_id,
+            'kode_sub'      => $request->kode_sub,
+            'nama_sub_unit' => $request->nama_sub_unit,
+            'is_active'     => true,
+        ]);
 
         return redirect()
-            ->route('master-sub-unit.index')
-            ->with('success', 'Data kerja sama berhasil ditambahkan');
+            ->route('sub-unit.index')
+            ->with('success', 'Sub Unit berhasil ditambahkan');
     }
 
     public function destroy($id)
@@ -47,15 +48,7 @@ class MasterSubUnitController extends Controller
         MasterSubUnit::findOrFail($id)->delete();
 
         return redirect()
-            ->route('master-sub-unit.index')
-            ->with('success', 'Data kerja sama berhasil dihapus');
+            ->route('sub-unit.index')
+            ->with('success', 'Sub Unit berhasil dihapus');
     }
-
-    public function createInternal()
-{
-    $unitPln = MasterUnitPln::orderBy('nama_unit')->get();
-    return view('master_sub_unit.create_internal', compact('unitPln'));
 }
-
-}
-

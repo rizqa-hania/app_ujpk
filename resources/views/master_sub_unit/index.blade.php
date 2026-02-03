@@ -1,52 +1,58 @@
-<div class="container">
-    <h4>Master Sub Unit</h4>
+<h4>Sub Unit</h4>
+<a href="{{ route('sub-unit.create') }}" class="btn btn-success mb-2">
+    + Tambah Sub Unit
+</a>
 
-    <a href="{{ route('master-sub-unit.create') }}" class="btn btn-primary mb-3">
-        Tambah Kerja Sama
-    </a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Kode</th>
+        <th>Unit PLN</th>
+        <th>Nama Sub Unit</th>
+        <th>Status</th>
+        <th>Aksi</th>
+    </tr>
+    @foreach ($subUnit as $row)
+    <tr>
+        <td>{{ $row->kode_sub }}</td>
+        <td>{{ $row->unitPln->nama_unit }}</td>
+        <td>{{ $row->nama_sub_unit }}</td>
+        <td>{{ $row->is_active ? 'Aktif' : 'Nonaktif' }}</td>
+        <td>
+            <form method="POST" action="#">
+                <button>Hapus</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</table>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Kode</th>
-                <th>Unit PLN</th>
-                <th>Nama Kerja Sama</th>
-                <th>Mitra</th>
-                <th>Jenis</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $row)
-            <tr>
-                <td>{{ $row->kode_sub }}</td>
-                <td>{{ $row->unitPln->nama_unit }}</td>
-                <td>{{ $row->nama_sub }}</td>
-                <td>{{ $row->nama_mitra }}</td>
-                <td>{{ $row->jenis_kerjasama }}</td>
-                <td>
-                    @if ($row->is_active)
-                        <span class="badge bg-success">Aktif</span>
-                    @else
-                        <span class="badge bg-secondary">Nonaktif</span>
-                    @endif
-                </td>
-                <a href="{{ route('master-sub-unit.create-internal') }}"class="btn btn-success mb-3"> Sub Unit</a>
-                
-                <td>
-                    <form action="{{ route('master-sub-unit.destroy', $row->sub_id) }}" method="POST"class="d-inline">
-                @csrf
-                @method('DELETE')
-        <button class="btn btn-sm btn-danger"
-                onclick="return confirm('Yakin hapus kerja sama ini?')">
-            Hapus
-        </button>
-    </form>
-</td>
+<h4 class="mt-4">Kerja Sama</h4>
+<a href="{{ route('kerja-sama.create') }}" class="btn btn-primary mb-2">
+    + Tambah Kerja Sama
+</a>
 
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Unit PLN</th>
+        <th>Nama Kerja Sama</th>
+        <th>Mitra</th>
+        <th>Jenis</th>
+        <th>Status</th>
+        <th>Aksi</th>
+    </tr>
+    @foreach ($kerjaSama as $row)
+    <tr>
+        <td>{{ $row->unitPln->nama_unit }}</td>
+        <td>{{ $row->nama_kerja_sama }}</td>
+        <td>{{ $row->mitra }}</td>
+        <td>{{ $row->jenis_kerjasama }}</td>
+        <td>{{ $row->is_active ? 'Aktif' : 'Nonaktif' }}</td>
+        <td>
+            <form method="POST" action="#">
+                <button>Hapus</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</table>
+

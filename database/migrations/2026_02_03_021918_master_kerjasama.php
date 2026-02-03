@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterSubUnitTable extends Migration
+class MasterKerjasama extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateMasterSubUnitTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_sub_unit', function (Blueprint $table) {
-    $table->bigIncrements('sub_unit_id');
+        Schema::create('master_kerja_sama', function (Blueprint $table) {
+    $table->bigIncrements('kerjasama_id');
 
     $table->unsignedBigInteger('unitpln_id');
     $table->foreign('unitpln_id')->references('unitpln_id')->on('master_unit_pln')->onDelete('cascade');
-
-    $table->string('kode_sub')->unique();
-    $table->string('nama_sub_unit');
+    $table->string('nama_kerja_sama');
+    $table->string('mitra');
+    $table->string('jenis_kerjasama');
     $table->boolean('is_active')->default(true);
+
     $table->timestamps();
 });
 
@@ -34,6 +35,6 @@ class CreateMasterSubUnitTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_sub_unit');
+        //
     }
 }
