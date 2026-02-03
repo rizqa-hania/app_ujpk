@@ -50,5 +50,12 @@ class MasterSubUnitController extends Controller
             ->route('master-sub-unit.index')
             ->with('success', 'Data kerja sama berhasil dihapus');
     }
+
+    public function createInternal()
+{
+    $unitPln = MasterUnitPln::orderBy('nama_unit')->get();
+    return view('master_sub_unit.create_internal', compact('unitPln'));
+}
+
 }
 

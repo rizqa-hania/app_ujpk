@@ -10,6 +10,7 @@ use App\Http\Controllers\MasterPendidikanController;
 use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,8 @@ Route::get('/master-sub-unit', [MasterSubUnitController::class, 'index'])->name(
 Route::get('/master-sub-unit/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
 Route::post('/master-sub-unit', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
 Route::delete('/master-sub-unit/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
+Route::get('/master-sub-unit/create-internal', [MasterSubUnitController::class, 'createInternal'])->name('master-sub-unit.create-internal');
+
 
 
 // master unit pln YEYYYY sisa satuu that simple, yang waras ya yang waras 

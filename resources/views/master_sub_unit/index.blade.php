@@ -1,11 +1,11 @@
 <div class="container">
-    <h4>Master Sub Unit (Kerja Sama)</h4>
+    <h4>Master Sub Unit</h4>
 
     <a href="{{ route('master-sub-unit.create') }}" class="btn btn-primary mb-3">
         Tambah Kerja Sama
     </a>
 
-    <table class="table table-bordered">
+    <table border="1">
         <thead>
             <tr>
                 <th>Kode</th>
@@ -32,6 +32,8 @@
                         <span class="badge bg-secondary">Nonaktif</span>
                     @endif
                 </td>
+                <a href="{{ route('master-sub-unit.create-internal') }}"class="btn btn-success mb-3"> Sub Unit</a>
+                
                 <td>
                     <form action="{{ route('master-sub-unit.destroy', $row->sub_id) }}" method="POST"class="d-inline">
                 @csrf
