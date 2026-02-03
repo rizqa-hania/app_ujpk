@@ -8,6 +8,7 @@ use App\Http\Controllers\MasterJabatanController;
 use App\Http\Controllers\MasterProjectController;
 use App\Http\Controllers\MasterPendidikanController;
 use App\Http\Controllers\MasterTadController;
+use App\Http\Controllers\MasterUnitPlnController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,8 +21,16 @@ use App\Http\Controllers\MasterTadController;
 */
 
 
-// besok lanjut ke unit pln sama sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
+// besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
+
+// master unit pln YEYYYY sisa satuu that simple, yang waras ya yang waras 
+Route::get('/masterunitpln',[MasterUnitPlnController::class,'index'])->name('master_unit_pln.index');
+Route::get('/masterunitpln/create',[MasterUnitPlnController::class,'create'])->name('master_unit_pln.create');
+Route::post('/masterunitpln',[MasterUnitPlnController::class,'store'])->name('master_unit_pln.store');
+Route::delete('/masterunitpln/{id}',[MasterUnitPlnController::class,'destroy'])->name('master_unit_pln.destroy');
+
+
 // master tad anjay dah empattttt yeyyy 2 lagi, oke disini eror lagiiii dah ah cape that simple(👉ﾟヮﾟ)👉
 Route::get('/mastertad',[MasterTadController::class,'index'])->name('master_tad.index');
 Route::get('/mastertad/create',[MasterTadController::class,'create'])->name('master_tad.create');

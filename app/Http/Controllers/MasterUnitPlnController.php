@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\MasterTad;
+use App\MasterUnitPln;
 
-
-class MasterTadController extends Controller
+class MasterUnitPlnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,8 @@ class MasterTadController extends Controller
      */
     public function index()
     {
-        $tad = MasterTad::orderBy('nama_tad')->get();
-        return view('master_tad.index', compact('tad'));
+        $pln = MasterUnitPln::orderBy('nama_unit')->get();
+        return view('master_unit_pln.index', compact('pln'));
     }
 
     /**
@@ -26,7 +25,7 @@ class MasterTadController extends Controller
      */
     public function create()
     {
-        return view('master_tad.create');
+        return view('master_unit_pln.create');
     }
 
     /**
@@ -38,14 +37,14 @@ class MasterTadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'kode_tad' => 'required|unique:master_tad,kode_tad',
-        'nama_tad' => 'required'
+        'kode_unit' => 'required|unique:master_unit_pln,kode_unit',
+        'nama_unit' => 'required'
         ]);
 
-        MasterTad::create($request->all());
+        MasterUnitPln::create($request->all());
 
-        return redirect()->route('master_tad.index')
-        ->with('success', 'TAD berhasil disimpan');
+        return redirect()->route('master_unit_pln.index')
+        ->with('success', 'UNit berhasil disimpan');
     }
 
     /**
@@ -90,7 +89,8 @@ class MasterTadController extends Controller
      */
     public function destroy($id)
     {
-        MasterTad::where('tad_id', $id)->delete();
-        return Redirect()->route('master_tad.index');
+        MasterUnitPln::where('unitpln_id', $id)->delete();
+        return Redirect()->route('master_unit_pln.index');
     }
 }
+
