@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class MasterSubUnit extends Model
 {
     protected $table = 'master_sub_unit';
-    
+
     protected $primaryKey = 'sub_id';
 
     protected $fillable = [

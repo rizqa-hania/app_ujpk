@@ -9,6 +9,7 @@ use App\Http\Controllers\MasterProjectController;
 use App\Http\Controllers\MasterPendidikanController;
 use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
+use App\Http\Controllers\MasterSubUnitController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +24,14 @@ use App\Http\Controllers\MasterUnitPlnController;
 
 // besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
+
+
+//master sub unit
+Route::get('/master-sub-unit', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
+Route::get('/master-sub-unit/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
+Route::post('/master-sub-unit', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
+Route::delete('/master-sub-unit/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
+
 
 // master unit pln YEYYYY sisa satuu that simple, yang waras ya yang waras 
 Route::get('/masterunitpln',[MasterUnitPlnController::class,'index'])->name('master_unit_pln.index');
