@@ -14,7 +14,7 @@ class CreateMasterSubUnitTable extends Migration
     public function up()
     {
         Schema::create('master_sub_unit', function (Blueprint $table) {
-    $table->bigIncrements('sub_unit_id');
+    $table->bigIncrements('sub_id');
 
     $table->unsignedBigInteger('unitpln_id');
     $table->foreign('unitpln_id')->references('unitpln_id')->on('master_unit_pln')->onDelete('cascade');
