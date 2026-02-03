@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasterSubUnit extends Model
 {
     protected $table = 'master_sub_unit';
-    protected $primaryKey = 'sub_unit_id';
+    protected $primaryKey = 'sub_id';
 
     protected $fillable = [
         'unitpln_id',
@@ -22,6 +22,8 @@ class MasterSubUnit extends Model
 
     public function unitPln()
     {
-        return $this->belongsTo(MasterUnitPln::class,'unitpln_id','unitpln_id');
+        return $this->belongsTo(
+            MasterUnitPln::class,'unitpln_id','unitpln_id'
+        );
     }
 }

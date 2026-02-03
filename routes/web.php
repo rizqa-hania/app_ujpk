@@ -10,7 +10,7 @@ use App\Http\Controllers\MasterPendidikanController;
 use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
-use App\Http\Controllers\KerjaSamaController;
+use App\Http\Controllers\MasterKerjaSamaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +31,21 @@ use App\Http\Controllers\KerjaSamaController;
 
 
 //master sub unit
-// MASTER SUB UNIT (FINAL & WARAS)
-Route::get('/master-sub-unit', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
-Route::post('/master-sub-unit/store', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
-Route::post('/master-sub-unit/{id}/delete', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
+Route::prefix('master-sub-unit')->group(function () {
+Route::get('/', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
+Route::get('/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
+Route::post('/', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
+Route::delete('/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
+});
 
+
+//master kerjasama
+Route::prefix('master-kerja-sama')->group(function () {
+Route::get('/', [MasterKerjaSamaController::class, 'index'])->name('master-kerja-sama.index');
+Route::get('/create', [MasterKerjaSamaController::class, 'create'])->name('master-kerja-sama.create');
+Route::post('/', [MasterKerjaSamaController::class, 'store'])->name('master-kerja-sama.store');
+Route::delete('/{id}', [MasterKerjaSamaController::class, 'destroy'])->name('master-kerja-sama.destroy');
+});
 
 
 

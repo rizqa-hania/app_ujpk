@@ -1,6 +1,6 @@
-<h2>Tambah Sub Unit</h2>
+<h2>Tambah Kerja Sama</h2>
 
-<form action="{{ route('master-sub-unit.store') }}" method="POST">
+<form action="{{ route('master-kerja-sama.store') }}" method="POST">
     @csrf
 
     <label>Unit PLN</label><br>
@@ -14,12 +14,16 @@
     </select>
     <br><br>
 
-    <label>Kode Sub Unit</label><br>
-    <input type="text" name="kode_sub" required>
+    <label>Nama Kerja Sama</label><br>
+    <input type="text" name="nama_kerja_sama" required>
     <br><br>
 
-    <label>Nama Sub Unit</label><br>
-    <input type="text" name="nama_sub_unit" required>
+    <label>Mitra</label><br>
+    <input type="text" name="mitra" required>
+    <br><br>
+
+    <label>Jenis Kerja Sama</label><br>
+    <input type="text" name="jenis_kerjasama" required>
     <br><br>
 
     <label>Status</label><br>
@@ -30,5 +34,5 @@
     <br><br>
 
     <button type="submit">Simpan</button>
-    <a href="{{ route('master-sub-unit.index') }}">Kembali</a>
+    <a href="{{ route('master-kerja-sama.index') }}">Kembali</a>
 </form>
