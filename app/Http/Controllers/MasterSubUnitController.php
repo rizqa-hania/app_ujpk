@@ -7,12 +7,12 @@ use App\MasterKerjaSama;
 use App\MasterUnitPln;
 use Illuminate\Http\Request;
 
-class SubUnitController extends Controller
+class MasterSubUnitController extends Controller
 {
     public function index()
     {
-        $subUnit   = MasterSubUnit::with('unitPln')->get();
-        $kerjaSama = MasterKerjaSama::with('unitPln')->get();
+        $subUnit   = MasterSubUnit::with('unitpln')->get();
+        $kerjaSama = MasterKerjaSama::with('unitpln')->get();
 
         return view('master_sub_unit.index', compact('subUnit', 'kerjaSama'));
     }
@@ -32,23 +32,19 @@ class SubUnitController extends Controller
         ]);
 
         MasterSubUnit::create([
-            'unitpln_id'    => $request->unitpln_id,
+            'sub_id'    => $request->sub_id,
             'kode_sub'      => $request->kode_sub,
             'nama_sub_unit' => $request->nama_sub_unit,
             'is_active'     => true,
         ]);
 
-        return redirect()
-            ->route('sub-unit.index')
-            ->with('success', 'Sub Unit berhasil ditambahkan');
+        return redirect()->route('sub-unit.index')->with('success', 'Sub Unit berhasil ditambahkan');
     }
 
     public function destroy($id)
     {
         MasterSubUnit::findOrFail($id)->delete();
 
-        return redirect()
-            ->route('sub-unit.index')
-            ->with('success', 'Sub Unit berhasil dihapus');
+        return redirect()->route('sub-unit.index')->with('success', 'Sub Unit berhasil dihapus');
     }
 }

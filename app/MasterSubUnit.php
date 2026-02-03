@@ -22,10 +22,6 @@ class MasterSubUnit extends Model
 
     public function unitPln()
     {
-        return $this->belongsTo(
-            MasterUnitPln::class,
-            'unitpln_id',
-            'unitpln_id'
-        );
+        return $this->belongsTo(MasterUnitPln::class,'unitpln_id','unitpln_id');
     }
 }

@@ -28,20 +28,14 @@ use App\Http\Controllers\KerjaSamaController;
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
 
 
-//buat kerjasama 
-Route::prefix('kerja-sama')->group(function () {
-Route::get('/create', [KerjaSamaController::class, 'create'])->name('kerja-sama.create');
-Route::post('/', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
-Route::delete('/{id}', [KerjaSamaController::class, 'destroy'])->name('kerja-sama.destroy');
-});
+
 
 //master sub unit
-Route::prefix('sub-unit')->group(function () {
-Route::get('/', [SubUnitController::class, 'index'])->name('sub-unit.index');
-Route::get('/create', [SubUnitController::class, 'create'])->name('sub-unit.create');
-Route::post('/', [SubUnitController::class, 'store'])->name('sub-unit.store');
-Route::delete('/{id}', [SubUnitController::class, 'destroy'])->name('sub-unit.destroy');
-});
+// MASTER SUB UNIT (FINAL & WARAS)
+Route::get('/master-sub-unit', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
+Route::post('/master-sub-unit/store', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
+Route::post('/master-sub-unit/{id}/delete', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
+
 
 
 
