@@ -15,7 +15,7 @@ class CreateKomponenTable extends Migration
     {
         Schema::create('komponen', function (Blueprint $table) {
             $table->bigIncrements('kode');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->enum('tipe', ['penghasilan', 'potongan']);
             $table->enum('tipe_penghitungan', ['tetap', 'presentase']);
             $table->decimal('nilai', 15, 2);

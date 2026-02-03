@@ -89,7 +89,7 @@ class KomponenController extends Controller
     {
         $request->validate([
             'kode'              => 'required|string|unique:komponen,kode,' . $id . ',kode',
-            'name'              => 'required|string|max:255|unique:komponen,name,',
+            'name'              => 'required|string|max:255',
             'tipe'              => 'required',
             'tipe_penghitungan' => 'required',
             'nilai'             => 'required|numeric',
