@@ -8,7 +8,7 @@ class Komponen extends Model
 {
     protected $table = 'komponen';
     protected $primaryKey = 'kode_id';
-    protected $fillable = ['kode', 'name', 'tipe', 'tipe_penghitungan', 'nilai', 'is_active'];
+    protected $fillable = ['kode', 'name', 'tipe', 'tipe_penghitungan', 'nilai', 'status', 'is_active'];
 
     public function detail()
     {

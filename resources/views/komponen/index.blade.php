@@ -39,7 +39,14 @@
                 </form>
                 @endif
             </td>
-            <td><a href="{{ route('komponen.edit', $v->kode) }}">Edit</a></td>
+            <td>
+                <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST" style="display:inline">
+                @csrf
+                @method('DELETE')
+                <a href="{{ route('komponen.edit', $v->kode) }}">Edit</a>
+                <button type="submit" onclick="return confirm('Yakin hapus data ini?')">Hapus</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>
