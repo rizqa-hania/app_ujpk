@@ -72,9 +72,9 @@ class KomponenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($kode)
+    public function edit($id)
     {
-        $komponen = Komponen::findOrFail($kode);
+        $komponen = Komponen::find($id);
         return view('komponen.edit', compact('komponen'));
     }
 
@@ -85,17 +85,17 @@ class KomponenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $kode)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'kode'              => 'required|string|unique:komponen,kode,' . $kode . ',kode',
+            'kode'              => 'required|string|unique:komponen,kode,' . $id . ',kode',
             'name'              => 'required|string|max:255',
             'tipe'              => 'required',
             'tipe_penghitungan' => 'required',
             'nilai'             => 'required|numeric',
         ]);
 
-        $updatedata = Komponen::findOrFail($kode);
+        $updatedata = Komponen::findOrFail($id);
 
         $updatedata->update([
             'kode'              => $request->kode,
@@ -114,21 +114,21 @@ class KomponenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($kode)
+    public function destroy($id)
     {
-        Komponen::where('kode', $kode)->delete();
+        Komponen::where('kode', $id)->delete();
         return redirect()->route('komponen.index');
     }
 
-    public function aktifkan($kode)
+    public function aktifkan($id)
     {
-        Komponen::where('kode', $kode)->update(['is_active' => 1]);
+        Komponen::where('kode', $id)->update(['is_active' => 1]);
         return redirect()->route('komponen.index'); 
     }
 
-    public function nonaktifkan($kode)
+    public function nonaktifkan($id)
     {
-        Komponen::where('kode', $kode)->update(['is_active' => 0]);
+        Komponen::where('kode', $id)->update(['is_active' => 0]);
         return redirect()->route('komponen.index');
     }
 }
