@@ -106,8 +106,8 @@ Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->nam
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
 Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
-Route::get('/komponen/{id}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
-Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('komponen.update');
-Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy'); 
-Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
-Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+Route::get('/komponen/{kode}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
+Route::put('/komponen/{kode}', [KomponenController::class, 'update'])->name('komponen.update');
+Route::delete('/komponen/{kode}', [KomponenController::class, 'destroy'])->name('komponen.destroy'); 
+Route::put('/komponen/{kode}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
+Route::put('/komponen/{kode}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
