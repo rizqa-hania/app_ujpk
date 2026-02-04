@@ -103,11 +103,3 @@ Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('p
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 //KOMPONEN GAJI
-Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
-Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
-Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
-Route::get('/komponen/{id}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
-Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('komponen.update');
-Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy'); 
-Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
-Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');

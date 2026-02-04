@@ -14,12 +14,6 @@ class CreateKomponenTable extends Migration
     public function up()
     {
         Schema::create('komponen', function (Blueprint $table) {
-            $table->string('kode')->primary();
-            $table->string('name')->unique();
-            $table->enum('tipe', ['penghasilan', 'potongan']);
-            $table->enum('tipe_penghitungan', ['tetap', 'presentase']);
-            $table->decimal('nilai', 15, 2);
-            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
