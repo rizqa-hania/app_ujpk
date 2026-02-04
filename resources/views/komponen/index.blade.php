@@ -8,6 +8,7 @@
             <th>Tipe Komponen</th>
             <th>Tipe Penghitungan</th>
             <th>Nilai</th>
+            <th>Status</th>
             <th>
                 <a href="{{ route('komponen.create') }}">+ Komponen</a>
             </th>
@@ -16,18 +17,28 @@
     <tbody>
         @foreach ($komponen as $v)
         <tr>
+            <td>{{ $loop->iteration }}</td>
             <td>{{ $v->kode }}</td>
             <td>{{ $v->name }}</td>
             <td>{{ $v->tipe }}</td>
             <td>{{ $v->tipe_penghitungan }}</td>
             <td>{{ $v->nilai }}</td>
             <td>
-                <form action="{{ route('komponen.destroy', $v->komponen_id) }}" method="POST" style="display:inline">
-                    {{ csrf_field() }}
-                    @method('DELETE')
-                    <a href="{{ route('komponen.edit', $v->komponen_id) }}">Edit</a>
-                    <button type="submit" onclick="return conirm('Yakin hapus data ini?')">Hapus</button>
+                <a href="{{ route('komponen.edit', $v->kode) }}">Edit</a>
+
+                @if($v->is_active == 1)
+                <form action="{{ route('komponen.nonaktifkan', $v->kode) }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" onclick="return confirm('Nonaktifkan data ini?')">Nonaktif</button>
                 </form>
+                @else
+                <form action="{{ route('komponen.aktifkan', $v->kode) }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" onclick="return confirm('Aktifkan data ini?')">Aktif</button>
+                </form>
+                @endif
             </td>
         </tr>
         @endforeach

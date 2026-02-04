@@ -116,7 +116,18 @@ class KomponenController extends Controller
      */
     public function destroy($id)
     {
-        Komponen::where('komponen_id', $id)->delete();
+     
+    }
+
+    public function aktifkan($id)
+    {
+        Komponen::where('kode', $id)->update(['is_active' => 1]);
+        return redirect()->route('komponen.index'); 
+    }
+
+    public function nonaktifkan($id)
+    {
+        Komponen::where('kode', $id)->update(['is_active' => 0]);
         return redirect()->route('komponen.index');
     }
 }

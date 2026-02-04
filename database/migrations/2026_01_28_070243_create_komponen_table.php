@@ -19,6 +19,7 @@ class CreateKomponenTable extends Migration
             $table->enum('tipe', ['penghasilan', 'potongan']);
             $table->enum('tipe_penghitungan', ['tetap', 'presentase']);
             $table->decimal('nilai', 15, 2);
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
