@@ -12,6 +12,6 @@ class Komponen extends Model
 
     public function detail()
     {
-        return $this->hasMany(Detail::class, 'komponen_id');
+        return $this->hasMany(Detail::class, 'kode');
     }
 }
