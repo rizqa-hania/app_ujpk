@@ -24,11 +24,6 @@
     <label>Nilai</label>
     <input type="number" name="nilai" required>
     <br>
-    <label>Status:</label>
-    <select name="status" required>
-        <option value="aktif">Aktif</option>
-    </select>
-    <br>
     <button type="submit">Simpan</button>
     <a href="{{ route('komponen.index') }}">Kembali</a>
 </form>

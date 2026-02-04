@@ -8,7 +8,7 @@
             <th>Tipe Komponen</th>
             <th>Tipe Penghitungan</th>
             <th>Nilai</th>
-            <th>Status</th>
+            <th>Aksi</th>
             <th>
                 <a href="{{ route('komponen.create') }}">+ Komponen</a>
             </th>
@@ -24,7 +24,6 @@
             <td>{{ $v->tipe_penghitungan }}</td>
             <td>{{ $v->nilai }}</td>
             <td>
-                {{ $v->status }}
                 @if($v->is_active == 1)
                 <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST" style="display:inline">
                     @csrf
