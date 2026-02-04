@@ -24,7 +24,7 @@ class CreateDetailTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('kode',10);
-            $table->foreign('kode')->references('kode')->on('komponen');
+            $table->foreign('kode_id')->references('kode_id')->on('komponen');
             $table->decimal('total_penghasilan', 15, 2);
             $table->decimal('total_potongan', 15, 2);
             $table->decimal('gaji_bersih', 15, 2);

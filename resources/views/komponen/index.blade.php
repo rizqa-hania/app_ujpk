@@ -24,16 +24,16 @@
             <td>{{ $v->tipe_penghitungan }}</td>
             <td>{{ $v->nilai }}</td>
             <td>
-                <a href="{{ route('komponen.edit', $v->kode) }}">Edit</a>
+                <a href="{{ route('komponen.edit', $v->kode_id) }}">Edit</a>
 
                 @if($v->is_active == 1)
-                <form action="{{ route('komponen.nonaktifkan', $v->kode) }}" method="POST" style="display:inline">
+                <form action="{{ route('komponen.nonaktif', $v->kode_id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('PUT')
                     <button type="submit" onclick="return confirm('Nonaktifkan data ini?')">Nonaktif</button>
                 </form>
                 @else
-                <form action="{{ route('komponen.aktifkan', $v->kode) }}" method="POST" style="display:inline">
+                <form action="{{ route('komponen.aktif', $v->kode_id) }}" method="POST" style="display:inline">
                     @csrf
                     @method('PUT')
                     <button type="submit" onclick="return confirm('Aktifkan data ini?')">Aktif</button>
