@@ -16,7 +16,13 @@ class CreateDetailTable extends Migration
         Schema::create('detail', function (Blueprint $table) {
             $table->bigIncrements('detail_id');
             $table->foreignId('penggajian_id')->references('penggajian_id')->on('penggajian');
-            $table->foreignId('nip')->references('nip')->on('karyawan');
+            // izin yaa riss, gomenn ku ganti
+            $table->string('nip', 30);
+            $table->foreign('nip')
+                ->references('nip')
+                ->on('karyawan')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('kode',10);
             $table->foreign('kode')->references('kode')->on('komponen');
             $table->decimal('total_penghasilan', 15, 2);

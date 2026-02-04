@@ -9,26 +9,24 @@ class CreateLemburTable extends Migration
     public function up()
     {
         Schema::create('lembur', function (Blueprint $table) {
-            $table->bigIncrements('lembur_id');
+        $table->bigIncrements('lembur_id');
 
-            $table->foreignId('nip')->references('nip')->on('karyawan');
+        $table->string('nip', 30);
+        $table->foreign('nip')
+            ->references('nip')
+            ->on('karyawan')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+        $table->date('tanggal_mulai');
+        $table->date('tanggal_selesai');
+        $table->time('jam_mulai');
+        $table->time('jam_selesai');
+        $table->enum('status', ['pending', 'disetujui', 'ditolak'])->default('pending');
+        $table->text('keterangan')->nullable();
+        $table->unique(['nip', 'tanggal_mulai', 'jam_mulai']);
+        $table->timestamps();
+    });
 
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
-
-            $table->time('jam_mulai');
-            $table->time('jam_selesai');
-
-            $table->enum('status', ['pending', 'disetujui', 'ditolak'])
-                  ->default('pending');
-
-            $table->text('keterangan')->nullable();
-
-            $table->timestamps();
-
-            // aktifkan kalau tabel pegawai sudah fix
-            // $table->foreign('nip')->references('nip')->on('pegawai');
-        });
     }
 
     public function down()

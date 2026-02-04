@@ -13,16 +13,25 @@ class CreateIzinTable extends Migration
      */
     public function up()
     {
-        Schema::create('izin', function (Blueprint $table) {
-            $table->bigIncrements('izin_id');
-            $table->foreignId('nip')->references('nip')->on('karyawan'); 
-            $table->enum('jenis_izin', ['sakit', 'izin', 'kehamilan','dll']);
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
-            $table->string('bukti_dokumen')->nullable();
-            $table->text('keterangan')->nullable();
-            $table->timestamps();
-        });
+       Schema::create('izin', function (Blueprint $table) {
+    $table->bigIncrements('izin_id');
+
+    $table->string('nip', 30);
+    $table->foreign('nip')
+        ->references('nip')
+        ->on('karyawan')
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
+
+    $table->enum('jenis_izin', ['sakit','izin','kehamilan','cuti_lainnya']);
+    $table->date('tanggal_mulai');
+    $table->date('tanggal_selesai');
+    $table->string('bukti_dokumen')->nullable();
+    $table->text('keterangan')->nullable();
+    $table->unique(['nip', 'tanggal_mulai', 'tanggal_selesai']);
+    $table->timestamps();
+});
+
     }
 
     /**
