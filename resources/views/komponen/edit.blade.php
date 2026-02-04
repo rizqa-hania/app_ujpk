@@ -1,8 +1,8 @@
 <h3>Form Edit</h3>
-<form action="{{ route('komponen.update', $komponen->kode_id) }}" method="POST">
+<form action="{{ route('komponen.update', $komponen->kode) }}" method="POST">
     {{ csrf_field() }}
     @method('PUT')
-    <label>Kode Penggajian</label>
+    <label>Kode Komponen Gaji</label>
     <input type="text" name="kode" value="{{ $komponen->kode }}" required>
     <br>
     <label>Komponen</label>

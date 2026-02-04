@@ -2,7 +2,7 @@
     <form action="{{ route('komponen.store') }}" method="POST">
         @csrf
         <label>Kode Penggajian</label>
-        <input type="text" name="kode">
+        <input type="text" name="kode" required>
         <br>
         <label>Komponen</label>
         <input type="text" name="name" required>

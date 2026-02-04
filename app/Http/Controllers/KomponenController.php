@@ -45,7 +45,7 @@ class KomponenController extends Controller
         ]);
 
         Komponen::create([
-            'kode_id'              => $request->kode,
+            'kode'              => $request->kode,
             'name'              => $request->name,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
@@ -121,13 +121,13 @@ class KomponenController extends Controller
 
     public function aktifkan($id)
     {
-        Komponen::where('kode_id', $id)->update(['is_active' => 1]);
+        Komponen::where('kode', $id)->update(['is_active' => 1]);
         return redirect()->route('komponen.index'); 
     }
 
     public function nonaktifkan($id)
     {
-        Komponen::where('kode_id', $id)->update(['is_active' => 0]);
+        Komponen::where('kode', $id)->update(['is_active' => 0]);
         return redirect()->route('komponen.index');
     }
 }
