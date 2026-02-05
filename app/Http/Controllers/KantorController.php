@@ -32,5 +32,12 @@ class KantorController extends Controller
 
     return redirect()->route('kantor.index');
 }
+
+    public function destroy($id)
+{
+    Kantor::where('kantor_id', $id)->delete();
+    return redirect()->route('kantor.index');
+}
+
  
 }
