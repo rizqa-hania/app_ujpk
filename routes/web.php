@@ -117,7 +117,6 @@ Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('p
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 //KOMPONEN GAJI
-<<<<<<< HEAD
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
 Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
@@ -126,7 +125,6 @@ Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('kompo
 Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
 Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
 Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
-=======
 
 
 
@@ -144,8 +142,3 @@ Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absens
 Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
 Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
 Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');
-<<<<<<< HEAD
->>>>>>> 285ad66439834943b59ee1bd1ff03d466c7fc2d5
-=======
-Route::delete('/kantor/{id}', [KantorController::class, 'destroy'])->name('kantor.destroy');
->>>>>>> 7498e5b1f412c6cf68b20ab6e8f3ad6c7345fc56
