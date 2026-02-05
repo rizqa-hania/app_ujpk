@@ -11,10 +11,10 @@ use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\QrAbsensiController;
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,8 +30,19 @@ use App\Http\Controllers\QrAbsensiController;
 // besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
 
+// login nih
+Route::get('/',[AuthController::class,'showformlogin'])->name('auth.login');
+Route::post('/login',[AuthController::class,'proseslogin'])->name('login.proses');
+Route::get('/dashboard',[AuthController::class,'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 
-
+// user
+Route::get('/user',[UserController::class,'index'])->name('users.index');
+Route::get('/user/create',[UserController::class,'create'])->name('users.create');
+Route::post('/user',[UserController::class,'store'])->name('users.store');
+//Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('users.edit');
+//Route::put('user/{id}',[UserController::class,'update'])->name('users.update');
+Route::delete('/user/{id}',[UserController::class,'destroy'])->name('users.destroy');
 
 //master sub unit
 Route::prefix('master-sub-unit')->group(function () {
