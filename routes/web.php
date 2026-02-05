@@ -133,4 +133,8 @@ Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absens
 Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
 Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
 Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');
+<<<<<<< HEAD
 >>>>>>> 285ad66439834943b59ee1bd1ff03d466c7fc2d5
+=======
+Route::delete('/kantor/{id}', [KantorController::class, 'destroy'])->name('kantor.destroy');
+>>>>>>> 7498e5b1f412c6cf68b20ab6e8f3ad6c7345fc56
