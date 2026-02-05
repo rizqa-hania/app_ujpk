@@ -13,6 +13,8 @@ use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\QrAbsensiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -115,11 +117,21 @@ Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('p
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 //KOMPONEN GAJI
-Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
-Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
-Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
-Route::get('/komponen/{id}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
-Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('komponen.update');
-Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy'); 
-Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
-Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+
+
+
+//ABSENSI
+Route::prefix('absensi')->group(function () {
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/store', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::post('/pulang/{id}', [AbsensiController::class, 'pulang'])->name('absensi.pulang');
+});
+
+//kantor
+Route::resource('kantor', KantorController::class);
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
+Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
+Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');
+Route::delete('/kantor/{id}', [KantorController::class, 'destroy'])->name('kantor.destroy');

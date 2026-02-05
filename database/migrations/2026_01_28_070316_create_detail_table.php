@@ -19,8 +19,6 @@ class CreateDetailTable extends Migration
             // izin yaa riss, gomenn ku ganti
             $table->string('nip', 30);
             $table->foreign('nip')->references('nip')->on('karyawan')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('kode',10);
-            $table->foreign('kode')->references('kode')->on('komponen');
             $table->decimal('total_penghasilan', 15, 2);
             $table->decimal('total_potongan', 15, 2);
             $table->decimal('gaji_bersih', 15, 2);
