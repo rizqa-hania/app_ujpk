@@ -7,7 +7,7 @@
             <th>Komponen</th>
             <th>Tipe Komponen</th>
             <th>Tipe Penghitungan</th>
-            <th>Nominal/Persen</th>
+            <th>Nilai</th>
             <th>Status</th>
             <th>
                 <a href="{{ route('komponen.create') }}">+ Komponen</a>

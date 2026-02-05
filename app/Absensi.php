@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Absensi extends Model
 {
     protected $table = 'absensi';
-
     protected $primaryKey = 'absensi_id';
 
     protected $fillable = [
@@ -19,12 +18,15 @@ class Absensi extends Model
         'lat_masuk',
         'long_masuk',
         'jarak_masuk',
+        'lat_pulang',
+        'long_pulang',
+        'jarak_pulang',
         'status',
+        'metode_absensi',
+        'verifikasi',
+        'is_valid_radius',
+        'device_id',
     ];
-
-    /**
-     * RELATIONS
-     */
 
     public function karyawan()
     {
