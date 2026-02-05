@@ -11,6 +11,9 @@ use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\QrAbsensiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -103,3 +106,20 @@ Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('p
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 //KOMPONEN GAJI
+
+
+
+//ABSENSI
+Route::prefix('absensi')->group(function () {
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/store', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::post('/pulang/{id}', [AbsensiController::class, 'pulang'])->name('absensi.pulang');
+});
+
+//kantor
+Route::resource('kantor', KantorController::class);
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
+Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
+Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');
