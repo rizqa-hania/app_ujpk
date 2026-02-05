@@ -18,7 +18,7 @@ class KomponenController extends Controller
         return view('komponen.index', compact('komponen'));
     }
 
-    /**
+    /*
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
