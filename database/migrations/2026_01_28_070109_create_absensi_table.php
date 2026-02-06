@@ -18,18 +18,9 @@ class CreateAbsensiTable extends Migration
 
     // NIP harus STRING karena karyawan.nip STRING
     $table->string('nip', 30);
-    $table->foreign('nip')
-        ->references('nip')
-        ->on('karyawan')
-        ->onUpdate('cascade')
-        ->onDelete('cascade');
+    $table->foreign('nip')->references('nip')->on('karyawan')->onUpdate('cascade')->onDelete('cascade');
     $table->unsignedBigInteger('kantor_id');
-    $table->foreign('kantor_id')
-        ->references('kantor_id')
-        ->on('kantor')
-        ->onUpdate('cascade')
-        ->onDelete('restrict');
-        
+    $table->foreign('kantor_id')->references('kantor_id')->on('kantor')->onUpdate('cascade')->onDelete('restrict');
     $table->date('tanggal');
     $table->time('jam_masuk')->nullable();
     $table->time('jam_pulang')->nullable();

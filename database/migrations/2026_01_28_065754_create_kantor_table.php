@@ -19,7 +19,7 @@ class CreateKantorTable extends Migration
             $table->string('alamat')->nullable();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude',10,7);
-            $table->integer('radius_meter')->default();
+            $table->integer('radius_meter')->default(100);
             $table->timestamps();
         });
     }

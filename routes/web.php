@@ -11,7 +11,10 @@ use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
-
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\QrAbsensiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,8 +30,19 @@ use App\Http\Controllers\MasterKerjaSamaController;
 // besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
 
+// login nih
+Route::get('/',[AuthController::class,'showformlogin'])->name('auth.login');
+Route::post('/login',[AuthController::class,'proseslogin'])->name('login.proses');
+Route::get('/dashboard',[AuthController::class,'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 
-
+// user
+Route::get('/user',[UserController::class,'index'])->name('users.index');
+Route::get('/user/create',[UserController::class,'create'])->name('users.create');
+Route::post('/user',[UserController::class,'store'])->name('users.store');
+//Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('users.edit');
+//Route::put('user/{id}',[UserController::class,'update'])->name('users.update');
+Route::delete('/user/{id}',[UserController::class,'destroy'])->name('users.destroy');
 
 //master sub unit
 Route::prefix('master-sub-unit')->group(function () {
@@ -103,3 +117,28 @@ Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('p
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 //KOMPONEN GAJI
+Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
+Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
+Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
+Route::get('/komponen/{id}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
+Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('komponen.update');
+Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
+Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
+
+
+
+//ABSENSI
+Route::prefix('absensi')->group(function () {
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/store', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::post('/pulang/{id}', [AbsensiController::class, 'pulang'])->name('absensi.pulang');
+});
+
+//kantor
+Route::resource('kantor', KantorController::class);
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
+Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
+Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');

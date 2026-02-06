@@ -18,7 +18,7 @@ class KomponenController extends Controller
         return view('komponen.index', compact('komponen'));
     }
 
-    /**
+    /*
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -37,16 +37,16 @@ class KomponenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode'              => 'required|string',
-            'name'              => 'required|string|max:255|unique:komponen',
-            'tipe'              => 'required',
-            'tipe_penghitungan' => 'required',
-            'nilai'             => 'required|numeric',
+            'kode'                  => 'required|string',
+            'komponen'              => 'required|string|max:255|unique:komponen',
+            'tipe'                  => 'required',
+            'tipe_penghitungan'     => 'required',
+            'nilai'                 => 'required|numeric',
         ]);
 
         Komponen::create([
             'kode'              => $request->kode,
-            'name'              => $request->name,
+            'komponen'              => $request->komponen,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
             'nilai'             => $request->nilai
@@ -88,21 +88,21 @@ class KomponenController extends Controller
     public function update(Request $request, $kode)
     {
         $request->validate([
-            'kode'              => 'required|string|unique:komponen,kode,' . $kode . ',kode',
-            'name'              => 'required|string|max:255',
-            'tipe'              => 'required',
-            'tipe_penghitungan' => 'required',
-            'nilai'             => 'required|numeric',
+            'kode'                  => 'required|string|unique:komponen,kode,' . $kode . ',kode',
+            'komponen'              => 'required|string|max:255',
+            'tipe'                  => 'required',
+            'tipe_penghitungan'     => 'required',
+            'nilai'                 => 'required|numeric',
         ]);
 
         $updatedata = Komponen::findOrFail($kode);
 
         $updatedata->update([
-            'kode'              => $request->kode,
-            'name'              => $request->name,
-            'tipe'              => $request->tipe,
-            'tipe_penghitungan' => $request->tipe_penghitungan,
-            'nilai'             => $request->nilai
+            'kode'                  => $request->kode,
+            'komponen'              => $request->komponen,
+            'tipe'                  => $request->tipe,
+            'tipe_penghitungan'     => $request->tipe_penghitungan,
+            'nilai'                 => $request->nilai
         ]);
 
         return redirect()->route('komponen.index');
