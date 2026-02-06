@@ -122,13 +122,13 @@ class KomponenController extends Controller
 
     public function aktifkan($kode)
     {
-        Komponen::where('kode', $kode)->update(['is_active' => 1]);
+        Komponen::where('kode', $kode)->update(['status' => 1]);
         return redirect()->route('komponen.index'); 
     }
 
     public function nonaktifkan($kode)
     {
-        Komponen::where('kode', $kode)->update(['is_active' => 0]);
+        Komponen::where('kode', $kode)->update(['status' => 0]);
         return redirect()->route('komponen.index');
     }
 }
