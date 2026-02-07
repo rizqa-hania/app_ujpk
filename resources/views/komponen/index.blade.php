@@ -5,12 +5,12 @@
             <th>No</th>
             <th>Kode</th>
             <th>Komponen</th>
-            <th>Tipe</th>
-            <th>Perhitungan</th>
+            <th>Tipe Komponen</th>
+            <th>Tipe Perhitungan</th>
             <th>Nilai</th>
             <th>Status</th>
             <th>
-                <a href="{{ route('penggajian.create') }}">+ Penggajian</a>
+                <a href="{{ route('komponen.create') }}">+ Komponen</a>
             </th>
         </tr>
     </thead>
