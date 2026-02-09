@@ -1,3 +1,4 @@
+
 <h2>Data Kantor</h2>
 
 <a href="{{ route('kantor.create') }}">Tambah Kantor</a>
