@@ -32,33 +32,44 @@
             @endif
         </td>
         <td>
-            @if($v->status == 1)
-            <span class="badge rounded-pill bg-success-subtle text-success px-3">Aktif</span>
-            @else
-            <span class="badge rounded-pill bg-danger-subtle text-danger px-3">Nonaktif</span>
-            @endif
-        </td>
-        <td>
-            @if($v->status == 1)
-                <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST">
+            @if($v->status == 0)
+            <form action="{{ route('komponen.aktif', $v->kode) }}" method="POST" style="display:inline">
+                    @csrf 
+                    @method('PUT')
+                    <button type="submit" onclick="return confirm('Aktifkan komponen ini?')">Aktifkan</button>
+                </form>
+
+                <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST" style="display:inline">
                     @csrf 
                     @method('PUT')
                     <button type="submit" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
                 </form>
+
+            @elseif($v->status == 1)
+            Aktif
+                <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST" style="display:inline">
+                    @csrf 
+                    @method('PUT')
+                    <button type="submit" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
+                </form>
+
             @else
                 <form action="{{ route('komponen.aktif', $v->kode) }}" method="POST" class="d-inline">
                     @csrf 
                     @method('PUT')
                     <button type="submit" onclick="return confirm('Aktifkan komponen ini?')">Aktifkan</button>
                 </form>
+            Nonaktif
             @endif
-                <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST">
-                    @csrf 
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus komponen ini?')">Hapus</button>
-                </form>
+        </td>
+        <td>
+            <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST">
+                @csrf 
+                @method('DELETE')
+                <button type="submit" onclick="return confirm('Yakin hapus komponen ini?')">Hapus</button>
+            </form>
         </td>
     </tr>
-            @endforeach
+     @endforeach
     </tbody>
 </table>

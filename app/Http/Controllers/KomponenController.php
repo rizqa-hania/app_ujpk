@@ -87,25 +87,7 @@ class KomponenController extends Controller
      */
     public function update(Request $request, $kode)
     {
-        $request->validate([
-            'kode'                  => 'required|string|unique:komponen,kode,' . $kode . ',kode',
-            'komponen'              => 'required|string|max:255',
-            'tipe'                  => 'required',
-            'tipe_penghitungan'     => 'required',
-            'nilai'                 => 'required|numeric',
-        ]);
-
-        $updatedata = Komponen::findOrFail($kode);
-
-        $updatedata->update([
-            'kode'                  => $request->kode,
-            'komponen'              => $request->komponen,
-            'tipe'                  => $request->tipe,
-            'tipe_penghitungan'     => $request->tipe_penghitungan,
-            'nilai'                 => $request->nilai
-        ]);
-
-        return redirect()->route('komponen.index');
+        
     }
 
     /**
@@ -128,7 +110,7 @@ class KomponenController extends Controller
 
     public function nonaktifkan($kode)
     {
-        Komponen::where('kode', $kode)->update(['status' => 0]);
+        Komponen::where('kode', $kode)->update(['status' => 2]);
         return redirect()->route('komponen.index');
     }
 }
