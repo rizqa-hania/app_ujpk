@@ -98,4 +98,11 @@ class Karyawan extends Model
         'file_sertifikat_garda',
     ];
 
+    public function jabatan()
+    {
+            return $this->belongsTo(MasterJabatan::class, 'jabatan_id');
+    }
+
+
+
     }

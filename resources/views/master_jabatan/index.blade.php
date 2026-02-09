@@ -11,7 +11,7 @@
 <tbody>
 @foreach($jabatan as $j)
 <tr>
-<td>{{$loop->iteration}}</td>
+    
 <td>{{$j->kode_jabatan}}</td>
 <td>{{$j->nama_jabatan}}</td>
 
