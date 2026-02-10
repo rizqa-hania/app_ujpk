@@ -15,6 +15,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\QrAbsensiController;
+use App\Http\Controllers\KaryawanController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +31,33 @@ use App\Http\Controllers\QrAbsensiController;
 
 // besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
 // lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
+
+// karyawan, dah sampe sini nih asekkkk dikit lagi kelar masih 70% lagi ;)
+Route::get('/karyawan',[KaryawanController::class,'index'])->name('karyawan.index');
+Route::get('/karyawan',[KaryawanController::class,'step1'])->name('karyawan.step1');
+Route::post('/karyawan',[KaryawanController::class,'storestep1'])->name('karyawan.storeste1');
+Route::get('/karyawan',[KaryawanController::class,'step2'])->name('karyawan.step2');
+Route::post('/karyawan',[KaryawanController::class,'storestep2'])->name('store.step2');
+Route::get('/karyawan',[KaryawanController::class,'step3'])->name('karyawan.step3');
+Route::post('/karyawan',[KaryawanController::class,'storestep3'])->name('store.step3');
+Route::get('/karyawan',[KaryawanController::class,'step4'])->name('karyawan.step4');
+Route::post('/karyawan',[KaryawanController::class,'storestep4'])->name('store.step4');
+Route::get('/karyawan',[KaryawanController::class,'step5'])->name('karyawan.step5');
+Route::post('/karyawan',[KaryawanController::class,'storestep5'])->name('store.step5');
+Route::get('/karyawan',[KaryawanController::class,'step6'])->name('karyawan.step6');
+Route::post('/karyawan',[KaryawanController::class,'storestep6'])->name('store.step6');
+Route::get('/karyawan',[KaryawanController::class,'step7'])->name('karyawan.step7');
+Route::post('/karyawan',[KaryawanController::class,'storestep7'])->name('store.step7');
+Route::get('/karyawan',[KaryawanController::class,'step8'])->name('karyawan.step8');
+Route::post('/karyawan',[KaryawanController::class,'storestep8'])->name('store,step8');
+Route::get('/karyawan',[KaryawanController::class,'step9'])->name('karyawan.step9');
+Route::post('/karyawan',[KaryawanController::class,'storestep9'])->name('store.step9');
+Route::get('/karyawan',[KaryawanController::class,'step10'])->name('karyawan.step10');
+Route::post('/karyawan',[KaryawanController::class,'storestep10'])->name('store.step10');
+Route::get('/karyawan',[KaryawanController::class,'stepkhusus'])->name('karyawan.stepkhusus');
+Route::post('/karyawan',[KaryawanController::class,'stepkhusus'])->name('store.stepkhusus');
+Route::get('/finish',[KaryawanController::class,'finish'])->name('karyawan.finish');
+
 
 // login nih
 Route::get('/',[AuthController::class,'showformlogin'])->name('auth.login');
