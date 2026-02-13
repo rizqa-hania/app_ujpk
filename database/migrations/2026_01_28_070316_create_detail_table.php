@@ -18,8 +18,6 @@ class CreateDetailTable extends Migration
             $table->foreignId('penggajian_id')->references('penggajian_id')->on('penggajian');
             $table->string('nip', 30);
             $table->foreign('nip')->references('nip')->on('karyawan')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('kode');
-            $table->foreign('kode')->references('kode')->on('komponen');
             $table->decimal('total_pendapatan', 15, 2);
             $table->decimal('total_potongan', 15, 2);
             $table->decimal('gaji_bersih', 15, 2);

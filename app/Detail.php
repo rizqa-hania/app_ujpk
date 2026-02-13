@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Penggajian;
+use App\Karyawan;
+use App\Komponen;
 
 class Detail extends Model
 {
@@ -20,4 +23,9 @@ class Detail extends Model
     return $this->belongsTo(Karyawan::class, 'nip', 'nip');
     }
 
+    public function detailKomponen()
+    {
+    return $this->hasMany(DetailKomponen::class);
+    }
+    
 }
