@@ -14,56 +14,53 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\QrAbsensiController;
+//
 use App\Http\Controllers\KaryawanController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// login
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::get('/forgot-password', [AuthController::class, 'showForgot'])->name('forgot');
+Route::post('/forgot-password', [AuthController::class, 'sendReset'])->name('forgot.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// dashboard
+Route::middleware('auth')->group(function () {
+Route::get('/superadmin/dashboard', function () {return view('superadmin.dashboard'); });
+Route::get('/admin/dashboard', function () {return view('admin.dashboard');});
+Route::get('/karyawan/dashboard', function () {return view('karyawan.dashboard');});
+});
 
 
-// besok lanjut ke sub unit pln, ini agak susah karena relasi jadi besok aja aku dah tak kuat sakit nih mata 
-// lanjut esok sekalian karyawan ini biar aku yang pegang.. anjayyy (*/ω＼*)
-
-// karyawan, dah sampe sini nih asekkkk dikit lagi kelar masih 70% lagi ;)
-Route::get('/karyawan',[KaryawanController::class,'index'])->name('karyawan.index');
-Route::get('/karyawan',[KaryawanController::class,'step1'])->name('karyawan.step1');
-Route::post('/karyawan',[KaryawanController::class,'storestep1'])->name('karyawan.storeste1');
-Route::get('/karyawan',[KaryawanController::class,'step2'])->name('karyawan.step2');
-Route::post('/karyawan',[KaryawanController::class,'storestep2'])->name('store.step2');
-Route::get('/karyawan',[KaryawanController::class,'step3'])->name('karyawan.step3');
-Route::post('/karyawan',[KaryawanController::class,'storestep3'])->name('store.step3');
-Route::get('/karyawan',[KaryawanController::class,'step4'])->name('karyawan.step4');
-Route::post('/karyawan',[KaryawanController::class,'storestep4'])->name('store.step4');
-Route::get('/karyawan',[KaryawanController::class,'step5'])->name('karyawan.step5');
-Route::post('/karyawan',[KaryawanController::class,'storestep5'])->name('store.step5');
-Route::get('/karyawan',[KaryawanController::class,'step6'])->name('karyawan.step6');
-Route::post('/karyawan',[KaryawanController::class,'storestep6'])->name('store.step6');
-Route::get('/karyawan',[KaryawanController::class,'step7'])->name('karyawan.step7');
-Route::post('/karyawan',[KaryawanController::class,'storestep7'])->name('store.step7');
-Route::get('/karyawan',[KaryawanController::class,'step8'])->name('karyawan.step8');
-Route::post('/karyawan',[KaryawanController::class,'storestep8'])->name('store,step8');
-Route::get('/karyawan',[KaryawanController::class,'step9'])->name('karyawan.step9');
-Route::post('/karyawan',[KaryawanController::class,'storestep9'])->name('store.step9');
-Route::get('/karyawan',[KaryawanController::class,'step10'])->name('karyawan.step10');
-Route::post('/karyawan',[KaryawanController::class,'storestep10'])->name('store.step10');
-Route::get('/karyawan',[KaryawanController::class,'stepkhusus'])->name('karyawan.stepkhusus');
-Route::post('/karyawan',[KaryawanController::class,'stepkhusus'])->name('store.stepkhusus');
-Route::get('/finish',[KaryawanController::class,'finish'])->name('karyawan.finish');
-
-
-// login nih
-Route::get('/',[AuthController::class,'showformlogin'])->name('auth.login');
-Route::post('/login',[AuthController::class,'proseslogin'])->name('login.proses');
-Route::get('/dashboard',[AuthController::class,'dashboard'])->name('dashboard')->middleware('auth');
-Route::get('/logout',[AuthController::class,'logout'])->name('logout');
+// karyawan
+Route::middleware(['auth'])->prefix('karyawan')->name('karyawan.')->group(function () {
+Route::get('step1', [KaryawanController::class,'step1'])->name('step1');
+Route::post('step1', [KaryawanController::class,'storestep1'])->name('store.step1');
+Route::get('step2', [KaryawanController::class,'step2'])->name('step2');
+Route::post('step2', [KaryawanController::class,'storestep2'])->name('store.step2');
+Route::get('step3', [KaryawanController::class,'step3'])->name('step3');
+Route::post('step3', [KaryawanController::class,'storestep3'])->name('store.step3');
+Route::get('step4', [KaryawanController::class,'step4'])->name('step4');
+Route::post('step4', [KaryawanController::class,'storestep4'])->name('store.step4');
+Route::get('step5', [KaryawanController::class,'step5'])->name('step5');
+Route::post('step5', [KaryawanController::class,'storestep5'])->name('store.step5');
+Route::get('step6', [KaryawanController::class,'step6'])->name('step6');
+Route::post('step6', [KaryawanController::class,'storestep6'])->name('store.step6');
+Route::get('step7', [KaryawanController::class,'step7'])->name('step7');
+Route::post('step7', [KaryawanController::class,'storestep7'])->name('store.step7');
+Route::get('step8', [KaryawanController::class,'step8'])->name('step8');
+Route::post('step8', [KaryawanController::class,'storestep8'])->name('store.step8');
+Route::get('step9', [KaryawanController::class,'step9'])->name('step9');
+Route::post('step9', [KaryawanController::class,'storestep9'])->name('store.step9');
+Route::get('step10', [KaryawanController::class,'step10'])->name('step10');
+Route::post('step10', [KaryawanController::class,'storestep10'])->name('store.step10');
+Route::get('khusus', [KaryawanController::class,'stepKhusus'])->name('stepkhusus');
+Route::post('khusus', [KaryawanController::class,'storestepkhusus'])->name('store.stepkhusus');
+Route::get('finish', [KaryawanController::class,'finish'])->name('finish');
+Route::get('dashboard', [KaryawanController::class,'dashboard'])->name('dashboard');
+});
 
 // user
 Route::get('/user',[UserController::class,'index'])->name('users.index');
@@ -74,12 +71,11 @@ Route::post('/user',[UserController::class,'store'])->name('users.store');
 Route::delete('/user/{id}',[UserController::class,'destroy'])->name('users.destroy');
 
 //master sub unit
-Route::prefix('master-sub-unit')->group(function () {
-Route::get('/', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
-Route::get('/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
-Route::post('/', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
-Route::delete('/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
-});
+
+Route::get('/sub', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
+Route::get('/sub/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
+Route::post('/sub', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
+Route::delete('/sub/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
 
 
 //master kerjasama
@@ -167,7 +163,5 @@ Route::prefix('absensi')->group(function () {
 //kantor
 Route::resource('kantor', KantorController::class);
 Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
-Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
-Route::get('/qr/generate/{kantor}', [QrController::class, 'generate'])->name('qr.generate');
-Route::post('/qr/scan', [QrController::class, 'scan'])->name('qr.scan');
+Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');;
 Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');

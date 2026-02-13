@@ -13,6 +13,7 @@
 
  <label> Role </label> <br>
  <input type="radio" name="role" value="admin"> Admin </br>
+ <input type="radio" name="role" value="super_admin">Super Admin</br>
 
  <button type="submit">Simpan</button>
 </form>
