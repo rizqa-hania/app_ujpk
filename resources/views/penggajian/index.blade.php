@@ -34,11 +34,6 @@
                                     <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}" method="POST">
                                         {{ csrf_field() }}
                                         @method('DELETE')
-                                        
-                                        <a href="{{ route('penggajian.edit', $v->penggajian_id) }}" class="btn btn-warning btn-sm">
-                                            Edit
-                                        </a>
-                                        
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
                                             Hapus
                                         </button>

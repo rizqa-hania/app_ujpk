@@ -1,7 +1,5 @@
 @extends('template.layout')
-
 @section('content')
-
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Data Komponen Gaji</h3>
@@ -15,13 +13,14 @@
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th style="width: 5%">No</th>
+                    <th>No</th>
                     <th>Kode</th>
                     <th>Komponen</th>
+                    <th>Tipe Komponen</th>
                     <th>Tipe Penghitungan</th>
                     <th>Nilai</th>
                     <th>Status</th>
-                    <th class="text-center">Aksi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +29,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $v->kode }}</td>
                     <td>{{ $v->komponen }}</td>
+                    <td>{{ $v->tipe }}</td>
                     <td>{{ $v->tipe_penghitungan == 'persen' ? 'Persentase' : 'Tetap' }}</td>
                     <td>
                         @if($v->tipe_penghitungan == 'persen')

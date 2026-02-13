@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\KomponenController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\MasterJabatanController;
 use App\Http\Controllers\MasterProjectController;
@@ -137,20 +138,23 @@ Route::put('/lembur/{lembur}/status', [LemburController::class, 'updateStatus'])
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
 Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
 Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
-Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
-Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
-//KOMPONEN GAJI
+// KOMPONEN GAJI
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
 Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
-Route::get('/komponen/{id}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
-Route::put('/komponen/{id}', [KomponenController::class, 'update'])->name('komponen.update');
 Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
 Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
 Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
 
+// DETAIL GAJI
+Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
+Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
+Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
+Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
+Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
+Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
 
 
 //ABSENSI

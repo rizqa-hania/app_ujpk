@@ -12,7 +12,7 @@ class DetailKomponen extends Model
 
     public function detail()
     {
-        return $this->belongsTo(Detail::class);
+        return $this->belongsTo(Detail::class, 'detail_id', 'detail_id');
     }
 
     public function komponen()

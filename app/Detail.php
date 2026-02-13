@@ -15,17 +15,17 @@ class Detail extends Model
 
     public function penggajian()
     {
-        return $this->belongsTo(Penggajian::class, 'penggajian_id');
+        return $this->belongsTo(Penggajian::class, 'penggajian_id', 'penggajian_id');
     }
 
     public function karyawan()
     {
-    return $this->belongsTo(Karyawan::class, 'nip', 'nip');
+        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
     }
 
     public function detailKomponen()
     {
-    return $this->hasMany(DetailKomponen::class);
+        return $this->hasMany(DetailKomponen::class);
     }
-    
+
 }
