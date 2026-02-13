@@ -3,120 +3,100 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use App\User;
-
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // ================= LOGIN =================
 
-    public function showformlogin()
+    public function showLogin()
     {
         return view('auth.login');
     }
 
-    public function proseslogin(Request $request)
+    public function login(Request $request)
     {
-        $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
+        // Validasi input
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'role' => 'required'
+
         ]);
-        if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect()->intended('/dashboard')->with('success', 'You have Successfully
 
-        loggedin');
+        // Cek autentikasi
+        if (Auth::attempt($request->only('email', 'password'))) {
+
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            // Cek role
+            if ($user->role == 'superadmin') {
+                return redirect('/superadmin/dashboard');
+            } elseif ($user->role == 'admin') {
+                return redirect('/admin/dashboard');
+            } else {
+                return redirect('/karyawan/dashboard');
+            }
         }
-        return back()->withErrors('Oppes! You have entered invalid credentials');
+
+        // Jika gagal
+        return back()->with('error', 'Login gagal, periksa email dan password');
     }
 
-    public function dashboard()
+    // ================= REGISTER =================
+
+    public function showRegister()
     {
-        return view('auth.dashboard');
+        return view('auth.register');
     }
 
-    public function logout()
+    public function register(Request $request)
     {
-        Session::flush();
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'karyawan'
+        ]);
+
+        return redirect()->route('login')
+            ->with('success', 'Akun berhasil dibuat, silakan login');
+    }
+
+    // ================= FORGOT PASSWORD =================
+
+    public function showForgot()
+    {
+        return view('auth.forgot');
+    }
+
+    public function sendReset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        // Sementara kita buat reset sederhana (tanpa email)
+        return back()->with('success', 'Link reset password berhasil dikirim (simulasi)');
+    }
+
+    // ================= LOGOUT =================
+
+    public function logout(Request $request)
+    {
         Auth::logout();
-        return redirect('/');
-    }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    public function index()
-    {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect('/login');
     }
 }

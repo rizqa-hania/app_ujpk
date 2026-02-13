@@ -15,20 +15,13 @@ class CreateIzinTable extends Migration
     {
        Schema::create('izin', function (Blueprint $table) {
     $table->bigIncrements('izin_id');
-
-    $table->string('nip', 30);
-    $table->foreign('nip')
-        ->references('nip')
-        ->on('karyawan')
-        ->onUpdate('cascade')
-        ->onDelete('cascade');
-
+    $table->foreignId('karyawan_id')->constrained('karyawan')->onDelete('cascade');
     $table->enum('jenis_izin', ['sakit','izin','kehamilan','cuti_lainnya']);
     $table->date('tanggal_mulai');
     $table->date('tanggal_selesai');
     $table->string('bukti_dokumen')->nullable();
     $table->text('keterangan')->nullable();
-    $table->unique(['nip', 'tanggal_mulai', 'tanggal_selesai']);
+    $table->unique(['karyawan_id', 'tanggal_mulai', 'tanggal_selesai']);
     $table->timestamps();
 });
 
