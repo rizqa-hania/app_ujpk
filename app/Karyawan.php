@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
 
 
 class Karyawan extends Model
 {
-    
-    protected $primaryKey = 'nip';
+    protected $table = 'karyawan';
+    protected $primaryKey = 'karyawan_id';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -103,6 +106,14 @@ class Karyawan extends Model
             return $this->belongsTo(MasterJabatan::class, 'jabatan_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 
+        public function detail()
+    {
+        return $this->hasMany(Detail::class, 'nip');
+    }
 
     }

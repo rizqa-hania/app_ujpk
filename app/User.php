@@ -17,9 +17,9 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $primaryKey = 'user_id';
-    protected $fillable = [
-        'name', 'email', 'password', 'role'
-    ];
+    public $incrementing = true;
+    protected $keyType = 'int';
+    protected $fillable = ['name', 'email', 'password', 'role','karyawan_id'];
 
     /**
      * The attributes that should be hidden for arrays.

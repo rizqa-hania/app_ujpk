@@ -17,4 +17,9 @@ class Komponen extends Model
         'tipe_penghitungan', 
         'nilai', 
         'status'];
+    
+    public function detailKomponen()
+    {
+        return $this->hasMany(DetailKomponen::class, 'kode', 'kode');
+    }
 }

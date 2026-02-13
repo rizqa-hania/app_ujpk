@@ -14,7 +14,8 @@ class CreateKaryawanTable extends Migration
     public function up()
     {
         Schema::create('karyawan', function (Blueprint $table) {
-            $table->string('nip', 30)->primary();
+          $table->id(); // ini primary key
+        $table->string('nip')->unique();
             $table->date('tanggal_input')->nullable();
             // ini nanti yang relasi taro di sini
            $table->unsignedBigInteger('unitpln_id');
