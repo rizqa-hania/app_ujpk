@@ -103,9 +103,6 @@ class Karyawan extends Model
             return $this->belongsTo(MasterJabatan::class, 'jabatan_id');
     }
 
-    public function detail()
-    {
-        return $this->hasMany(Detail::class, 'nip');
-    }
+
 
     }
