@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Detail;
+use App\Penggajian;
+use App\Karyawan;
+use App\Komponen;
 
 class DetailController extends Controller
 {
@@ -12,9 +15,12 @@ class DetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $penggajian = Penggajian::findOrFail($id);
+        $detail = Detail::where('penggajian_id', $id)->get();
+
+        return view('detail.index', compact('penggajian', 'detail'));
     }
 
     /**
@@ -24,7 +30,11 @@ class DetailController extends Controller
      */
     public function create()
     {
-        //
+        $penggajian = Penggajian::findOrFail($id);
+        $karyawan = Karyawan::all();
+        $komponen = Komponen::all();
+
+        return view('detail.create', compact('penggajian', 'karyawan', 'komponen'));
     }
 
     /**

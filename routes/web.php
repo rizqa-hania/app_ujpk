@@ -149,12 +149,9 @@ Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan']
 Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
 
 // DETAIL GAJI
-Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
-Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
-Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
-Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
-Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
-Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
+Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name('detail.index');
+Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
+Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 
 
 //ABSENSI

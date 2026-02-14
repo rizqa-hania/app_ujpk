@@ -9,8 +9,8 @@
             </a>
         </div>
     </div>
-    <div class="card-body">
-        <table class="table table-bordered table-hover">
+    <div class="card-body table-responsive">
+        <table class="table table-stripped table-hover">
             <thead>
                 <tr>
                     <th>No</th>
