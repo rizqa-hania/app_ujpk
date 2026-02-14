@@ -11,7 +11,6 @@
 <tbody>
 @foreach($pln as $n)
 <tr>
-    <td>{{$loop->iteration}}</td>
     <td>{{$n->kode_unit}}</td>
     <td>{{$n->nama_unit}}</td>
 <td> <form action="{{route('master_unit_pln.destroy',$n->unitpln_id)}}" method="POST" style="display:inline">
