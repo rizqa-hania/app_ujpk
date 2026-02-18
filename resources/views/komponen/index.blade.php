@@ -30,16 +30,18 @@
                     <td>{{ $v->kode }}</td>
                     <td>{{ $v->komponen }}</td>
                     <td>{{ $v->tipe }}</td>
-                    <td>{{ $v->tipe_penghitungan == 'persen' ? 'Persentase' : 'Tetap' }}</td>
+                    <td>{{ $v->tipe_penghitungan == 'presentase' ? 'Persentase' : 'Tetap' }}</td>
                     <td>
-                        @if($v->tipe_penghitungan == 'persen')
+                        @if($v->tipe_penghitungan == 'presentase')
                             {{ $v->nilai }}%
                         @else
                             Rp {{ number_format($v->nilai, 0, ',', '.') }}
                         @endif
                     </td>
                     <td>
-                        @if($v->status == 1)
+                        @if ($v->status == 0)
+                        <span class="badge badge-success"> -</span>
+                        @elseif($v->status == 1)
                             <span class="badge badge-success">Aktif</span>
                         @else
                             <span class="badge badge-danger">Nonaktif</span>
