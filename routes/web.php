@@ -18,7 +18,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\DashboardController;
 
-//DASHBOARD ALL
+//DASHBOARD SEMUANYA
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 // login
