@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         @if ($v->status == 0)
-                        <span class="badge badge-success"> -</span>
+                        <span class="badge badge-secondary">-</span>
                         @elseif($v->status == 1)
                             <span class="badge badge-success">Aktif</span>
                         @else
