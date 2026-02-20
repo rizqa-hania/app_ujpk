@@ -15,8 +15,11 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController;
-//
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\DashboardController;
+
+//DASHBOARD ALL
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 // login
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
