@@ -1,9 +1,4 @@
-
-
-
-      
-
-
+//
 <h2>Step 1</h2>
 
 <form action="{{ route('karyawan.store.step1') }}" method="POST">
@@ -12,7 +7,7 @@
      <div class="form-group mb-3">
             <label>Unit PLN</label>
             <select name="unitpln_id" class="form-control" required>
-                <option value="">-- Pilih Unit PLN --</option>
+                <option value="">Pilih Unit PLN </option>
                 @foreach(\App\MasterUnitPln::all() as $unit)
                     <option value="{{ $unit->id }}">{{ $unit->nama_unit }}</option>
                 @endforeach
@@ -22,7 +17,7 @@
         <div class="form-group mb-3">
             <label>Jabatan</label>
             <select name="jabatan_id" class="form-control" required>
-                <option value="">-- Pilih Jabatan --</option>
+                <option value=""> Pilih Jabatan</option>
                 @foreach(\App\Jabatan::all() as $jabatan)
                     <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
                 @endforeach
@@ -32,7 +27,7 @@
         <div class="form-group mb-3">
             <label>Sub Unit</label>
             <select name="sub_id" class="form-control">
-                <option value="">-- Pilih Sub Unit --</option>
+                <option value=""> Pilih Sub Unit</option>
                 @foreach(\App\MasterSubUnit::all() as $subUnits)
                     <option value="{{ $subUnits->id }}">{{ $subUnits->nama_sub_unit }}</option>
                 @endforeach
@@ -42,7 +37,7 @@
         <div class="form-group mb-3">
             <label>TAD</label>
             <select name="tad_id" class="form-control">
-                <option value="">-- Pilih TAD --</option>
+                <option value="">Pilih TAD</option>
                 @foreach(\App\MasterTad::all() as $tad)
                     <option value="{{ $tad->id }}">{{ $tad->nama_tad }}</option>
                 @endforeach
@@ -52,7 +47,7 @@
         <div class="form-group mb-3">
             <label>Project</label>
             <select name="project_id" class="form-control">
-                <option value="">-- Pilih Project --</option>
+                <option value="">Pilih Project</option>
                 @foreach(\App\MasterProject::all() as $project)
                     <option value="{{ $project->id }}">{{ $project->nama_project }}</option>
                 @endforeach
@@ -72,7 +67,7 @@
         <div class="form-group mb-3">
             <label>Status Karyawan</label>
             <select name="status_karyawan" class="form-control">
-                <option value="">-- Pilih Status --</option>
+                <option value=""> Pilih Status </option>
                 <option value="aktif">Aktif</option>
                 <option value="nonaktif">Non Aktif</option>
             </select>

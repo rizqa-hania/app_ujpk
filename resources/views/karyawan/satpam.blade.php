@@ -7,5 +7,5 @@
     <input type="date" name="masa_berlaku_kta"><br>
     <input type="text" name="pangkat_garda" placeholder="Pangkat Garda"><br>
 
-    <button type="submit">Finish</button>
+    <button type="submit">Selesai</button>
 </form>

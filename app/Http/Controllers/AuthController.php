@@ -5,59 +5,57 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\Support\Facades\Password;    
+use App\User; 
 
 class AuthController extends Controller
 {
-    // ================= LOGIN =================
-
+    // Tampil login
     public function showLogin()
     {
         return view('auth.login');
     }
 
+    // Proses login
     public function login(Request $request)
     {
-        // Validasi input
+        //
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-            'role' => 'required'
-
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
-        // Cek autentikasi
-        if (Auth::attempt($request->only('email', 'password'))) {
+        // Ambil user dari database berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
-            $request->session()->regenerate();
-            $user = Auth::user();
+        if($user && Hash::check($request->password, $user->password))
+        {
+            Auth::login($user); // login user
 
-            // Cek role
-            if ($user->role == 'superadmin') {
-                return redirect('/superadmin/dashboard');
-            } elseif ($user->role == 'admin') {
-                return redirect('/admin/dashboard');
-            } else {
-                return redirect('/karyawan/dashboard');
+            // arahkan sesuai role
+            switch($user->role){
+                case 'super_admin':
+                    return redirect('/super-admin/dashboard');
+                case 'admin':
+                    return redirect('/admind/dashboard');
+                default:
+                    return redirect('/karyawan/dashboard');
             }
         }
 
-        // Jika gagal
-        return back()->with('error', 'Login gagal, periksa email dan password');
+        return back()->with('error', 'Email atau password salah');
     }
-
-    // ================= REGISTER =================
-
-    public function showRegister()
+    //REGISTER KARYAWAN 
+    public function showRegisterKaryawan()
     {
         return view('auth.register');
     }
 
-    public function register(Request $request)
+    public function registerKaryawan(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed'
         ]);
 
@@ -68,35 +66,59 @@ class AuthController extends Controller
             'role' => 'karyawan'
         ]);
 
-        return redirect()->route('login')
-            ->with('success', 'Akun berhasil dibuat, silakan login');
+        return redirect('/login')->with('success','Registrasi berhasil');
     }
 
-    // ================= FORGOT PASSWORD =================
-
-    public function showForgot()
+    //FORGOT PASSWORD 
+    public function showForgotPassword()
     {
         return view('auth.forgot');
     }
 
-    public function sendReset(Request $request)
+    public function sendResetLink(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users,email'
-        ]);
+        $request->validate(['email' => 'required|email']);
 
-        // Sementara kita buat reset sederhana (tanpa email)
-        return back()->with('success', 'Link reset password berhasil dikirim (simulasi)');
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['success' => 'Link reset password telah dikirim ke email.'])
+                    : back()->withErrors(['email' => 'Email tidak ditemukan']);
     }
 
-    // ================= LOGOUT =================
+    public function showResetPassword($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
 
-    public function logout(Request $request)
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+                    ? redirect('/login')->with('success', 'Password berhasil direset')
+                    : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    //LOGOUT
+    public function logout()
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
+        //
         return redirect('/login');
     }
 }
+//

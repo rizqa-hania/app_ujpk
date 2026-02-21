@@ -12,28 +12,42 @@ use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
+//
 use App\Http\Controllers\AbsensiController;
 //
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 
-// login
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-Route::get('/forgot-password', [AuthController::class, 'showForgot'])->name('forgot');
-Route::post('/forgot-password', [AuthController::class, 'sendReset'])->name('forgot.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// tambah admin
+Route::get('/admin',[AdminController::class,'index'])->name('admin.index');
+Route::get('/admin/create',[AdminController::class,'create'])->name('admin.create');
+Route::post('/admin',[AdminController::class,'store'])->name('admin.store');
+Route::delete('/admin/{admin}',[AdminController::class,'destroy'])->name('admin.destroy');
+
+// login, register dan forgot password
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login',[AuthController::class,'login']);
+Route::get('/register', [AuthController::class, 'showRegisterKaryawan'])->name('register');
+Route::post('/register', [AuthController::class, 'registerKaryawan']);
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('forgot.password');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('reset.password');
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+// super admin
+Route::middleware(['auth','role:super_admin'])->group(function(){Route::get('/super-admin/dashboard',[DashboardController::class,'super']);Route::resource('/admin', AdminController::class);});
+// admin
+Route::middleware(['auth','role:admin'])->group(function(){Route::get('/admind/dashboard',[DashboardController::class,'admin']);});
+// karyawan
+Route::middleware(['auth','role:karyawan'])->group(function(){Route::get('/karyawan/dashboard',[DashboardController::class,'karyawan']);});
 
 // dashboard
 Route::middleware('auth')->group(function () {
 Route::get('/superadmin/dashboard', function () {return view('superadmin.dashboard'); });
 Route::get('/admin/dashboard', function () {return view('admin.dashboard');});
-Route::get('/karyawan/dashboard', function () {return view('karyawan.dashboard');});
-});
-
+Route::get('/karyawan/dashboard', function () {return view('karyawan.dashboard');});});
 
 // karyawan
 Route::middleware(['auth'])->prefix('karyawan')->name('karyawan.')->group(function () {
@@ -63,14 +77,7 @@ Route::get('finish', [KaryawanController::class,'finish'])->name('finish');
 Route::get('dashboard', [KaryawanController::class,'dashboard'])->name('dashboard');
 });
 
-// user
-Route::get('/user',[UserController::class,'index'])->name('users.index');
-Route::get('/user/create',[UserController::class,'create'])->name('users.create');
-Route::post('/user',[UserController::class,'store'])->name('users.store');
-//Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('users.edit');
-//Route::put('user/{id}',[UserController::class,'update'])->name('users.update');
-Route::delete('/user/{id}',[UserController::class,'destroy'])->name('users.destroy');
-
+//
 //master sub unit
 
 Route::get('/sub', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');

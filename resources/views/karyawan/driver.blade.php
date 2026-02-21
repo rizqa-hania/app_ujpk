@@ -7,5 +7,5 @@
     <input type="date" name="masa_berlaku_sim"><br>
     <input type="number" name="jumlah_tilang_6_bulan" placeholder="Jumlah Tilang"><br>
 
-    <button type="submit">Finish</button>
+    <button type="submit">Selesai</button>
 </form>
