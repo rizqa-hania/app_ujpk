@@ -14,11 +14,17 @@ use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
 //
 use App\Http\Controllers\AbsensiController;
-//
 use App\Http\Controllers\KaryawanController;
+<<<<<<< HEAD
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+=======
+use App\Http\Controllers\DashboardController;
+
+//DASHBOARD SEMUANYA
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+>>>>>>> 732dc7f062ea6f5bd36dc0e448dc7f4424948cb7
 
 
 // tambah admin

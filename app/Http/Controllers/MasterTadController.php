@@ -90,7 +90,7 @@ class MasterTadController extends Controller
      */
     public function destroy($id)
     {
-        MasterTad::where('tad_id', $id)->delete();
+        MasterTad::findOrFail($id)->delete();
         return Redirect()->route('master_tad.index');
     }
 }
