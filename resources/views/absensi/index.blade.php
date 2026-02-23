@@ -1,4 +1,4 @@
-@extends('template.layouts')
+@extends('template.layout')
 
 @section('content')
 <div class="container">
@@ -16,7 +16,7 @@
 <video id="video" width="400" autoplay></video>
 <canvas id="canvas" style="display:none;"></canvas>
 
-<form method="POST" action="{{ route('absensi.masuk') }}">
+<form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo">
 <input type="hidden" name="latitude" id="latitude">
@@ -26,7 +26,7 @@
 <button type="submit">Absen Masuk</button>
 </form>
 
-<form method="POST" action="{{ route('absensi.pulang') }}">
+<form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo2">
 <input type="hidden" name="latitude" id="latitude">
@@ -48,15 +48,26 @@
 <th>Jarak (m)</th>
 </tr>
 
-@foreach($dataAbsensi as $item)
-<tr>
-<td>{{ $item->tanggal }}</td>
-<td>{{ $item->jam_masuk }}</td>
-<td>{{ $item->jam_pulang }}</td>
-<td>{{ $item->status }}</td>
-<td>{{ $item->jarak }}</td>
-</tr>
-@endforeach
+@if(isset($dataAbsensi) && $dataAbsensi->count() > 0)
+
+    @foreach($dataAbsensi as $item)
+        <tr>
+            <td>{{ $item->tanggal }}</td>
+            <td>{{ $item->jam_masuk }}</td>
+            <td>{{ $item->jam_pulang }}</td>
+            <td>@if($item->jam_masuk && $item->jam_pulang) Hadir
+                @elseif($item->status_masuk == 'terlambat')Terlambat
+                @else Hadir (Belum Pulang)
+                @endif
+</td>
+        </tr>
+    @endforeach
+
+@else
+    <tr>
+        <td colspan="4">Belum ada data absensi</td>
+    </tr>
+@endif
 </table>
 
 </div>
