@@ -8,7 +8,7 @@ class DetailKomponen extends Model
 {
     protected $table = 'detail_komponen';
     protected $primaryKey = 'id';
-    protected $fillable = ['detail_id', 'kode', 'nilai'];
+    protected $fillable = ['detail_id', 'nip', 'kode', 'tipe', 'nilai'];
 
     public function detail()
     {
@@ -18,5 +18,10 @@ class DetailKomponen extends Model
     public function komponen()
     {
         return $this->belongsTo(Komponen::class, 'kode', 'kode');
+    }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'nip', 'id');
     }
 }

@@ -162,6 +162,7 @@ Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('k
 Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name('detail.index');
 Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
+Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
 
 
 //ABSENSI

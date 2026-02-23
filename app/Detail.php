@@ -11,7 +11,7 @@ class Detail extends Model
 {
     protected $table = 'detail';
     protected $primaryKey = 'detail_id';
-    protected $fillable = ['penggajian_id', 'nip', 'kode', 'total_pendapatan', 'total_potongan', 'gaji_bersih'];
+    protected $fillable = ['penggajian_id', 'id', 'kode', 'total_pendapatan', 'total_potongan', 'gaji_bersih'];
 
     public function penggajian()
     {
@@ -20,7 +20,7 @@ class Detail extends Model
 
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
+        return $this->belongsTo(Karyawan::class, 'id', 'id');
     }
 
     public function detailKomponen()
