@@ -26,7 +26,7 @@
 <td> <form action="{{route('master_project.destroy',$p->project_id)}}" method="POST" style="display:inline">
     @csrf
     @method('DELETE')
-    <button type="submit" onclick="return confirm('Yakin menghapus Project ini permanen?')">
+    <button type="submit" onclick="return confirm('Yakin menghapus Project ini permanen?')"class="btn btn-danger btn-sm">
         Hapus</button>
 </form>
 </td>
