@@ -7,6 +7,7 @@ use App\Detail;
 use App\Penggajian;
 use App\Karyawan;
 use App\Komponen;
+use App\DetailKomponen;
 
 class DetailController extends Controller
 {
@@ -18,7 +19,7 @@ class DetailController extends Controller
     public function index($id)
     {
         $penggajian = Penggajian::findOrFail($id);
-        $detail = Detail::where('penggajian_id', $id)->get();
+        $detail = Detail::with('karyawan')->where('penggajian_id', $id)->get();
 
         return view('detail.index', compact('penggajian', 'detail'));
     }
@@ -43,9 +44,25 @@ class DetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $detail_id)
     {
-        //
+        $request->validate([
+            'nama'                  => 'required|string',
+            'nip'              => 'required|string|max:255|unique:karyawan',
+            'tipe'                  => 'required',
+            'nilai'                 => 'required|numeric',
+        ]);
+
+        $detail = Detail::findOrFail($detail_id);
+
+        DetailKomponen::create([
+            'nama'              => $request->nama,
+            'nip'              => $request->nip,
+            'tipe'              => $request->tipe,
+            'nilai'             => $request->nilai
+        ]);
+
+        return redirect()->route('detail.index', $request->penggajian_id);
     }
 
     /**
@@ -54,9 +71,11 @@ class DetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($detail_id)
     {
-        //
+        $detail = Detail::with(['karyawan.jabatan', 'detailKomponen.komponen', 'penggajian'])->findOrFail($detail_id);
+        
+        return view('detail.slip_gaji', compact('detail'));
     }
 
     /**
@@ -89,6 +108,11 @@ class DetailController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        //
+    }
+
+    public function tambahkomponen()
     {
         //
     }

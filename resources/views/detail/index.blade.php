@@ -28,7 +28,7 @@
                         @foreach ($detail as $v)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $v->nip }}</td>
+                                <td>{{ $v->karyawan->nip ?? '-' }}</td>
                                 <td>{{ $v->total_pendapatan }}</td>
                                 <td>{{ $v->total_potongan }}</td>
                                 <td>{{ $v->gaji_bersih }}</td>
@@ -38,14 +38,18 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
-                                    <form action="{{ route('detail.destroy', $v->detail_id) }}" method="POST">
-                                        {{ csrf_field() }}
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    <div class="btn-group">
+                                        <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm" title="Slip Gaji">
+                                            <i class="fas fa-file-invoice"></i> Slip Gaji
+                                        </a>
+                                        <form action="{{ route('detail.destroy', $v->detail_id) }}" method="POST" class="d-inline">
+                                            {{ csrf_field() }}
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
