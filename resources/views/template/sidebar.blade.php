@@ -1,12 +1,7 @@
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-<<<<<<< HEAD
-    <a class="brand-link">
-      <img src="dist/img/UJPK.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-=======
     <a href="index3.html" class="brand-link">
       <img src="{{ asset('ujpkkkkkk.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
->>>>>>> 10130cdd82bdac84ad3c828072ff04eb6214b9f3
       <span class="brand-text font-weight-light">PT UJPK</span>
     </a>
 
