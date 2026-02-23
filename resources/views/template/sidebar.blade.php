@@ -50,6 +50,15 @@
                 </a>
               </li>
             </ul>
+              <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tambah Admin</p>
+                </a>
+              </li>
+            </ul>
+
           </li>
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">

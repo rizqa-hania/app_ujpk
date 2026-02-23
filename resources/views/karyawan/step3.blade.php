@@ -1,6 +1,6 @@
 <h2>Step 3</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step3') }}">
+<form method="POST" action="{{ route('karyawan.storestep3') }}">
     @csrf
 
     <input type="number" name="tinggi_badan" placeholder="Tinggi Badan"><br>

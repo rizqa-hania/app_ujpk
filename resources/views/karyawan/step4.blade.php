@@ -1,6 +1,6 @@
 <h2>Step 4 - Data Pribadi</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step4') }}">
+<form method="POST" action="{{ route('karyawan.storestep4') }}">
     @csrf
 
     <input type="text" name="tempat_lahir" placeholder="Tempat Lahir"><br>

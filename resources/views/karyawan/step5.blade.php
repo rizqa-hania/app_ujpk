@@ -1,6 +1,6 @@
 <h2>Step 5 - Kontak</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step5') }}">
+<form method="POST" action="{{ route('karyawan.storestep5') }}">
     @csrf
 
     <input type="text" name="no_hp_utama" placeholder="No HP Utama"><br>
