@@ -9,9 +9,9 @@ use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-    private $officeLat = -6.200000; // GANTI dengan koordinat kantor
-    private $officeLng = 106.816666; // GANTI dengan koordinat kantor
-    private $radius = 100; // meter
+    //private $officeLat = -6.200000; // GANTI dengan koordinat kantor
+    //private $officeLng = 106.816666; // GANTI dengan koordinat kantor
+    //private $radius = 100; // meter
     private $jamMasuk = "08:00:00";
 
     public function __construct()
@@ -19,10 +19,16 @@ class AbsensiController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-        return view('absensi.index');
-    }
+   public function index()
+{
+    $userId = Auth::id();
+
+    $dataAbsensi = Absensi::where('user_id', $userId)
+                    ->orderBy('tanggal','desc')
+                    ->get();
+
+    return view('absensi.index', compact('dataAbsensi'));
+}
 
     private function distance($lat1,$lon1,$lat2,$lon2)
     {
@@ -53,11 +59,11 @@ class AbsensiController extends Controller
         $lat = $request->latitude;
         $lng = $request->longitude;
 
-        $distance = $this->distance($this->officeLat,$this->officeLng,$lat,$lng);
+        //$distance = $this->distance($this->officeLat,$this->officeLng,$lat,$lng);
 
-        if($distance > $this->radius){
-            return back()->with('error','Anda di luar radius 100 meter');
-        }
+        //if($distance > $this->radius){
+         //   return back()->with('error','Anda di luar radius 100 meter');
+       // }
 
         $absen = Absensi::where('user_id',$userId)
                     ->where('tanggal',$today)
@@ -80,16 +86,15 @@ class AbsensiController extends Controller
         }
 
         // ABSEN PULANG
-        if($absen && !$absen->jam_pulang){
+if($absen && !$absen->jam_pulang){
 
-            $absen->update([
-                'jam_pulang'=>$now->format('H:i:s'),
-                'status_pulang'=>'pulang'
-            ]);
+    $absen->update([
+        'jam_pulang'=>$now->format('H:i:s'),
+        'status_pulang'=>'pulang'
+    ]);
 
-            return back()->with('success','Absen pulang berhasil');
-        }
-
-        return back()->with('error','Anda sudah absen hari ini');
+    return redirect()->route('absensi.index')
+        ->with('success','Absen pulang berhasil. Status hadir lengkap.');
+}
     }
 }
