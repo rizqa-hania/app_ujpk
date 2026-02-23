@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="row">
+    
     <div class="col-12">
 
         <div class="card">
@@ -22,23 +23,44 @@
                         {{ session('success') }}
                     </div>
                 @endif
+<<<<<<< HEAD
 
 
                 {{-- Kamera --}}
                 <div class="kamera-wrapper mb-3">
                     <video id="video" autoplay playsinline class="kamera-preview"></video>
 
+=======
+<<<<<<< HEAD
+                {{-- Kamera --}}
+                <div class="kamera-wrapper mb-3">
+                    <video id="video" autoplay playsinline class="kamera-preview"></video>
+=======
+
+
+                {{-- Kamera --}}
+                <div class="kamera-wrapper mb-3">
+                    <video id="video" autoplay playsinline class="kamera-preview"></video>
+
+>>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
+>>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
 <form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo">
 <input type="hidden" name="latitude" id="latitude">
 <input type="hidden" name="longitude" id="longitude">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
                 <div class="row">
                     <div class="col-md-6 text-center">
                         <video id="video" class="img-fluid rounded" autoplay></video>
                     </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
 
                     <div class="col-md-6">
                         <form method="POST" action="{{ route('absensi.store') }}">
@@ -64,6 +86,13 @@
                             </button>
                         </form>
                     </div>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
+>>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
                 </div>
 
                 {{-- FORM MASUK --}}
@@ -146,6 +175,7 @@
         </div>
 
     </div>
+    
 </div>
 
 {{-- STYLE KAMERA --}}

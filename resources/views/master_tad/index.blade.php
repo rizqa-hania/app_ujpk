@@ -1,6 +1,13 @@
-<h3> TAD </h3>
+@extends('template.layout')
+@section('content')
 
-<table border="1" cellpadding="5">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+<h3> TAD </h3></div>
+       <div class="card-body">
+<table class="table table-striped table-hover">
 <thead>
     <tr>
         <th>Kode</th>
@@ -11,13 +18,13 @@
 <tbody>
 @foreach($tad as $t)
 <tr>
-    <td>{{$loop->iteration}}</td>
+   
     <td>{{$t->kode_tad}}</td>
     <td>{{$t->nama_tad}}</td>
 <td> <form action="{{route('master_tad.destroy',$t->tad_id)}}" method="POST" style="display:inline">
     @csrf
     @method('DELETE')
-    <button type="submit" onclick="return confirm('Yakin menghapus TAD ini permanen?')">
+    <button type="submit" onclick="return confirm('Yakin menghapus TAD ini permanen?')" class="btn btn-danger btn-sm">
         Hapus</button>
 </form>
 </td>
@@ -25,4 +32,17 @@
 @endforeach
 </tbody>
 </table>
+
+
+       </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+
+
+
+
 

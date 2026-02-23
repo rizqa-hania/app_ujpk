@@ -29,9 +29,17 @@
                                 <td>{{ $v->periode_bulan }}</td>
                                 <td>{{ $v->periode_tahun }}</td>
                                 <td>
-                                    <span class="badge {{ $v->status == 'Aktif' ? 'badge-success' : 'badge-secondary' }}">
-                                        {{ $v->status }}
-                                    </span>
+                                    <td>
+                                    @if($v->status == 'draft')
+                                        <span class="badge badge-secondary">Draft</span>
+                                    @elseif($v->status == 'approved')
+                                        <span class="badge badge-success">Approved</span>
+                                    @elseif($v->status == 'paid')
+                                        <span class="badge badge-primary">Paid</span>
+                                    @else
+                                        <span class="badge badge-info">{{ $v->status }}</span>
+                                    @endif
+                                </td>
                                 </td>
                                 <td>
                                     <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>

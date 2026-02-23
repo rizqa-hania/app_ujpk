@@ -7,7 +7,7 @@
         <div class="mb-2">
             <label>Unit PLN</label>
             <select name="unitpln_id" class="form-control" required>
-                <option value="">-- Pilih Unit --</option>
+                <option value=""> Pilih Unit </option>
                 @foreach ($unitPln as $unit)
                     <option value="{{ $unit->unitpln_id }}">
                         {{ $unit->nama_unit }}
