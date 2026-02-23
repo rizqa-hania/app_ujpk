@@ -5,120 +5,97 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;    
-use App\User; 
+use Illuminate\Support\Facades\Mail;
+use App\User;
 
 class AuthController extends Controller
 {
-    // Tampil login
+
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Proses login
-    public function login(Request $request)
-    {
-        //
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
 
-        // Ambil user dari database berdasarkan email
-        $user = User::where('email', $request->email)->first();
+   public function login(Request $request) {
+    $credentials = $request->validate([
+        'email'=>'required|email',
+        'password'=>'required'
+    ]);
 
-        if($user && Hash::check($request->password, $user->password))
-        {
-            Auth::login($user); // login user
+    if(Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
-            // arahkan sesuai role
-            switch($user->role){
-                case 'super_admin':
-                    return redirect('/super-admin/dashboard');
-                case 'admin':
-                    return redirect('/admind/dashboard');
-                default:
-                    return redirect('/karyawan/dashboard');
-            }
+        // Redirect berdasarkan role
+        if(Auth::user()->role == 'admin'){
+            return redirect()->route('admin.dashboard');
+        } else {
+            return redirect()->route('karyawan.dashboard');
         }
-
-        return back()->with('error', 'Email atau password salah');
-    }
-    //REGISTER KARYAWAN 
-    public function showRegisterKaryawan()
-    {
-        return view('auth.register');
     }
 
-    public function registerKaryawan(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed'
-        ]);
+    return back()->withErrors([
+        'email' => 'Email atau password salah'
+    ]);
+}
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'karyawan'
-        ]);
-
-        return redirect('/login')->with('success','Registrasi berhasil');
-    }
-
-    //FORGOT PASSWORD 
-    public function showForgotPassword()
-    {
-        return view('auth.forgot');
-    }
-
-    public function sendResetLink(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink($request->only('email'));
-
-        return $status === Password::RESET_LINK_SENT
-                    ? back()->with(['success' => 'Link reset password telah dikirim ke email.'])
-                    : back()->withErrors(['email' => 'Email tidak ditemukan']);
-    }
-
-    public function showResetPassword($token)
-    {
-        return view('auth.reset-password', ['token' => $token]);
-    }
-
-    public function resetPassword(Request $request)
-    {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->save();
-            }
-        );
-
-        return $status === Password::PASSWORD_RESET
-                    ? redirect('/login')->with('success', 'Password berhasil direset')
-                    : back()->withErrors(['email' => [__($status)]]);
-    }
-
-    //LOGOUT
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        //
-        return redirect('/login');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
+
+  public function showRegister()
+{
+    return view('auth.register');
+}
+
+public function sendOtp(Request $request)
+{
+    $request->validate(['email' => 'required|email']);
+
+    $otp = rand(100000,999999);
+
+    $user = User::updateOrCreate(
+        ['email' => $request->email],
+        ['otp' => $otp]
+    );
+
+    Mail::raw("Kode OTP kamu: $otp", function ($message) use ($request) {
+        $message->to($request->email)
+                ->subject('Kode Verifikasi');
+    });
+
+    return back()->with('step', 2)->with('email',$request->email);
+}
+
+public function verifyOtp(Request $request)
+{
+    $user = User::where('email',$request->email)
+                ->where('otp',$request->otp)
+                ->first();
+
+    if(!$user){
+        return back()->with('error','OTP Salah');
+    }
+
+    return back()->with('step',3)->with('email',$request->email);
+}
+
+public function completeRegister(Request $request)
+{
+    $user = User::where('email',$request->email)->first();
+
+    $user->update([
+        'name'=>$request->name,
+        'password'=>Hash::make($request->password),
+        'otp'=>null,
+        'is_verified'=>true
+    ]);
+
+    return redirect('/login');
+}
 }
 //

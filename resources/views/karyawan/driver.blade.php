@@ -1,6 +1,6 @@
 <h2>Data Driver</h2>
 
-<form method="POST" action="{{ route('karyawan.store.stepkhusus') }}">
+<form method="POST" action="{{ route('karyawan.storestepkhusus') }}">
     @csrf
 
     <input type="text" name="no_sim_a" placeholder="No SIM A"><br>

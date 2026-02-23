@@ -16,8 +16,14 @@ class CreateKaryawanTable extends Migration
         Schema::create('karyawan', function (Blueprint $table) {
           $table->id(); // ini primary key
         $table->string('nip')->unique();
-            $table->date('tanggal_input')->nullable();
+            $table->boolean('is_complete')->default(false);
+            $table->timestamp('tanggal_input')->nullable();
             // ini nanti yang relasi taro di sini
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->foreign('user_id')
+                ->references('user_id')
+                ->on('users')
+                ->onDelete('cascade');
            $table->unsignedBigInteger('unitpln_id');
            $table->foreign('unitpln_id')
                 ->references('unitpln_id')
@@ -65,8 +71,8 @@ class CreateKaryawanTable extends Migration
 
 
             //ini teh bagian identitas dirii asekk ;)
-            $table->string('nama_depan',100);
-            $table->string('nama_belakang',100);
+            $table->string('nama_lengkap',100);
+            //
             $table->string('nama_panggilan',100)->nullable();
             //data fisik
             $table->integer('tinggi_badan')->nullable();

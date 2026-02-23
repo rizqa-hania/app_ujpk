@@ -1,6 +1,6 @@
 <h2>Step 6 - Pendidikan</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step6') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('karyawan.storestep6') }}" enctype="multipart/form-data">
     @csrf
 
     <input type="text" name="pendidikan_id" placeholder="Pendidikan"><br>

@@ -1,7 +1,7 @@
-//
+
 <h2>Step 1</h2>
 
-<form action="{{ route('karyawan.store.step1') }}" method="POST">
+<form action="{{ route('karyawan.storestep1') }}" method="POST">
     @csrf
     <input type="text" name="nip" placeholder="NIP"><br>
      <div class="form-group mb-3">

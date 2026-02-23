@@ -1,6 +1,6 @@
 <h2>Data Satpam</h2>
 
-<form method="POST" action="{{ route('karyawan.store.stepkhusus') }}">
+<form method="POST" action="{{ route('karyawan.storestepkhusus') }}">
     @csrf
 
     <input type="text" name="no_kta" placeholder="No KTA"><br>

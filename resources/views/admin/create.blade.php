@@ -1,32 +1,61 @@
+@extends('template.layout')
+@section('content')
 
-<div class="container">
-    <h2>Tambah Admin</h2>
 
-    @if(session('success'))
-        <div style="color:green">{{ session('success') }}</div>
-    @endif
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">Add User</div>
 
-    <form action="{{ route('admin.store') }}" method="POST">
-        @csrf
-        <div>
-            <label>Nama</label>
-            <input type="text" name="name" value="{{ old('name') }}">
-            @error('name') <div style="color:red">{{ $message }}</div> @enderror
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="email" name="email" value="{{ old('email') }}">
-            @error('email') <div style="color:red">{{ $message }}</div> @enderror
-        </div>
-        <div>
-            <label>Password</label>
-            <input type="password" name="password">
-            @error('password') <div style="color:red">{{ $message }}</div> @enderror
-        </div>
-        <div>
-            <label>Konfirmasi Password</label>
-            <input type="password" name="password_confirmation">
-        </div>
-        <button type="submit">Tambah Admin</button>
-    </form>
+<form action="{{ route ('admin.store') }}" method="POST">
+    {{ csrf_field( ) }}
+            <div class="card-body">
+
+ <div class="mb-3">
+<label name="name" class="form-table">Nama: </label>
+    <input type="text" class = "form-control" name="name" value="{{old('name')}}">
+@if($errors->has('name'))
+<span class="text-danger">{{ $errors->first('name')}}</span>   
+@endif
+ </div>
+
+<div class="mb-3">
+<label name="email" class="form-table">Email</label>
+  <input type="text" class = "form-control" name="email"
+   value="{{old('email
+   ')}}">
 </div>
+
+<div class="mb-3">
+<label name="password" class="form-table">Password</label>
+<input type="text" class = "form-control" name="password"
+   value="{{old('password
+   ')}}">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Role</label><br>
+
+<input type="radio" class="btn-check" name="role" id="admin" value="admin" checked>
+<label class="btn btn-outline-secondary btn-sm" for="admin">Admin</label>
+</div>                     
+
+
+
+  
+
+            </div>
+     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Save</button>
+        <a href="{{route('admin.index')}}" class="btn btn-success btn-sm">Back</a>
+        </div>
+</form>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+
+
+
+ 

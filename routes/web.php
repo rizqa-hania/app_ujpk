@@ -12,78 +12,75 @@ use App\Http\Controllers\MasterTadController;
 use App\Http\Controllers\MasterUnitPlnController;
 use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
-//
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
-<<<<<<< HEAD
-use App\Http\Controllers\AdminController;
+//
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-=======
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
+use Laravel\Socialite\Facades\Socialite;
 
-//DASHBOARD SEMUANYA
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
->>>>>>> 732dc7f062ea6f5bd36dc0e448dc7f4424948cb7
-
-
-// tambah admin
-Route::get('/admin',[AdminController::class,'index'])->name('admin.index');
-Route::get('/admin/create',[AdminController::class,'create'])->name('admin.create');
-Route::post('/admin',[AdminController::class,'store'])->name('admin.store');
-Route::delete('/admin/{admin}',[AdminController::class,'destroy'])->name('admin.destroy');
-
-// login, register dan forgot password
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login',[AuthController::class,'login']);
-Route::get('/register', [AuthController::class, 'showRegisterKaryawan'])->name('register');
-Route::post('/register', [AuthController::class, 'registerKaryawan']);
-Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('forgot.password');
-Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('reset.password');
-Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-// super admin
-Route::middleware(['auth','role:super_admin'])->group(function(){Route::get('/super-admin/dashboard',[DashboardController::class,'super']);Route::resource('/admin', AdminController::class);});
-// admin
-Route::middleware(['auth','role:admin'])->group(function(){Route::get('/admind/dashboard',[DashboardController::class,'admin']);});
-// karyawan
-Route::middleware(['auth','role:karyawan'])->group(function(){Route::get('/karyawan/dashboard',[DashboardController::class,'karyawan']);});
-
-// dashboard
-Route::middleware('auth')->group(function () {
-Route::get('/superadmin/dashboard', function () {return view('superadmin.dashboard'); });
-Route::get('/admin/dashboard', function () {return view('admin.dashboard');});
-Route::get('/karyawan/dashboard', function () {return view('karyawan.dashboard');});});
-
-// karyawan
-Route::middleware(['auth'])->prefix('karyawan')->name('karyawan.')->group(function () {
-Route::get('step1', [KaryawanController::class,'step1'])->name('step1');
-Route::post('step1', [KaryawanController::class,'storestep1'])->name('store.step1');
-Route::get('step2', [KaryawanController::class,'step2'])->name('step2');
-Route::post('step2', [KaryawanController::class,'storestep2'])->name('store.step2');
-Route::get('step3', [KaryawanController::class,'step3'])->name('step3');
-Route::post('step3', [KaryawanController::class,'storestep3'])->name('store.step3');
-Route::get('step4', [KaryawanController::class,'step4'])->name('step4');
-Route::post('step4', [KaryawanController::class,'storestep4'])->name('store.step4');
-Route::get('step5', [KaryawanController::class,'step5'])->name('step5');
-Route::post('step5', [KaryawanController::class,'storestep5'])->name('store.step5');
-Route::get('step6', [KaryawanController::class,'step6'])->name('step6');
-Route::post('step6', [KaryawanController::class,'storestep6'])->name('store.step6');
-Route::get('step7', [KaryawanController::class,'step7'])->name('step7');
-Route::post('step7', [KaryawanController::class,'storestep7'])->name('store.step7');
-Route::get('step8', [KaryawanController::class,'step8'])->name('step8');
-Route::post('step8', [KaryawanController::class,'storestep8'])->name('store.step8');
-Route::get('step9', [KaryawanController::class,'step9'])->name('step9');
-Route::post('step9', [KaryawanController::class,'storestep9'])->name('store.step9');
-Route::get('step10', [KaryawanController::class,'step10'])->name('step10');
-Route::post('step10', [KaryawanController::class,'storestep10'])->name('store.step10');
-Route::get('khusus', [KaryawanController::class,'stepKhusus'])->name('stepkhusus');
-Route::post('khusus', [KaryawanController::class,'storestepkhusus'])->name('store.stepkhusus');
-Route::get('finish', [KaryawanController::class,'finish'])->name('finish');
-Route::get('dashboard', [KaryawanController::class,'dashboard'])->name('dashboard');
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
 });
 
-//
+Route::get('/auth/google/callback', function () {
+
+    $googleUser = Socialite::driver('google')->user();
+
+    $user = \App\Models\User::updateOrCreate(
+        ['email' => $googleUser->email],
+        [
+            'name' => $googleUser->name,
+            'password' => bcrypt('google_login'),
+            'is_verified' => true
+        ]
+    );
+
+    Auth::login($user);
+
+    return redirect('/dashboard');
+});
+
+// tambah admin 
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
+Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+
+// login
+
+
+// Auth
+Route::get('/login', [AuthController::class,'showLogin'])->name('login');
+Route::post('/login', [AuthController::class,'login'])->name('login.process');
+Route::get('/register', [AuthController::class,'showRegister'])->name('register');
+Route::get('/register', [AuthController::class, 'showRegister']);
+Route::post('/send-otp', [AuthController::class, 'sendOtp']);
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+Route::post('/complete-register', [AuthController::class, 'completeRegister']);
+Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+
+// Admin Dashboard
+Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
+    Route::get('/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');
+});
+
+// Karyawan Dashboard
+Route::prefix('karyawan')->middleware(['auth','is_karyawan'])->group(function(){
+    Route::get('/dashboard', [KaryawanDashboard::class,'index'])->name('karyawan.dashboard');
+});
+
+
+//DASHBOARD SEMUANYA
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+
+
 //master sub unit
 
 Route::get('/sub', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');

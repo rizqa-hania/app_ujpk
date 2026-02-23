@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use App\Karyawan;
 
 class AdminController extends Controller
 {
-    // TAMPILKAN LIST ADMIN
+
     public function index()
     {
-        $admins = User::where('role','admin')->get();
+        $admins = User::where('role', 'admin')->get();
         return view('admin.index', compact('admins'));
-        
     }
 
     public function create()
@@ -20,37 +21,29 @@ class AdminController extends Controller
         return view('admin.create');
     }
 
-    // FORM CREATE
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6'
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'role' => 'admin'
         ]);
-        return redirect()->route('admin.index')
-        ->with('success','admin berhasil disimpan');
+
+        return redirect()->route('admin.index')->with('success', 'Admin berhasil dibuat');
     }
-    // HAPUS ADMIN
-   public function destroy($id)
+
+    public function destroy($id)
     {
-        $admin = User::findOrFail($id);
+        User::where('user_id', $id)->where('role', 'admin')->delete();
 
-        // Tidak boleh hapus super admin
-        if($admin->role !== 'admin'){
-            return back()->with('error','Tidak bisa menghapus user ini');
-        }
-
-        $admin->delete();
-
-        return back()->with('success','Admin berhasil dihapus');
+        return back()->with('success', 'Admin berhasil dihapus');
     }
-
+    
 }
