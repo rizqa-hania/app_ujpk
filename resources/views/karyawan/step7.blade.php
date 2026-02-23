@@ -1,6 +1,6 @@
 <h2>Step 7 - Dokumen Pribadi</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step7') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('karyawan.storestep7') }}" enctype="multipart/form-data">
     @csrf
 
     <input type="text" name="no_ktp" placeholder="No KTP"><br>

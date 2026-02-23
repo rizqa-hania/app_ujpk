@@ -16,8 +16,11 @@ class CreateDetailKomponenTable extends Migration
         Schema::create('detail_komponen', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('detail_id')->references('detail_id')->on('detail');
+            $table->foreignId('nip')->references('id')->on('karyawan')->onDelete('cascade');
             $table->string('kode');
             $table->foreign('kode')->references('kode')->on('komponen')->onDelete('cascade');
+            $table->string('tipe');
+            $table->foreign('tipe')->references('kode')->on('komponen')->onDelete('cascade');
             $table->decimal('nilai', 15, 2);
             $table->timestamps();
         });

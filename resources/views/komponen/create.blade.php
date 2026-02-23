@@ -1,66 +1,60 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white py-3">
-                    <h5 class="mb-0 fw-bold text-primary">Form Tambah Komponen Gaji</h5>
+@extends('template.layout')
+@section('content')
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Tambah Komponen</div>
+                <form action="{{ route('komponen.store') }}" method="POST">
+                @csrf
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="kode" class="form-label">Kode Komponen</label>
+                        <input type="text" name="kode" class="form-control" placeholder="Contoh: 02" value="{{old('kode')}}" required>
+                        @if ($errors->has('kode'))
+                        <span class="text-danger">{{ $errors->first('kode') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="komponen" class="form-label">Nama Komponen</label>
+                        <input type="text" name="komponen" class="form-control" placeholder="Contoh: Tunjangan Jabatan" value="{{old('komponen')}}" required>
+                        @if ($errors->has('komponen'))
+                        <span class="text-danger">{{ $errors->first('komponen') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipe" class="form-label">Tipe Komponen</label>
+                        <select name="tipe" class="form-control">
+                            <option value="pendapatan">Pendapatan</option>
+                            <option value="potongan">Potongan</option>
+                        </select>
+                        @if ($errors->has('tipe'))
+                        <span class="text-danger">{{ $errors->first('tipe') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipe_penghitungan" class="form-label">Tipe Penghitungan</label>
+                        <select name="tipe_penghitungan" class="form-control">
+                            <option value="nominal">Nominal (Tetap)</option>
+                            <option value="presentase">Persentase (%)</option>
+                        </select>
+                        @if ($errors->has('tipe_penghitungan'))
+                        <span class="text-danger">{{ $errors->first('tipe_penghitungan') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nilai</label>
+                            <span class="input-group-text bg-light">Rp / %</span>
+                            <input type="number" name="nilai" class="form-control" step="0.01" placeholder="Masukkan angka saja">
+                        <small class="text-muted">Gunakan titik untuk desimal jika perlu.</small>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <a href="{{route('komponen.index')}}" class="btn btn-success btn-sm">Kembali</a>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <form action="{{ route('komponen.store') }}" method="POST">
-                        @csrf
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Kode Komponen</label>
-                                <input type="text" name="kode" class="form-control" placeholder="Contoh: 02" required>
-                            </div>
-                            <div class="col-md-8">
-                                <label class="form-label fw-semibold">Nama Komponen</label>
-                                <input type="text" name="komponen" class="form-control" placeholder="Contoh: Tunjangan IT" required>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tipe Komponen</label>
-                                <select name="tipe" class="form-select">
-                                    <option value="pendapatan">Pendapatan</option>
-                                    <option value="potongan">Potongan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tipe Penghitungan</label>
-                                <select name="tipe_penghitungan" class="form-select">
-                                    <option value="nominal">Nominal (Tetap)</option>
-                                    <option value="presentase">Persentase (%)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Nilai</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">Rp / %</span>
-                                <input type="number" name="nilai" class="form-control" step="0.01" placeholder="Masukkan angka saja">
-                            </div>
-                            <small class="text-muted">Gunakan titik untuk desimal jika perlu.</small>
-                        </div>
-
-                        <hr>
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ route('komponen.index') }}" class="btn btn-light border">
-                                <i class="bi bi-arrow-left"></i> Kembali
-                            </a>
-                            <button type="submit" class="btn btn-primary px-4">
-                                Simpan Komponen
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+@endsection

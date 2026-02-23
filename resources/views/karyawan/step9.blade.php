@@ -1,6 +1,6 @@
 <h2>Step 9 - Pengalaman Kerja</h2>
 
-<form method="POST" action="{{ route('karyawan.store.step9') }}">
+<form method="POST" action="{{ route('karyawan.storestep9') }}">
     @csrf
 
     <textarea name="pengalaman_kerja_1" placeholder="Pengalaman Kerja 1"></textarea><br>
@@ -9,3 +9,4 @@
 
     <button type="submit">Next</button>
 </form>
+

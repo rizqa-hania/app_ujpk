@@ -1,7 +1,5 @@
 @extends('template.layout')
-
 @section('content')
-
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Data Komponen Gaji</h3>
@@ -11,17 +9,18 @@
             </a>
         </div>
     </div>
-    <div class="card-body">
-        <table class="table table-bordered table-hover">
+    <div class="card-body table-responsive">
+        <table class="table table-stripped table-hover">
             <thead>
                 <tr>
-                    <th style="width: 5%">No</th>
+                    <th>No</th>
                     <th>Kode</th>
                     <th>Komponen</th>
+                    <th>Tipe Komponen</th>
                     <th>Tipe Penghitungan</th>
                     <th>Nilai</th>
                     <th>Status</th>
-                    <th class="text-center">Aksi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,16 +29,19 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $v->kode }}</td>
                     <td>{{ $v->komponen }}</td>
-                    <td>{{ $v->tipe_penghitungan == 'persen' ? 'Persentase' : 'Tetap' }}</td>
+                    <td>{{ $v->tipe }}</td>
+                    <td>{{ $v->tipe_penghitungan == 'presentase' ? 'Persentase' : 'Tetap' }}</td>
                     <td>
-                        @if($v->tipe_penghitungan == 'persen')
+                        @if($v->tipe_penghitungan == 'presentase')
                             {{ $v->nilai }}%
                         @else
                             Rp {{ number_format($v->nilai, 0, ',', '.') }}
                         @endif
                     </td>
                     <td>
-                        @if($v->status == 1)
+                        @if ($v->status == 0)
+                        <span class="badge badge-secondary">-</span>
+                        @elseif($v->status == 1)
                             <span class="badge badge-success">Aktif</span>
                         @else
                             <span class="badge badge-danger">Nonaktif</span>

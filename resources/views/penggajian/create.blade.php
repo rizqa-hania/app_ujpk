@@ -1,13 +1,11 @@
 @extends('template.layout')
-
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-8">
+<div class="row">
+    <div class="col-12">
         <div class="card card-primary mt-4">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-plus-circle mr-1"></i> Form Penggajian Baru</h3>
             </div>
-            
             <form action="{{ route('penggajian.store') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="card-body">

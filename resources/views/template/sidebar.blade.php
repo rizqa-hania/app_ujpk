@@ -1,7 +1,12 @@
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
+<<<<<<< HEAD
     <a class="brand-link">
       <img src="dist/img/UJPK.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+=======
+    <a href="index3.html" class="brand-link">
+      <img src="{{ asset('ujpkkkkkk.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+>>>>>>> 10130cdd82bdac84ad3c828072ff04eb6214b9f3
       <span class="brand-text font-weight-light">PT UJPK</span>
     </a>
 
@@ -10,10 +15,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('AdminLTE/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">Usaha Jaya Prima Karya</a>
         </div>
       </div>
 
@@ -50,27 +55,51 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('penggajian.index') }}" class="nav-link active">
+                <a href="{{ route('dashboard') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Gaji</p>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+            </ul>
+              <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tambah Admin</p>
+                </a>
+              </li>
+            </ul>
+
+          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Absensi
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Penggajian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+              <li class="nav-item">
+                <a href="{{ route('penggajian.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Penggajian</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('komponen.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Komponen</p>
+                  <p>Komponen Gaji</p>
                 </a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
           </li>
         </ul>
       </nav>
