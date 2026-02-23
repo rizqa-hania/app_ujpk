@@ -15,7 +15,7 @@ class CreatePenggajianTable extends Migration
     {
         Schema::create('penggajian', function (Blueprint $table) {
             $table->bigIncrements('penggajian_id');
-            $table->tinyInteger('periode_bulan');
+            $table->string('periode_bulan');
             $table->smallInteger('periode_tahun');
             $table->enum('status', ['draft', 'approved', 'paid'])->default('draft');
             $table->timestamps();

@@ -37,7 +37,7 @@ class PenggajianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'periode_bulan' => 'required|integer',
+            'periode_bulan' => 'required|string',
             'periode_tahun' => 'required|integer',
             'status' => 'required|string',
         ]);
@@ -70,8 +70,7 @@ class PenggajianController extends Controller
      */
     public function edit($id)
     {
-        $dataeditpenggajian = Penggajian::find($id);
-        return view('penggajian.edit', compact('dataeditpenggajian'));
+        //
     }
 
     /**
@@ -83,21 +82,7 @@ class PenggajianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'periode_bulan' => 'required|integer',
-            'periode_tahun' => 'required|integer',
-            'status' => 'required|string',
-        ]);
-
-        $updatedata = Penggajian::findOrFail($id);
-
-        $updatedata->update([
-            'periode_bulan' => $request->periode_bulan,
-            'periode_tahun' => $request->periode_tahun,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('penggajian.index');
+        //
     }
 
     /**

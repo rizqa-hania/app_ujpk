@@ -24,6 +24,7 @@
                     <div class="mb-3">
                         <label for="tipe" class="form-label">Tipe Komponen</label>
                         <select name="tipe" class="form-control">
+                            <option value="">-- Pilih Tipe Komponen --</option>
                             <option value="pendapatan">Pendapatan</option>
                             <option value="potongan">Potongan</option>
                         </select>
@@ -34,6 +35,7 @@
                     <div class="mb-3">
                         <label for="tipe_penghitungan" class="form-label">Tipe Penghitungan</label>
                         <select name="tipe_penghitungan" class="form-control">
+                            <option value="">-- Pilih Tipe Penghitungan --</option>
                             <option value="nominal">Nominal (Tetap)</option>
                             <option value="presentase">Persentase (%)</option>
                         </select>
