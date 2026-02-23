@@ -55,7 +55,7 @@ Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.d
 
 
 // Auth
-Route::get('/login', [AuthController::class,'showLogin'])->name('login');
+Route::get('/', [AuthController::class,'showLogin'])->name('login');
 Route::post('/login', [AuthController::class,'login'])->name('login.process');
 Route::get('/register', [AuthController::class,'showRegister'])->name('register');
 Route::get('/register', [AuthController::class, 'showRegister']);
