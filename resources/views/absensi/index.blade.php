@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="row">
+    
     <div class="col-12">
 
         <div class="card">
@@ -22,9 +23,18 @@
                         {{ session('success') }}
                     </div>
                 @endif
+<<<<<<< HEAD
                 {{-- Kamera --}}
                 <div class="kamera-wrapper mb-3">
                     <video id="video" autoplay playsinline class="kamera-preview"></video>
+=======
+
+
+                {{-- Kamera --}}
+                <div class="kamera-wrapper mb-3">
+                    <video id="video" autoplay playsinline class="kamera-preview"></video>
+
+>>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
 <form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo">
@@ -59,7 +69,10 @@
                             </button>
                         </form>
                     </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
                 </div>
 
                 {{-- FORM MASUK --}}
@@ -142,6 +155,7 @@
         </div>
 
     </div>
+    
 </div>
 
 {{-- STYLE KAMERA --}}

@@ -12,7 +12,7 @@
             <div class="card-body">
 
  <div class="mb-3">
-<label name="nama_project" class="form-table">Jabatan: </label>
+<label name="nama_project" class="form-table">Project: </label>
     <input type="text" class = "form-control" name="nama_project" value="{{old('nama_project')}}">
 @if($errors->has('nama_jabatan'))
 <span class="text-danger">{{ $errors->first('nama_jabatan')}}</span>   
