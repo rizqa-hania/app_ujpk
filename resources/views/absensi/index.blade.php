@@ -16,7 +16,7 @@
 <video id="video" width="400" autoplay></video>
 <canvas id="canvas" style="display:none;"></canvas>
 
-<form method="POST" action="{{ route('absensi.masuk') }}">
+<form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo">
 <input type="hidden" name="latitude" id="latitude">
@@ -26,7 +26,7 @@
 <button type="submit">Absen Masuk</button>
 </form>
 
-<form method="POST" action="{{ route('absensi.pulang') }}">
+<form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo2">
 <input type="hidden" name="latitude" id="latitude">
