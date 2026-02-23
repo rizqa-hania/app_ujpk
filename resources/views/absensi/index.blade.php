@@ -22,24 +22,18 @@
                         {{ session('success') }}
                     </div>
                 @endif
-
-<<<<<<< HEAD
                 {{-- Kamera --}}
                 <div class="kamera-wrapper mb-3">
                     <video id="video" autoplay playsinline class="kamera-preview"></video>
-=======
-<<<<<<< HEAD
 <form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo">
 <input type="hidden" name="latitude" id="latitude">
 <input type="hidden" name="longitude" id="longitude">
-=======
                 <div class="row">
                     <div class="col-md-6 text-center">
                         <video id="video" class="img-fluid rounded" autoplay></video>
                     </div>
->>>>>>> feb5a0c31d9fba6163cc98cba4c3a1baba8c9824
 
                     <div class="col-md-6">
                         <form method="POST" action="{{ route('absensi.store') }}">
@@ -48,24 +42,24 @@
                             <input type="hidden" name="latitude" id="latitude">
                             <input type="hidden" name="longitude" id="longitude">
 
-<<<<<<< HEAD
+
 <form method="POST" action="{{ route('absensi.store') }}">
 @csrf
 <input type="hidden" name="photo" id="photo2">
 <input type="hidden" name="latitude" id="latitude">
 <input type="hidden" name="longitude" id="longitude">
-=======
+
                             <button type="button" onclick="capture()" class="btn btn-info mb-2">
                                 Ambil Foto
                             </button>
->>>>>>> feb5a0c31d9fba6163cc98cba4c3a1baba8c9824
+
 
                             <button type="submit" class="btn btn-success btn-block">
                                 Absen Sekarang
                             </button>
                         </form>
                     </div>
->>>>>>> 8189e357cbf39da48d5f64b932face867bcf7ae2
+
                 </div>
 
                 {{-- FORM MASUK --}}
