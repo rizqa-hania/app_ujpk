@@ -1,15 +1,15 @@
 @extends('template.layout')
 
 @section('content')
-<div class="row"> 
+<div class="row">
     <div class="col-12">
-        <div class="card"> 
 
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Absensi Wajah + Radius</h3> 
+                <h3 class="card-title">Absensi</h3>
             </div>
 
-            <div class="card-body">
+            <div class="card-body text-center">
 
                 @if(session('error'))
                     <div class="alert alert-danger">
@@ -23,35 +23,48 @@
                     </div>
                 @endif
 
-                <div class="row">
-                    <div class="col-md-6 text-center">
-                        <video id="video" class="img-fluid rounded" autoplay></video>
-                    </div>
-
-                    <div class="col-md-6">
-                        <form method="POST" action="{{ route('absensi.store') }}">
-                            @csrf
-                            <input type="hidden" name="photo" id="photo">
-                            <input type="hidden" name="latitude" id="latitude">
-                            <input type="hidden" name="longitude" id="longitude">
-
-                            <button type="button" onclick="capture()" class="btn btn-info mb-2">
-                                Ambil Foto
-                            </button>
-
-                            <button type="submit" class="btn btn-success btn-block">
-                                Absen Sekarang
-                            </button>
-                        </form>
-                    </div>
+                {{-- Kamera --}}
+                <div class="kamera-wrapper mb-3">
+                    <video id="video" autoplay playsinline class="kamera-preview"></video>
                 </div>
+
+                {{-- FORM MASUK --}}
+                <form method="POST" action="{{ route('absensi.store') }}" class="mb-2">
+                    @csrf
+                    <input type="hidden" name="photo" id="photo">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+                    <input type="hidden" name="type" value="masuk">
+
+                    <button type="button" onclick="capture()" class="btn btn-warning btn-sm">
+                        Ambil Foto
+                    </button>
+
+                    <button type="submit" class="btn btn-success btn-sm">
+                        Absen Masuk
+                    </button>
+                </form>
+
+                {{-- FORM PULANG --}}
+                <form method="POST" action="{{ route('absensi.store') }}">
+                    @csrf
+                    <input type="hidden" name="photo" id="photo2">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+                    <input type="hidden" name="type" value="pulang">
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        Absen Pulang
+                    </button>
+                </form>
 
                 <hr>
 
-                <h5>Riwayat Absensi</h5>
+                {{-- RIWAYAT --}}
+                <h5 class="text-left">Riwayat Absensi</h5>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -62,9 +75,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
                         @if(isset($dataAbsensi) && $dataAbsensi->count() > 0)
-
                             @foreach($dataAbsensi as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -82,22 +93,39 @@
                                     </td>
                                 </tr>
                             @endforeach
-
                         @else
                             <tr>
-                                <td colspan="5" class="text-center">Belum ada data absensi</td>
+                                <td colspan="5" class="text-center">
+                                    Belum ada data absensi
+                                </td>
                             </tr>
                         @endif
-
                         </tbody>
                     </table>
                 </div>
 
             </div>
         </div>
+
     </div>
 </div>
 
+{{-- STYLE KAMERA --}}
+<style>
+.kamera-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.kamera-preview {
+    width: 400px; /* ukuran sedang-kecil */
+    max-width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+</style>
+
+{{-- SCRIPT --}}
 <script>
 const video = document.getElementById('video');
 let stream = null;
@@ -138,7 +166,6 @@ function stopCamera() {
 @if(session('success'))
     stopCamera();
 @endif
-
 </script>
 
 @endsection
