@@ -1,100 +1,144 @@
 @extends('template.layout')
 
 @section('content')
-<div class="container">
+<div class="row"> 
+    <div class="col-12">
+        <div class="card"> 
 
-<h3>Absensi Wajah + Radius</h3>
+            <div class="card-header">
+                <h3 class="card-title">Absensi Wajah + Radius</h3> 
+            </div>
 
-@if(session('error'))
-<div style="color:red">{{ session('error') }}</div>
-@endif
+            <div class="card-body">
 
-@if(session('success'))
-<div style="color:green">{{ session('success') }}</div>
-@endif
-
-<video id="video" width="400" autoplay></video>
-<canvas id="canvas" style="display:none;"></canvas>
-
-<form method="POST" action="{{ route('absensi.store') }}">
-@csrf
-<input type="hidden" name="photo" id="photo">
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
-
-<button type="button" onclick="capture('photo')">Ambil Foto Masuk</button>
-<button type="submit">Absen Masuk</button>
-</form>
-
-<form method="POST" action="{{ route('absensi.store') }}">
-@csrf
-<input type="hidden" name="photo" id="photo2">
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
-
-<button type="button" onclick="capture('photo2')">Ambil Foto Pulang</button>
-<button type="submit">Absen Pulang</button>
-</form>
-
-<hr>
-
-<h4>Riwayat</h4>
-<table border="1">
-<tr>
-<th>Tanggal</th>
-<th>Masuk</th>
-<th>Pulang</th>
-<th>Status</th>
-<th>Jarak (m)</th>
-</tr>
-
-@if(isset($dataAbsensi) && $dataAbsensi->count() > 0)
-
-    @foreach($dataAbsensi as $item)
-        <tr>
-            <td>{{ $item->tanggal }}</td>
-            <td>{{ $item->jam_masuk }}</td>
-            <td>{{ $item->jam_pulang }}</td>
-            <td>@if($item->jam_masuk && $item->jam_pulang) Hadir
-                @elseif($item->status_masuk == 'terlambat')Terlambat
-                @else Hadir (Belum Pulang)
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
                 @endif
-</td>
-        </tr>
-    @endforeach
 
-@else
-    <tr>
-        <td colspan="4">Belum ada data absensi</td>
-    </tr>
-@endif
-</table>
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <video id="video" class="img-fluid rounded" autoplay></video>
+                    </div>
+
+                    <div class="col-md-6">
+                        <form method="POST" action="{{ route('absensi.store') }}">
+                            @csrf
+                            <input type="hidden" name="photo" id="photo">
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
+
+                            <button type="button" onclick="capture()" class="btn btn-info mb-2">
+                                Ambil Foto
+                            </button>
+
+                            <button type="submit" class="btn btn-success btn-block">
+                                Absen Sekarang
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h5>Riwayat Absensi</h5>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Masuk</th>
+                                <th>Pulang</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        @if(isset($dataAbsensi) && $dataAbsensi->count() > 0)
+
+                            @foreach($dataAbsensi as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->tanggal }}</td>
+                                    <td>{{ $item->jam_masuk }}</td>
+                                    <td>{{ $item->jam_pulang }}</td>
+                                    <td>
+                                        @if($item->jam_masuk && $item->jam_pulang)
+                                            <span class="badge badge-success">Hadir</span>
+                                        @elseif($item->status_masuk == 'terlambat')
+                                            <span class="badge badge-warning">Terlambat</span>
+                                        @else
+                                            <span class="badge badge-info">Belum Pulang</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">Belum ada data absensi</td>
+                            </tr>
+                        @endif
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
 
 <script>
 const video = document.getElementById('video');
+let stream = null;
 
-navigator.mediaDevices.getUserMedia({ video: {} })
-.then(stream => video.srcObject = stream);
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(function(s) {
+    stream = s;
+    video.srcObject = stream;
+})
+.catch(function(err) {
+    console.log(err);
+});
 
 if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition(function(position) {
-document.getElementById('latitude').value = position.coords.latitude;
-document.getElementById('longitude').value = position.coords.longitude;
-});
+    navigator.geolocation.getCurrentPosition(function(position) {
+        document.getElementById('latitude').value = position.coords.latitude;
+        document.getElementById('longitude').value = position.coords.longitude;
+    });
 }
 
-async function capture(field) {
-const canvas = document.getElementById('canvas');
-canvas.width = video.videoWidth;
-canvas.height = video.videoHeight;
-canvas.getContext('2d').drawImage(video, 0, 0);
-document.getElementById(field).value = canvas.toDataURL('image/png');
-alert("Foto berhasil diambil");
+function capture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    document.getElementById('photo').value = canvas.toDataURL('image/png');
+    alert("Foto berhasil diambil");
 }
+
+// Matikan kamera jika sukses
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+    }
+}
+
+@if(session('success'))
+    stopCamera();
+@endif
+
 </script>
 
 @endsection
