@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-6">
         <div class="card">
-            <div class="card-header">Add User</div>
+            <div class="card-header">Tambah Admin</div>
 
 <form action="{{ route ('admin.store') }}" method="POST">
     {{ csrf_field( ) }}
@@ -45,8 +45,8 @@
   
 
             </div>
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Save</button>
-        <a href="{{route('admin.index')}}" class="btn btn-success btn-sm">Back</a>
+     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+        <a href="{{route('admin.index')}}" class="btn btn-success btn-sm">Kembali</a>
         </div>
 </form>
         </div>
