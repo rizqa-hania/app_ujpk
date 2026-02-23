@@ -5,7 +5,6 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-primary">
                     <div class="inner">
@@ -20,6 +19,21 @@
                     </a>
                 </div>
             </div>
+            
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3>{{ $totalJabatan }}</h3>
+                        <p>Total Jabatan</p>
+                    </div>
+                    <div class="icon">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <a href="{{ route('master_jabatan.index') }}" class="small-box-footer">
+            Lihat Data <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-success">
@@ -35,6 +49,21 @@
                     </a>
                 </div>
             </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{ $totalPendidikan }}</h3>
+                            <p>Total Pendidikan</p>
+                        </div>
+                <div class="icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <a href="{{ route('master_pendidikan.index') }}" class="small-box-footer">
+                    Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
 
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">

@@ -6,27 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absensi extends Model
 {
-    protected $table = 'absensi';
+    protected $table = 'absensis';
+
     protected $primaryKey = 'absensi_id';
 
     protected $fillable = [
-        'nip',
-        'kantor_id',
+        'user_id',
         'tanggal',
         'jam_masuk',
         'jam_pulang',
-        'lat_masuk',
-        'long_masuk',
-        'jarak_masuk',
-        'lat_pulang',
-        'long_pulang',
-        'jarak_pulang',
         'status',
-        'metode_absensi',
-        'verifikasi',
-        'is_valid_radius',
-        'device_id',
+        'foto_masuk',
+        'foto_pulang',
+        'latitude',
+        'longitude',
+        'jarak'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 
     public function karyawan()
     {

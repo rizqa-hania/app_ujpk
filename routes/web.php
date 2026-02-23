@@ -166,11 +166,12 @@ Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail
 
 
 //ABSENSI
-Route::prefix('absensi')->group(function () {
-    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
-    Route::post('/store', [AbsensiController::class, 'store'])->name('absensi.store');
-    Route::post('/pulang/{id}', [AbsensiController::class, 'pulang'])->name('absensi.pulang');
+Route::middleware(['auth'])->group(function(){
+    Route::get('/absensi','AbsensiController@index')->name('absensi.index');
+    Route::post('/absensi','AbsensiController@store')->name('absensi.store');
+
 });
+
 
 //kantor
 Route::resource('kantor', KantorController::class);
