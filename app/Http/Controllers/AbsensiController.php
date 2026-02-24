@@ -13,6 +13,7 @@ class AbsensiController extends Controller
     //private $officeLng = 106.816666; // GANTI dengan koordinat kantor
     //private $radius = 100; // meter
     private $jamMasuk = "08:00:00";
+    private $jamPulang = "16:30:00";
 
     public function __construct()
     {
@@ -47,54 +48,63 @@ class AbsensiController extends Controller
     }
 
     public function store(Request $request)
-    {
-        if(!Auth::check()){
-            return redirect()->route('login');
-        }
-
-        $userId = Auth::id();
-        $today = Carbon::today()->toDateString();
-        $now = Carbon::now();
-
-        $lat = $request->latitude;
-        $lng = $request->longitude;
-
-        //$distance = $this->distance($this->officeLat,$this->officeLng,$lat,$lng);
-
-        //if($distance > $this->radius){
-         //   return back()->with('error','Anda di luar radius 100 meter');
-       // }
-
-        $absen = Absensi::where('user_id',$userId)
-                    ->where('tanggal',$today)
-                    ->first();
-
-        // ABSEN MASUK
-        if(!$absen){
-            $status = $now->format('H:i:s') > $this->jamMasuk ? 'terlambat' : 'hadir';
-
-            Absensi::create([
-                'user_id'=>$userId,
-                'tanggal'=>$today,
-                'jam_masuk'=>$now->format('H:i:s'),
-                'status_masuk'=>$status,
-                'latitude'=>$lat,
-                'longitude'=>$lng
-            ]);
-
-            return back()->with('success','Absen masuk berhasil');
-        }
-
-        // ABSEN PULANG
-if($absen && !$absen->jam_pulang){
-
-    $absen->update([
-        'jam_pulang'=>$now->format('H:i:s'),
-        'status_pulang'=>'pulang'
-    ]);
-
-    return redirect()->route('absensi.index')
-        ->with('success','Absen pulang berhasil. Status hadir lengkap.');
-}
+{
+    if(!Auth::check()){
+        return redirect()->route('login');
     }
+
+    $userId = Auth::id();
+    $today = Carbon::today()->toDateString();
+    $now = Carbon::now();
+
+    $lat = $request->latitude;
+    $lng = $request->longitude;
+
+    $absen = Absensi::where('user_id',$userId)
+                ->where('tanggal',$today)
+                ->first();
+
+    // ======================
+    // ABSEN MASUK
+    // ======================
+    if(!$absen){
+
+        $batasMasuk = Carbon::createFromFormat('H:i:s', $this->jamMasuk);
+
+        $status = $now->gt($batasMasuk) ? 'terlambat' : 'hadir';
+
+        Absensi::create([
+            'user_id'=>$userId,
+            'tanggal'=>$today,
+            'jam_masuk'=>$now->format('H:i:s'),
+            'status_masuk'=>$status,
+            'latitude'=>$lat,
+            'longitude'=>$lng
+        ]);
+
+        return back()->with('success','Absen masuk berhasil');
+    }
+
+    // ======================
+    // ABSEN PULANG
+    // ======================
+    if($absen && !$absen->jam_pulang){
+
+        $batasPulang = Carbon::createFromFormat('H:i:s', $this->jamPulang);
+
+        if($now->lt($batasPulang)){
+            return back()->with('error','Belum waktunya pulang (16:30)');
+        }
+
+        $absen->update([
+            'jam_pulang'=>$now->format('H:i:s'),
+            'status_pulang'=>'pulang'
+        ]);
+
+        return redirect()->route('absensi.index')
+            ->with('success','Absen pulang berhasil');
+    }
+
+    return back()->with('error','Anda sudah absen hari ini');
+}
 }

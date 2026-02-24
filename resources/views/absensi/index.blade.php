@@ -23,52 +23,17 @@
                         {{ session('success') }}
                     </div>
                 @endif
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-
-                {{-- Kamera --}}
-                <div class="kamera-wrapper mb-3">
-                    <video id="video" autoplay playsinline class="kamera-preview"></video>
-
-=======
-<<<<<<< HEAD
-                {{-- Kamera --}}
-                <div class="kamera-wrapper mb-3">
-                    <video id="video" autoplay playsinline class="kamera-preview"></video>
-=======
->>>>>>> f1d6095a65642153b12fb634fd000999151b7362
 
 
                 {{-- SECTION KAMERA + AKSI --}}
                 <div class="row mb-4">
 
-<<<<<<< HEAD
                     {{-- KAMERA --}}
-=======
->>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
->>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
-<form method="POST" action="{{ route('absensi.store') }}">
-@csrf
-<input type="hidden" name="photo" id="photo">
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
-<<<<<<< HEAD
-
-=======
->>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
-                <div class="row">
->>>>>>> f1d6095a65642153b12fb634fd000999151b7362
                     <div class="col-md-6 text-center">
                         <div class="camera-box">
                             <video id="video" autoplay playsinline></video>
                         </div>
                     </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
 
                     {{-- PANEL AKSI --}}
                     <div class="col-md-6">
@@ -110,17 +75,7 @@
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
->>>>>>> 7926d4ff4b5c3f41d71483937d1ff18e68bfaaf8
->>>>>>> f1d6095a65642153b12fb634fd000999151b7362
                 </div>
 
 
@@ -168,13 +123,11 @@
                     </table>
                 </div>
 
-
             </div>
         </div>
 
     </div>
 </div>
-
 
 
 {{-- STYLE --}}
@@ -194,13 +147,12 @@
 </style>
 
 
-
 {{-- SCRIPT --}}
 <script>
 const video = document.getElementById('video');
 let stream = null;
 
-// Aktifkan Kamera
+// Kamera
 navigator.mediaDevices.getUserMedia({ video: true })
 .then(function(s) {
     stream = s;
@@ -210,7 +162,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
     console.log("Camera Error:", err);
 });
 
-// Ambil Lokasi
+// Lokasi
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
 
@@ -223,7 +175,7 @@ if (navigator.geolocation) {
     });
 }
 
-// Capture Foto
+// Capture
 function capturePhoto() {
 
     if (!video.videoWidth) {
@@ -246,7 +198,7 @@ function capturePhoto() {
     alert("Foto berhasil diambil");
 }
 
-// Stop Kamera Setelah Sukses
+// Stop kamera jika sukses
 @if(session('success'))
 if (stream) {
     stream.getTracks().forEach(track => track.stop());
