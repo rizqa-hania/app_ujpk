@@ -103,12 +103,18 @@
                                 <td>{{ $item->jam_masuk ?? '-' }}</td>
                                 <td>{{ $item->jam_pulang ?? '-' }}</td>
                                 <td>
-                                    @if($item->jam_masuk && $item->jam_pulang)
-                                        <span class="badge badge-success">Hadir</span>
-                                    @elseif($item->status_masuk == 'terlambat')
+                                    {{-- LOGIKA STATUS YANG BENAR --}}
+                                    @if($item->status_masuk == 'terlambat')
                                         <span class="badge badge-warning">Terlambat</span>
+
+                                    @elseif($item->jam_masuk && !$item->jam_pulang)
+                                        <span class="badge badge-info">Belum Pulang</span>
+
+                                    @elseif($item->jam_masuk && $item->jam_pulang)
+                                        <span class="badge badge-success">Hadir</span>
+
                                     @else
-                                        <span class="badge badge-secondary">Belum Pulang</span>
+                                        <span class="badge badge-secondary">Belum Absen</span>
                                     @endif
                                 </td>
                             </tr>
