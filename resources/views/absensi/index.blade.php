@@ -90,14 +90,15 @@
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->jam_masuk ?? '-' }}</td>
                                 <td>{{ $item->jam_pulang ?? '-' }}</td>
-                                <td>
+                               <td>
                                     @switch($item->status)
+
                                         @case('lengkap')
                                             <span class="badge badge-success">Lengkap</span>
                                         @break
 
                                         @case('tidak lengkap')
-                                            <span class="badge badge-info">Tidak Lengkap</span>
+                                            <span class="badge badge-secondary">Tidak Lengkap</span>
                                         @break
 
                                         @case('terlambat')
@@ -108,8 +109,13 @@
                                             <span class="badge badge-danger">Terlambat & Tidak Lengkap</span>
                                         @break
 
+                                        @case('izin')
+                                            <span class="badge badge-info">Izin</span>
+                                        @break
+
                                         @default
-                                            <span class="badge badge-secondary">-</span>
+                                            <span class="badge badge-dark">-</span>
+
                                     @endswitch
                                 </td>
                             </tr>

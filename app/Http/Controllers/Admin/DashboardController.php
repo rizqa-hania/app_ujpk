@@ -11,6 +11,8 @@ use App\MasterProject;
 use App\MasterPendidikan;
 use App\Jabatan;
 use App\Lembur;
+use App\Izin;
+use App\Absensi;
 
 class DashboardController extends Controller {
 
@@ -26,6 +28,8 @@ class DashboardController extends Controller {
         $totalPendidikan = MasterPendidikan::count();
         $totalJabatan = Jabatan::count();
         $totalLembur = Lembur::count();
+        $totalIzin = Izin::count();
+        $totalAbsensi = Absensi::count();
 
         return view('dashboard.admin.dashboard', compact(
             'karyawans',
@@ -35,7 +39,8 @@ class DashboardController extends Controller {
             'totalProject',
             'totalPendidikan',
             'totalJabatan',
-            'totalLembur'
-        ));
+            'totalLembur',
+            'totalIzin',
+            'totalAbsensi'));
     }
 }

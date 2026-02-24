@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class AbsensiController extends Controller
 {
     private $jamMasuk  = "08:00:00";
-    private $jamPulang = "09:30:00";
+    private $jamPulang = "16:30:00";
 
     public function index()
     {
@@ -68,7 +68,7 @@ class AbsensiController extends Controller
             $batasPulang = Carbon::parse($today . ' ' . $this->jamPulang);
 
             if ($now->lt($batasPulang)) {
-                return back()->with('error','Belum waktunya pulang (09:30)');
+                return back()->with('error','Belum waktunya pulang (16:30)');
             }
 
             $absen->jam_pulang = $now->format('H:i:s');

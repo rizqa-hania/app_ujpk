@@ -4,9 +4,12 @@
 
 <section class="content">
     <div class="container-fluid">
+
         <div class="row">
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-primary">
+
+            {{-- TAD --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-primary elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalTad }}</h3>
                         <p>Total TAD</p>
@@ -15,28 +18,30 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <a href="{{ route('master_tad.index') }}" class="small-box-footer">
-                        Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
-            
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-secondary">
+
+            {{-- Jabatan --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-indigo elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalJabatan }}</h3>
                         <p>Total Jabatan</p>
                     </div>
                     <div class="icon">
-                <i class="fas fa-user-tie"></i>
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <a href="{{ route('master_jabatan.index') }}" class="small-box-footer">
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
             </div>
-            <a href="{{ route('master_jabatan.index') }}" class="small-box-footer">
-            Lihat Data <i class="fas fa-arrow-circle-right"></i>
-            </a>
-        </div>
-    </div>
 
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-success">
+            {{-- Project --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-success elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalProject }}</h3>
                         <p>Total Project</p>
@@ -45,28 +50,30 @@
                         <i class="fas fa-project-diagram"></i>
                     </div>
                     <a href="{{ route('master_project.index') }}" class="small-box-footer">
-                        Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
 
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>{{ $totalPendidikan }}</h3>
-                            <p>Total Pendidikan</p>
-                        </div>
-                <div class="icon">
-                    <i class="fas fa-graduation-cap"></i>
+            {{-- Pendidikan --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-danger elevation-3 dashboard-box">
+                    <div class="inner">
+                        <h3>{{ $totalPendidikan }}</h3>
+                        <p>Total Pendidikan</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <a href="{{ route('master_pendidikan.index') }}" class="small-box-footer">
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
-                <a href="{{ route('master_pendidikan.index') }}" class="small-box-footer">
-                    Lihat Data <i class="fas fa-arrow-circle-right"></i>
-                </a>
             </div>
-        </div>
 
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-info">
+            {{-- Unit PLN --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-info elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalUnitPln }}</h3>
                         <p>Total Unit PLN</p>
@@ -75,29 +82,46 @@
                         <i class="fas fa-building"></i>
                     </div>
                     <a href="{{ route('master_unit_pln.index') }}" class="small-box-footer">
-                        Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
 
-             <div class="col-lg-3 col-6">
-                <div class="small-box bg-teal">
+            {{-- Sub Unit --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-teal elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalSubUnit }}</h3>
                         <p>Total Sub Unit</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-building"></i>
+                        <i class="fas fa-sitemap"></i>
                     </div>
                     <a href="{{ route('master-sub-unit.index') }}" class="small-box-footer">
-                        Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
 
+            {{-- Izin --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-warning elevation-3 dashboard-box">
+                    <div class="inner">
+                        <h3>{{ $totalIzin }}</h3>
+                        <p>Total Izin</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <a href="{{ route('izin.index') }}" class="small-box-footer">
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
 
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-warning">
+            {{-- Lembur --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-secondary elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalLembur }}</h3>
                         <p>Total Lembur</p>
@@ -106,7 +130,23 @@
                         <i class="fas fa-clock"></i>
                     </div>
                     <a href="{{ route('lembur.index') }}" class="small-box-footer">
-                        Lihat Data <i class="fas fa-arrow-circle-right"></i>
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            {{-- Absensi --}}
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="small-box bg-dark elevation-3 dashboard-box">
+                    <div class="inner">
+                        <h3>{{ $totalAbsensi ?? 0 }}</h3>
+                        <p>Total Absensi</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <a href="{{ route('absensi.index') }}" class="small-box-footer">
+                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
@@ -114,5 +154,18 @@
         </div>
     </div>
 </section>
+
+<style>
+.dashboard-box {
+    transition: all 0.3s ease;
+}
+.dashboard-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.small-box h3 {
+    font-weight: 700;
+}
+</style>
 
 @endsection

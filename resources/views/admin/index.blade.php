@@ -28,7 +28,7 @@
                 <form action="{{ route('admin.destroy', $e->user_id) }}" method="POST">
                     {{csrf_field()}}
                     @method('DELETE')
-                    <button type="submit"  onclick="return confirm('Are you sure you want to delete this users?')" class="btn btn-danger btn-sm">Hapus</button>
+                    <button type="submit"  onclick="return confirm('Apakah kamu yakin ingin menghapus user  ini?')" class="btn btn-danger btn-sm">Hapus</button>
                 </form>           
              </td>
         </tr>

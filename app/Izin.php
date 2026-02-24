@@ -1,29 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Izin extends Model
 {
-    protected $table = 'izin';
-
     protected $primaryKey = 'izin_id';
 
     protected $fillable = [
-        'nip',
-        'jenis_izin',
+        'user_id',
         'tanggal_mulai',
         'tanggal_selesai',
-        'bukti_dokumen',
         'keterangan',
+        'file_bukti',
+        'status'
     ];
 
-    /**
-     * RELATION
-     */
-    public function pegawai()
+    public function user()
     {
-        return $this->belongsTo(Pegawai::class, 'nip', 'nip');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
