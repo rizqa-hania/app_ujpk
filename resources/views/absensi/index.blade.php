@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="row">
-    
     <div class="col-12">
 
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Absensi</h3>
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Absensi Karyawan</h5>
             </div>
 
-            <div class="card-body text-center">
+            <div class="card-body">
 
+                {{-- ALERT --}}
                 @if(session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -23,196 +23,189 @@
                         {{ session('success') }}
                     </div>
                 @endif
-<<<<<<< HEAD
-                {{-- Kamera --}}
-                <div class="kamera-wrapper mb-3">
-                    <video id="video" autoplay playsinline class="kamera-preview"></video>
-=======
 
 
-                {{-- Kamera --}}
-                <div class="kamera-wrapper mb-3">
-                    <video id="video" autoplay playsinline class="kamera-preview"></video>
+                {{-- SECTION KAMERA + AKSI --}}
+                <div class="row mb-4">
 
->>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
-<form method="POST" action="{{ route('absensi.store') }}">
-@csrf
-<input type="hidden" name="photo" id="photo">
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
-                <div class="row">
+                    {{-- KAMERA --}}
                     <div class="col-md-6 text-center">
-                        <video id="video" class="img-fluid rounded" autoplay></video>
+                        <div class="camera-box">
+                            <video id="video" autoplay playsinline></video>
+                        </div>
                     </div>
 
+                    {{-- PANEL AKSI --}}
                     <div class="col-md-6">
-                        <form method="POST" action="{{ route('absensi.store') }}">
-                            @csrf
-                            <input type="hidden" name="photo" id="photo">
-                            <input type="hidden" name="latitude" id="latitude">
-                            <input type="hidden" name="longitude" id="longitude">
+                        <div class="card border shadow-sm">
+                            <div class="card-body">
 
+                                <button type="button"
+                                        onclick="capturePhoto()"
+                                        class="btn btn-warning btn-block mb-3">
+                                    Ambil Foto
+                                </button>
 
-<form method="POST" action="{{ route('absensi.store') }}">
-@csrf
-<input type="hidden" name="photo" id="photo2">
-<input type="hidden" name="latitude" id="latitude">
-<input type="hidden" name="longitude" id="longitude">
+                                {{-- FORM MASUK --}}
+                                <form method="POST" action="{{ route('absensi.store') }}" class="mb-2">
+                                    @csrf
+                                    <input type="hidden" name="photo" id="photo_masuk">
+                                    <input type="hidden" name="latitude" id="latitude_masuk">
+                                    <input type="hidden" name="longitude" id="longitude_masuk">
+                                    <input type="hidden" name="type" value="masuk">
 
-                            <button type="button" onclick="capture()" class="btn btn-info mb-2">
-                                Ambil Foto
-                            </button>
+                                    <button type="submit" class="btn btn-success btn-block">
+                                        Absen Masuk
+                                    </button>
+                                </form>
 
+                                {{-- FORM PULANG --}}
+                                <form method="POST" action="{{ route('absensi.store') }}">
+                                    @csrf
+                                    <input type="hidden" name="photo" id="photo_pulang">
+                                    <input type="hidden" name="latitude" id="latitude_pulang">
+                                    <input type="hidden" name="longitude" id="longitude_pulang">
+                                    <input type="hidden" name="type" value="pulang">
 
-                            <button type="submit" class="btn btn-success btn-block">
-                                Absen Sekarang
-                            </button>
-                        </form>
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        Absen Pulang
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 713e2a29bce7b1aaa133413e586b0b40eeda6f5f
                 </div>
 
-                {{-- FORM MASUK --}}
-                <form method="POST" action="{{ route('absensi.store') }}" class="mb-2">
-                    @csrf
-                    <input type="hidden" name="photo" id="photo">
-                    <input type="hidden" name="latitude" id="latitude">
-                    <input type="hidden" name="longitude" id="longitude">
-                    <input type="hidden" name="type" value="masuk">
-
-                    <button type="button" onclick="capture()" class="btn btn-warning btn-sm">
-                        Ambil Foto
-                    </button>
-
-                    <button type="submit" class="btn btn-success btn-sm">
-                        Absen Masuk
-                    </button>
-                </form>
-
-                {{-- FORM PULANG --}}
-                <form method="POST" action="{{ route('absensi.store') }}">
-                    @csrf
-                    <input type="hidden" name="photo" id="photo2">
-                    <input type="hidden" name="latitude" id="latitude">
-                    <input type="hidden" name="longitude" id="longitude">
-                    <input type="hidden" name="type" value="pulang">
-
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        Absen Pulang
-                    </button>
-                </form>
 
                 <hr>
 
                 {{-- RIWAYAT --}}
-                <h5 class="text-left">Riwayat Absensi</h5>
+                <h5 class="mb-3">Riwayat Absensi</h5>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
+                    <table class="table table-bordered table-striped">
+                        <thead class="thead-light">
                             <tr>
-                                <th>No</th>
+                                <th width="5%">No</th>
                                 <th>Tanggal</th>
-                                <th>Masuk</th>
-                                <th>Pulang</th>
+                                <th>Jam Masuk</th>
+                                <th>Jam Pulang</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @if(isset($dataAbsensi) && $dataAbsensi->count() > 0)
-                            @foreach($dataAbsensi as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->tanggal }}</td>
-                                    <td>{{ $item->jam_masuk }}</td>
-                                    <td>{{ $item->jam_pulang }}</td>
-                                    <td>
-                                        @if($item->jam_masuk && $item->jam_pulang)
-                                            <span class="badge badge-success">Hadir</span>
-                                        @elseif($item->status_masuk == 'terlambat')
-                                            <span class="badge badge-warning">Terlambat</span>
-                                        @else
-                                            <span class="badge badge-info">Belum Pulang</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
+                        @forelse($dataAbsensi as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->tanggal }}</td>
+                                <td>{{ $item->jam_masuk ?? '-' }}</td>
+                                <td>{{ $item->jam_pulang ?? '-' }}</td>
+                                <td>
+                                    @if($item->jam_masuk && $item->jam_pulang)
+                                        <span class="badge badge-success">Hadir</span>
+                                    @elseif($item->status_masuk == 'terlambat')
+                                        <span class="badge badge-warning">Terlambat</span>
+                                    @else
+                                        <span class="badge badge-secondary">Belum Pulang</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
                             <tr>
                                 <td colspan="5" class="text-center">
                                     Belum ada data absensi
                                 </td>
                             </tr>
-                        @endif
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
+
 
             </div>
         </div>
 
     </div>
-    
 </div>
 
-{{-- STYLE KAMERA --}}
+
+
+{{-- STYLE --}}
 <style>
-.kamera-wrapper {
-    display: flex;
-    justify-content: center;
+.camera-box {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background: #f8f9fa;
 }
 
-.kamera-preview {
-    width: 400px; /* ukuran sedang-kecil */
-    max-width: 100%;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+#video {
+    width: 100%;
+    max-height: 350px;
+    border-radius: 8px;
 }
 </style>
+
+
 
 {{-- SCRIPT --}}
 <script>
 const video = document.getElementById('video');
 let stream = null;
 
+// Aktifkan Kamera
 navigator.mediaDevices.getUserMedia({ video: true })
 .then(function(s) {
     stream = s;
-    video.srcObject = stream;
+    video.srcObject = s;
 })
 .catch(function(err) {
-    console.log(err);
+    console.log("Camera Error:", err);
 });
 
+// Ambil Lokasi
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-        document.getElementById('latitude').value = position.coords.latitude;
-        document.getElementById('longitude').value = position.coords.longitude;
+
+        document.getElementById('latitude_masuk').value  = position.coords.latitude;
+        document.getElementById('longitude_masuk').value = position.coords.longitude;
+
+        document.getElementById('latitude_pulang').value  = position.coords.latitude;
+        document.getElementById('longitude_pulang').value = position.coords.longitude;
+
     });
 }
 
-function capture() {
+// Capture Foto
+function capturePhoto() {
+
+    if (!video.videoWidth) {
+        alert("Kamera belum siap");
+        return;
+    }
+
     const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
+    canvas.width  = video.videoWidth;
     canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0);
-    document.getElementById('photo').value = canvas.toDataURL('image/png');
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+
+    const imageData = canvas.toDataURL('image/png');
+
+    document.getElementById('photo_masuk').value  = imageData;
+    document.getElementById('photo_pulang').value = imageData;
+
     alert("Foto berhasil diambil");
 }
 
-// Matikan kamera jika sukses
-function stopCamera() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        video.srcObject = null;
-    }
-}
-
+// Stop Kamera Setelah Sukses
 @if(session('success'))
-    stopCamera();
+if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+}
 @endif
 </script>
 
