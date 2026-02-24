@@ -47,19 +47,19 @@ class DetailController extends Controller
     public function store(Request $request, $detail_id)
     {
         $request->validate([
-            'nama'                  => 'required|string',
+            'nama'             => 'required|string',
             'nip'              => 'required|string|max:255|unique:karyawan',
-            'tipe'                  => 'required',
-            'nilai'                 => 'required|numeric',
+            'tipe'             => 'required',
+            'nilai'            => 'required|numeric',
         ]);
 
         $detail = Detail::findOrFail($detail_id);
 
         DetailKomponen::create([
-            'nama'              => $request->nama,
+            'nama'             => $request->nama,
             'nip'              => $request->nip,
-            'tipe'              => $request->tipe,
-            'nilai'             => $request->nilai
+            'tipe'             => $request->tipe,
+            'nilai'            => $request->nilai
         ]);
 
         return redirect()->route('detail.index', $request->penggajian_id);
