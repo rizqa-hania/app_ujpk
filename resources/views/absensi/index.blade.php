@@ -25,63 +25,51 @@
                 @endif
 
 
-                {{-- SECTION KAMERA + AKSI --}}
+                {{-- ============================= --}}
+                {{-- SECTION ABSEN --}}
+                {{-- ============================= --}}
                 <div class="row mb-4">
 
-                    {{-- KAMERA --}}
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-12 text-center mb-3">
+                        <button class="btn btn-success" onclick="openCamera('masuk')">
+                            Absen Masuk
+                        </button>
+
+                        <button class="btn btn-primary" onclick="openCamera('pulang')">
+                            Absen Pulang
+                        </button>
+                    </div>
+
+                    <div class="col-md-12 text-center" id="cameraSection" style="display:none;">
                         <div class="camera-box">
                             <video id="video" autoplay playsinline></video>
                         </div>
-                    </div>
 
-                    {{-- PANEL AKSI --}}
-                    <div class="col-md-6">
-                        <div class="card border shadow-sm">
-                            <div class="card-body">
+                        <button class="btn btn-warning mt-3" onclick="submitAbsen()">
+                            Absen Sekarang
+                        </button>
 
-                                <button type="button"
-                                        onclick="capturePhoto()"
-                                        class="btn btn-warning btn-block mb-3">
-                                    Ambil Foto
-                                </button>
-
-                                {{-- FORM MASUK --}}
-                                <form method="POST" action="{{ route('absensi.store') }}" class="mb-2">
-                                    @csrf
-                                    <input type="hidden" name="photo" id="photo_masuk">
-                                    <input type="hidden" name="latitude" id="latitude_masuk">
-                                    <input type="hidden" name="longitude" id="longitude_masuk">
-                                    <input type="hidden" name="type" value="masuk">
-
-                                    <button type="submit" class="btn btn-success btn-block">
-                                        Absen Masuk
-                                    </button>
-                                </form>
-
-                                {{-- FORM PULANG --}}
-                                <form method="POST" action="{{ route('absensi.store') }}">
-                                    @csrf
-                                    <input type="hidden" name="photo" id="photo_pulang">
-                                    <input type="hidden" name="latitude" id="latitude_pulang">
-                                    <input type="hidden" name="longitude" id="longitude_pulang">
-                                    <input type="hidden" name="type" value="pulang">
-
-                                    <button type="submit" class="btn btn-primary btn-block">
-                                        Absen Pulang
-                                    </button>
-                                </form>
-
-                            </div>
-                        </div>
+                        <button class="btn btn-danger mt-2" onclick="closeCamera()">
+                            Batal
+                        </button>
                     </div>
 
                 </div>
 
+                {{-- FORM HIDDEN --}}
+                <form method="POST" action="{{ route('absensi.store') }}" id="absenForm">
+                    @csrf
+                    <input type="hidden" name="photo" id="photo">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+                    <input type="hidden" name="type" id="absenType">
+                </form>
 
                 <hr>
 
+                {{-- ============================= --}}
                 {{-- RIWAYAT --}}
+                {{-- ============================= --}}
                 <h5 class="mb-3">Riwayat Absensi</h5>
 
                 <div class="table-responsive">
@@ -102,14 +90,33 @@
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->jam_masuk ?? '-' }}</td>
                                 <td>{{ $item->jam_pulang ?? '-' }}</td>
-                                <td>
-                                    @if($item->jam_masuk && $item->jam_pulang)
-                                        <span class="badge badge-success">Hadir</span>
-                                    @elseif($item->status_masuk == 'terlambat')
-                                        <span class="badge badge-warning">Terlambat</span>
-                                    @else
-                                        <span class="badge badge-secondary">Belum Pulang</span>
-                                    @endif
+                               <td>
+                                    @switch($item->status)
+
+                                        @case('lengkap')
+                                            <span class="badge badge-success">Lengkap</span>
+                                        @break
+
+                                        @case('tidak lengkap')
+                                            <span class="badge badge-secondary">Tidak Lengkap</span>
+                                        @break
+
+                                        @case('terlambat')
+                                            <span class="badge badge-warning">Terlambat</span>
+                                        @break
+
+                                        @case('terlambat dan tidak lengkap')
+                                            <span class="badge badge-danger">Terlambat & Tidak Lengkap</span>
+                                        @break
+
+                                        @case('izin')
+                                            <span class="badge badge-info">Izin</span>
+                                        @break
+
+                                        @default
+                                            <span class="badge badge-dark">-</span>
+
+                                    @endswitch
                                 </td>
                             </tr>
                         @empty
@@ -130,7 +137,6 @@
 </div>
 
 
-{{-- STYLE --}}
 <style>
 .camera-box {
     border: 1px solid #ddd;
@@ -147,36 +153,51 @@
 </style>
 
 
-{{-- SCRIPT --}}
 <script>
 const video = document.getElementById('video');
+const cameraSection = document.getElementById('cameraSection');
+
 let stream = null;
+let currentType = null;
 
-// Kamera
-navigator.mediaDevices.getUserMedia({ video: true })
-.then(function(s) {
-    stream = s;
-    video.srcObject = s;
-})
-.catch(function(err) {
-    console.log("Camera Error:", err);
-});
+// ===========================
+// BUKA KAMERA
+// ===========================
+async function openCamera(type) {
 
-// Lokasi
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
+    currentType = type;
+    document.getElementById('absenType').value = type;
 
-        document.getElementById('latitude_masuk').value  = position.coords.latitude;
-        document.getElementById('longitude_masuk').value = position.coords.longitude;
+    cameraSection.style.display = "block";
 
-        document.getElementById('latitude_pulang').value  = position.coords.latitude;
-        document.getElementById('longitude_pulang').value = position.coords.longitude;
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "user" },
+            audio: false
+        });
 
-    });
+        video.srcObject = stream;
+
+    } catch (err) {
+        console.error("Camera error:", err);
+        alert("Kamera tidak bisa diakses. Izinkan akses kamera.");
+    }
 }
 
-// Capture
-function capturePhoto() {
+// ===========================
+// TUTUP KAMERA
+// ===========================
+function closeCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+    cameraSection.style.display = "none";
+}
+
+// ===========================
+// SUBMIT ABSEN
+// ===========================
+function submitAbsen() {
 
     if (!video.videoWidth) {
         alert("Kamera belum siap");
@@ -192,18 +213,22 @@ function capturePhoto() {
 
     const imageData = canvas.toDataURL('image/png');
 
-    document.getElementById('photo_masuk').value  = imageData;
-    document.getElementById('photo_pulang').value = imageData;
+    document.getElementById('photo').value = imageData;
 
-    alert("Foto berhasil diambil");
-}
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
 
-// Stop kamera jika sukses
-@if(session('success'))
-if (stream) {
-    stream.getTracks().forEach(track => track.stop());
+            document.getElementById('latitude').value  = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+
+            document.getElementById('absenForm').submit();
+            closeCamera();
+        });
+    } else {
+        document.getElementById('absenForm').submit();
+        closeCamera();
+    }
 }
-@endif
 </script>
 
 @endsection

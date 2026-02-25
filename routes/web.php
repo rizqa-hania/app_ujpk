@@ -15,10 +15,14 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9174a675930ff5f58d61fd3c86844b8e5167b4ee
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\IzinController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
@@ -208,3 +212,15 @@ Route::resource('kantor', KantorController::class);
 Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
 Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
 Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');
+
+/*
+=========================
+IZIN
+=========================
+*/
+Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');
+Route::get('/izin/create', [IzinController::class, 'create'])->name('izin.create');
+Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store');
+Route::delete('/izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
+Route::get('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
+Route::get('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');

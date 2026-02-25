@@ -11,17 +11,27 @@ class CreateAbsensisTable extends Migration
         Schema::create('absensis', function (Blueprint $table) {
 
             $table->bigIncrements('absensi_id');
+
             $table->unsignedBigInteger('user_id');
+
             $table->date('tanggal');
+
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();
-            $table->enum('status', ['hadir','terlambat'])->nullable();
+
+            // GANTI ENUM JADI VARCHAR
+            $table->string('status', 50)->nullable();
+
             $table->string('foto_masuk')->nullable();
             $table->string('foto_pulang')->nullable();
+
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
+
             $table->integer('jarak')->nullable(); // meter
+
             $table->timestamps();
+
             $table->foreign('user_id')
                 ->references('user_id')
                 ->on('users')
