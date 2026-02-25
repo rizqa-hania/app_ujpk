@@ -13,6 +13,7 @@ use App\MasterPendidikan;
 use App\Jabatan;
 use App\Lembur;
 use App\Absensi;
+use App\Izin;
 
 class DashboardController extends Controller {
 
