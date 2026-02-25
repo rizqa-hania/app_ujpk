@@ -92,7 +92,8 @@ public function completeRegister(Request $request)
         'name'=>$request->name,
         'password'=>Hash::make($request->password),
         'otp'=>null,
-        'is_verified'=>true
+        'is_verified'=>true,
+        'role'=>'karyawan'
     ]);
 
     return redirect('/login');

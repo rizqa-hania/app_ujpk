@@ -20,13 +20,13 @@
 <tbody>
 @foreach($pendidikan as $d)
 <tr>
-    <td>{{$loop->iteration}}</td>
+    
     <td>{{$d->kode_pendidikan}}</td>
     <td>{{$d->nama_pendidikan}}</td>
     <td> <form action="{{route('master_pendidikan.destroy',$d->pendidikan_id)}}" method="POST" style="display:inline">
     @csrf
     @method('DELETE')
-    <button type="submit" onclick="return confirm('Yakin menghapus pendidikan ini permanen?')" class="btn btn-denger btn-m">
+    <button type="submit" onclick="return confirm('Yakin menghapus pendidikan ini permanen?')" class="btn btn-danger btn-m">
         Hapus</button>
 </form>
 </td>

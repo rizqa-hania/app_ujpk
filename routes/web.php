@@ -15,7 +15,7 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
-//
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -49,9 +49,7 @@ Route::get('/auth/google/callback', function () {
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
-Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
-
-// login
+Route::delete('/admin/{Id}', [AdminController::class, 'destroy'])->name('admin.destroy');
 
 
 // Auth
@@ -67,57 +65,99 @@ Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 // Admin Dashboard
 Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::get('/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');
+    Route::get('/karyawan', [AdminController::class, 'karyawanIndex'])->name('admin.karyawan.index');
+    Route::get('/karyawan/{id}', [AdminController::class, 'karyawanShow'])->name('admin.karyawan.show');
 });
 
-// Karyawan Dashboard
-Route::prefix('karyawan')->middleware(['auth','is_karyawan'])->group(function(){
-    Route::get('/dashboard', [KaryawanDashboard::class,'index'])->name('karyawan.dashboard');
-});
 
+//karyawan
+Route::prefix('karyawan')->name('karyawan.')->group(function () {
+    // Buat user karyawan bar
+    
+    // Step 1 - Data Kerja
+    Route::get('/step1', [KaryawanController::class, 'step1'])->name('step1');
+    Route::post('/step1', [KaryawanController::class, 'storestep1'])->name('storestep1');
+    
+    // Step 2 - Data Pribadi
+    Route::get('/step2', [KaryawanController::class, 'step2'])->name('step2');
+    Route::post('/step2', [KaryawanController::class, 'storestep2'])->name('storestep2');
+    
+    // Step 3 - Data Fisik
+    Route::get('/step3', [KaryawanController::class, 'step3'])->name('step3');
+    Route::post('/step3', [KaryawanController::class, 'storestep3'])->name('storestep3');
+    
+    // Step 4 - Kontak
+    Route::get('/step4', [KaryawanController::class, 'step4'])->name('step4');
+    Route::post('/step4', [KaryawanController::class, 'storestep4'])->name('storestep4');
+    
+    // Step 5 - Pendidikan
+    Route::get('/step5', [KaryawanController::class, 'step5'])->name('step5');
+    Route::post('/step5', [KaryawanController::class, 'storestep5'])->name('storestep5');
+    
+    // Step 6 - Identitas Resmi
+    Route::get('/step6', [KaryawanController::class, 'step6'])->name('step6');
+    Route::post('/step6', [KaryawanController::class, 'storestep6'])->name('storestep6');
+    
+    // Step 7 - Bank & BPJS
+    Route::get('/step7', [KaryawanController::class, 'step7'])->name('step7');
+    Route::post('/step7', [KaryawanController::class, 'storestep7'])->name('storestep7');
+    
+    // Step 8 - Dokumen
+    Route::get('/step8', [KaryawanController::class, 'step8'])->name('step8');
+    Route::post('/step8', [KaryawanController::class, 'storestep8'])->name('storestep8');
+    
+    // Step 9 - Pengalaman Kerja
+    Route::get('/step9', [KaryawanController::class, 'step9'])->name('step9');
+    Route::post('/step9', [KaryawanController::class, 'storestep9'])->name('storestep9');
+    
+    // Step 10 - Kesehatan
+    Route::get('/step10', [KaryawanController::class, 'step10'])->name('step10');
+    Route::post('/step10', [KaryawanController::class, 'storestep10'])->name('storestep10');
+    
+    // Step 11 - Driver/Satpam
+    Route::get('/step11', [KaryawanController::class, 'step11'])->name('step11');
+    Route::post('/step11', [KaryawanController::class, 'storestep11'])->name('storestep11');
+    
+    Route::get('/dashboard', [KaryawanController::class, 'dashboard'])->name('dashboard');
+    Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
+    Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [KaryawanController::class, 'updateProfile'])->name('profile.update');
+});
 
 //DASHBOARD SEMUANYA
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
-
-
 //master sub unit
-
 Route::get('/sub', [MasterSubUnitController::class, 'index'])->name('master-sub-unit.index');
 Route::get('/sub/create', [MasterSubUnitController::class, 'create'])->name('master-sub-unit.create');
 Route::post('/sub', [MasterSubUnitController::class, 'store'])->name('master-sub-unit.store');
 Route::delete('/sub/{id}', [MasterSubUnitController::class, 'destroy'])->name('master-sub-unit.destroy');
 
-
 //master kerjasama
 Route::prefix('master-kerja-sama')->group(function () {
-Route::get('/', [MasterKerjaSamaController::class, 'index'])->name('master-kerja-sama.index');
-Route::get('/create', [MasterKerjaSamaController::class, 'create'])->name('master-kerja-sama.create');
-Route::post('/', [MasterKerjaSamaController::class, 'store'])->name('master-kerja-sama.store');
-Route::delete('/{id}', [MasterKerjaSamaController::class, 'destroy'])->name('master-kerja-sama.destroy');
+    Route::get('/', [MasterKerjaSamaController::class, 'index'])->name('master-kerja-sama.index');
+    Route::get('/create', [MasterKerjaSamaController::class, 'create'])->name('master-kerja-sama.create');
+    Route::post('/', [MasterKerjaSamaController::class, 'store'])->name('master-kerja-sama.store');
+    Route::delete('/{id}', [MasterKerjaSamaController::class, 'destroy'])->name('master-kerja-sama.destroy');
 });
 
-
-
-// master unit pln YEYYYY sisa satuu that simple, yang waras ya yang waras 
+// master unit pln
 Route::get('/masterunitpln',[MasterUnitPlnController::class,'index'])->name('master_unit_pln.index');
 Route::get('/masterunitpln/create',[MasterUnitPlnController::class,'create'])->name('master_unit_pln.create');
 Route::post('/masterunitpln',[MasterUnitPlnController::class,'store'])->name('master_unit_pln.store');
 Route::delete('/masterunitpln/{id}',[MasterUnitPlnController::class,'destroy'])->name('master_unit_pln.destroy');
 
-
-// master tad anjay dah empattttt yeyyy 2 lagi, oke disini eror lagiiii dah ah cape that simple(👉ﾟヮﾟ)👉
+// master tad
 Route::get('/mastertad',[MasterTadController::class,'index'])->name('master_tad.index');
 Route::get('/mastertad/create',[MasterTadController::class,'create'])->name('master_tad.create');
 Route::post('/mastertad',[MasterTadController::class,'store'])->name('master_tad.store');
 Route::delete('/mastertad/{id}',[MasterTadController::class,'destroy'])->name('master_tad.destroy');
 
-// master pendidikan ijikkk dah 3 nih dalam sehari, yang ini eror muluu kapan bisa selesaiin semua create dalam seharii (；′⌒`)
+// master pendidikan
 Route::get('/masterpendidikan',[MasterPendidikanController::class,'index'])->name('master_pendidikan.index');
 Route::get('/masterpendidikan/create',[MasterPendidikanController::class,'create'])->name('master_pendidikan.create');
 Route::post('/masterpendidikan',[MasterPendidikanController::class,'store'])->name('master_pendidikan.store');
 Route::delete('/masterpendidikan/{id}',[MasterPendidikanController::class,'destroy'])->name('master_pendidikan.destroy');
-
 
 // master project
 Route::get('/masterproject',[MasterProjectController::class,'index'])->name('master_project.index');
@@ -127,16 +167,9 @@ Route::delete('/masterproject/{id}',[MasterProjectController::class,'destroy'])-
 
 // master jabatan
 Route::get('/masterjabatan', [MasterJabatanController::class, 'index'])->name('master_jabatan.index');
-//Route::get('/masterjabatan-all', [MasterJabatanController::class, 'indexAll'])->name('master_jabatan.all');
 Route::get('/masterjabatan/create', [MasterJabatanController::class, 'create'])->name('master_jabatan.create');
-//Route::patch('/masterjabatan/{id}/status', [MasterJabatanController::class, 'toggleStatus'])->name('master_jabatan.status');
 Route::post('/masterjabatan', [MasterJabatanController::class, 'store'])->name('master_jabatan.store');
-// ini edit Route::get('/masterjabatan/{id}/edit', [MasterJabatanController::class, 'edit'])->name('master_jabatan.edit');
-//Route::put('/masterjabatan/{id}', [MasterJabatanController::class, 'update'])->name('master_jabatan.update');
 Route::delete('/masterjabatan/{id}',[MasterJabatanController::class,'destroy'])->name('master_jabatan.destroy');
-
-
-
 
 //LEMBUR
 Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
@@ -164,17 +197,14 @@ Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create']
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
 
-
 //ABSENSI
 Route::middleware(['auth'])->group(function(){
     Route::get('/absensi','AbsensiController@index')->name('absensi.index');
     Route::post('/absensi','AbsensiController@store')->name('absensi.store');
-
 });
-
 
 //kantor
 Route::resource('kantor', KantorController::class);
 Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
-Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');;
+Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
 Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.scan');

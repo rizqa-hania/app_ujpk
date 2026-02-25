@@ -45,5 +45,26 @@ class AdminController extends Controller
 
         return back()->with('success', 'Admin berhasil dihapus');
     }
-    
+
+    // Method untuk menampilkan data karyawan
+    public function karyawanIndex()
+    {
+        $karyawans = User::where('role', 'karyawan')
+            ->with(['karyawan' => function($q) {
+                $q->with(['jabatan', 'unitpln', 'subunit', 'tad', 'project', 'pendidikan']);
+            }])
+            ->get();
+
+        return view('admin.karyawan.index', compact('karyawans'));
+    }
+
+    // Method untuk melihat detail karyawan
+    public function karyawanShow($id)
+    {
+        $user = User::where('user_id', $id)->with(['karyawan' => function($q) {
+            $q->with(['jabatan', 'unitpln','subunit','tad','project','pendidikan']);
+        }])->firstOrFail();
+
+        return view('admin.karyawan.show', compact('user'));
+    }
 }

@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // Bypass CSRF for karyawan routes (development)
+        'karyawan/*',
     ];
 }

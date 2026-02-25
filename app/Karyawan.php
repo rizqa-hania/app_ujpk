@@ -3,7 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-//
+use App\MasterUnitPln;
+use App\MasterSubUnit;
+use App\MasterTad;
+use App\MasterProject;
+use App\MasterPendidikan;
 class Karyawan extends Model
 {
     protected $table = 'karyawan';
@@ -28,7 +32,7 @@ class Karyawan extends Model
         'penyakit_bawaan', 'tanggal_skck', 'file_skck', 'tanggal_bnn', 'file_bnn', 
         'no_sim_a', 'masa_berlaku_sim', 'file_sim', 'jumlah_tilang_6_bulan', 
         'no_kta', 'masa_berlaku_kta', 'file_kta', 'pangkat_garda', 
-        'no_sertifikat_garda', 'file_sertifikat_garda'
+        'no_sertifikat_garda', 'file_sertifikat_garda',
     ];
 
     public function user() {
@@ -37,5 +41,25 @@ class Karyawan extends Model
 
     public function jabatan() {
         return $this->belongsTo(Jabatan::class, 'jabatan_id', 'jabatan_id');
+    }
+
+    public function unitpln() {
+        return $this->belongsTo(MasterUnitPln::class, 'unitpln_id', 'unitpln_id');
+    }
+
+    public function subunit() {
+        return $this->belongsTo(MasterSubUnit::class, 'sub_id', 'sub_id');
+    }
+
+    public function tad() {
+        return $this->belongsTo(MasterTad::class, 'tad_id', 'tad_id');
+    }
+
+    public function project() {
+        return $this->belongsTo(MasterProject::class, 'project_id', 'project_id');
+    }
+
+    public function pendidikan() {
+        return $this->belongsTo(MasterPendidikan::class, 'pendidikan_id', 'pendidikan_id');
     }
 }

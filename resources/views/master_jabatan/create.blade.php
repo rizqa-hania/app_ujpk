@@ -22,7 +22,8 @@
 <div class="mb-3">
 <label name="kode_jabatan" class="form-table">Kode Jabatan:</label>
   <input type="text" class = "form-control" name="kode_jabatan"
-   value="{{old('kode_jabatan')}}">
+   value="{{old('kode_jabatan')}}" placeholder="Contoh: 03 untuk Satpam, 06 untuk Driver">
+   <small class="text-muted">Masukkan kode jabatan (03=Satpam, 06=Driver)</small>
 </div>
 
      <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>

@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
     <!-- Brand Logo -->
-    <a href="{{ route('admin.dashboard') }}" class="brand-link text-center">
+    <a href="{{ route('dashboard') }}" class="brand-link text-center">
         <img src="{{ asset('ujpkkkkkk.png') }}"
              alt="Logo"
              class="brand-image img-circle elevation-3"
@@ -20,7 +20,7 @@
                      alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Usaha Jaya Prima Karya</a>
+                <a href="#" class="d-block">{{ auth()->user()->name ?? 'User' }}</a>
             </div>
         </div>
 
@@ -46,83 +46,114 @@
                 role="menu"
                 data-accordion="false">
 
-                {{-- DASHBOARD --}}
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}"
-                       class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
+                {{-- KARYAWAN MENU --}}
+                @auth
+                    @if(auth()->user()->role == 'karyawan')
+                        <li class="nav-item">
+                            <a href="{{ route('karyawan.dashboard') }}"
+                               class="nav-link {{ request()->routeIs('karyawan.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard </p>
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('karyawan.profile') }}"
+                               class="nav-link {{ request()->routeIs('karyawan.profile') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Profil Saya</p>
+                            </a>
+                        </li>
 
-                {{-- ADMIN --}}
-                <li class="nav-item">
-                    <a href="{{ route('admin.index') }}"
-                       class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user-shield"></i>
-                        <p>Tambah Admin</p>
-                    </a>
-                </li>
-
-
-                {{-- ABSENSI --}}
-                <li class="nav-item has-treeview {{ request()->is('absensi*') ? 'menu-open' : '' }}">
-                    <a href="#"
-                       class="nav-link {{ request()->is('absensi*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-camera"></i>
-                        <p>
-                            Absensi
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('absensi.index') }}"
                                class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Absensi Karyawan</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                {{-- PENGGAJIAN --}}
-                <li class="nav-item has-treeview 
-                    {{ request()->is('penggajian*') || request()->is('komponen*') ? 'menu-open' : '' }}">
-
-                    <a href="#"
-                       class="nav-link 
-                       {{ request()->is('penggajian*') || request()->is('komponen*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-money-bill-wave"></i>
-                        <p>
-                            Penggajian
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-
-                    <ul class="nav nav-treeview">
-
-                        <li class="nav-item">
-                            <a href="{{ route('penggajian.index') }}"
-                               class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Penggajian</p>
+                                <i class="nav-icon fas fa-clock"></i>
+                                <p>Absensi</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('komponen.index') }}"
-                               class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Komponen Gaji</p>
+                            <a href="{{ route('lembur.index') }}"
+                               class="nav-link {{ request()->routeIs('lembur.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-overtime"></i>
+                                <p>Lembur</p>
+                            </a>
+                        </li>
+                    @else
+                        {{-- ADMIN MENU --}}
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dashboard') }}"
+                               class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard</p>
                             </a>
                         </li>
 
-                    </ul>
-                </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.index') }}"
+                               class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-shield"></i>
+                                <p>Tambah Admin</p>
+                            </a>
+                        </li>
+
+                        {{-- ABSENSI --}}
+                        <li class="nav-item has-treeview {{ request()->is('absensi*') ? 'menu-open' : '' }}">
+                            <a href="#"
+                               class="nav-link {{ request()->is('absensi*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-camera"></i>
+                                <p>
+                                    Absensi
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('absensi.index') }}"
+                                       class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Absensi Karyawan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        {{-- PENGGAJIAN --}}
+                        <li class="nav-item has-treeview 
+                            {{ request()->is('penggajian*') || request()->is('komponen*') ? 'menu-open' : '' }}">
+
+                            <a href="#"
+                               class="nav-link 
+                               {{ request()->is('penggajian*') || request()->is('komponen*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
+                                <p>
+                                    Penggajian
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('penggajian.index') }}"
+                                       class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Penggajian</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('komponen.index') }}"
+                                       class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Komponen Gaji</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                @endauth
 
             </ul>
         </nav>

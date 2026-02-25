@@ -14,7 +14,7 @@ class CreateMasterPendidikanTable extends Migration
     public function up()
     {
         Schema::create('master_pendidikan', function (Blueprint $table) {
-            $table->bigIncrements('pendidikan_id');
+             $table->id('pendidikan_id');
             $table->string('kode_pendidikan')->unique();
             $table->string('nama_pendidikan');
             $table->timestamps();

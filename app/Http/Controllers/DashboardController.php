@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $totalPendidikan = MasterPendidikan::count();
         $totalJabatan = Jabatan::count();
         $totalLembur = Lembur::count();
-
+        $totalKaryawan = Karyawan::count();
 
         return view('dashboard', compact(
             'totalTad',
@@ -32,7 +32,8 @@ class DashboardController extends Controller
             'totalProject',
             'totalPendidikan',
             'totalJabatan',
-            'totalLembur'));
+            'totalLembur',
+            'totalKaryawan'));
 
     }
 

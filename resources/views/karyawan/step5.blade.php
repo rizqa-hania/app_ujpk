@@ -1,14 +1,54 @@
-<h2>Step 5 - Kontak</h2>
+@extends('template.layout')
 
-<form method="POST" action="{{ route('karyawan.storestep5') }}">
-    @csrf
+@section('content')
 
-    <input type="text" name="no_hp_utama" placeholder="No HP Utama"><br>
-    <input type="text" name="no_hp_cadangan" placeholder="No HP Cadangan"><br>
-    <input type="email" name="email_pribadi" placeholder="Email Pribadi"><br>
-    <input type="text" name="instagram" placeholder="Instagram"><br>
-    <input type="text" name="facebook" placeholder="Facebook"><br>
-    <input type="text" name="nama_kontak_darurat" placeholder="Nama Kontak Darurat"><br>
+<div class="container-fluid">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Step 5 - Pendidikan</h3>
+        </div>
 
-    <button type="submit">Next</button>
-</form>
+        <form action="{{ route('karyawan.storestep5') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <div class="card-body">
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                    </div>
+                @endif
+
+                <div class="form-group">
+                    <label>Pendidikan</label>
+                    <select name="pendidikan_id" class="form-control" required>
+                        <option value="">-- Pilih Pendidikan --</option>
+                        @foreach($pendidikan as $pen)
+                            <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
+                                {{ $pen->nama_pendidikan }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Universitas/Sekolah</label>
+                    <input type="text" name="nama_perguruan" class="form-control" value="{{ old('nama_perguruan', optional($karyawan)->nama_perguruan) }}">
+                </div>
+
+                <div class="form-group">
+                    <label>File Ijazah (PDF/Foto)</label>
+                    <input type="file" name="file_ijazah" class="form-control" accept="image/*,.pdf">
+                    @if(optional($karyawan)->file_ijazah)
+                        <small class="text-success">File sudah ada: {{ $karyawan->file_ijazah }}</small>
+                    @endif
+                </div>
+            </div>
+
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-success">Simpan & Lanjut</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@endsection
