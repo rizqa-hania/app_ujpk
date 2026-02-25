@@ -15,10 +15,6 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
-<<<<<<< HEAD
-
-=======
->>>>>>> 9174a675930ff5f58d61fd3c86844b8e5167b4ee
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
