@@ -1,10 +1,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
     <!-- Sidebar -->
     <div class="sidebar">
+
         <!-- User Panel -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-
     <div class="image">
         <img src="{{ asset('images/logo.png') }}" 
              class="img-circle elevation-2"
@@ -25,6 +25,7 @@
         <a href="#" class="d-block">PT Usaha Jaya Prima Karya</a>
     </div>
 </div>
+
 
         <!-- Sidebar Search -->
         <div class="form-inline">
@@ -59,6 +60,7 @@
                             </a>
                         </li>
 
+
                         <li class="nav-item">
                             <a href="{{ route('karyawan.profile') }}"
                                class="nav-link {{ request()->routeIs('karyawan.profile') ? 'active' : '' }}">
@@ -72,6 +74,7 @@
                                class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-clock"></i>
                                 <p>Absensi</p>
+
                 {{-- ADMIN --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.index') }}"
@@ -123,6 +126,7 @@
                                class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Penggajian</p>
+
                             </a>
                         </li>
 
@@ -209,6 +213,7 @@
                 @endauth
                     </ul>
                 </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

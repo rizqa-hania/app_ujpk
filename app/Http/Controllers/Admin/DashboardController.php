@@ -12,14 +12,8 @@ use App\MasterProject;
 use App\MasterPendidikan;
 use App\Jabatan;
 use App\Lembur;
-<<<<<<< HEAD
 use App\Absensi;
-
-
-=======
 use App\Izin;
-use App\Absensi;
->>>>>>> 9174a675930ff5f58d61fd3c86844b8e5167b4ee
 
 class DashboardController extends Controller {
 
@@ -41,14 +35,12 @@ class DashboardController extends Controller {
         $totalPendidikan = MasterPendidikan::count();
         $totalJabatan = Jabatan::count();
         $totalLembur = Lembur::count();
-<<<<<<< HEAD
         
         // Statistik terbaru
         $absensiHariIni = Absensi::whereDate('created_at', today())->count();
-=======
+
         $totalIzin = Izin::count();
         $totalAbsensi = Absensi::count();
->>>>>>> 9174a675930ff5f58d61fd3c86844b8e5167b4ee
 
         return view('dashboard.admin.dashboard', compact(
             'karyawans',
@@ -60,12 +52,8 @@ class DashboardController extends Controller {
             'totalPendidikan',
             'totalJabatan',
             'totalLembur',
-<<<<<<< HEAD
         'absensiHariIni',
-        ));
-=======
             'totalIzin',
             'totalAbsensi'));
->>>>>>> 9174a675930ff5f58d61fd3c86844b8e5167b4ee
     }
 }
