@@ -20,7 +20,7 @@
                      alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ auth()->user()->name ?? 'Karyawan' }}</a>
+                <a href="#" class="d-block">{{ $karyawan->nama_panggilan ?? auth()->user()->name }}</a>
                 <small class="text-info">Karyawan</small>
             </div>
         </div>

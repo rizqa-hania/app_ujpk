@@ -2,16 +2,29 @@
 
 @section('content')
 
+@php
+$karyawan = $user->karyawan;
+@endphp
+
 <section class="content">
     <div class="container-fluid">
+        @if(!$karyawan)
+        <div class="alert alert-warning">
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Peringatan!</h5>
+            Data karyawan belum tersedia. Silakan lengkapi data karyawan terlebih dahulu.
+        </div>
+        <a href="{{ route('admin.karyawan.index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        @else
         <!-- Header with Photo and Basic Info -->
         <div class="row">
             <div class="col-md-4">
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            @if($user->karyawan && $user->karyawan->foto_profil)
-                                <img src="{{ asset('storage/' . $user->karyawan->foto_profil) }}" 
+                            @if($karyawan->foto_profil)
+                                <img src="{{ asset('storage/' . $karyawan->foto_profil) }}" 
                                      alt="Foto Profil" 
                                      class="profile-user-img img-fluid img-circle"
                                      style="width: 150px; height: 150px; object-fit: cover;">
@@ -23,19 +36,19 @@
                             @endif
                         </div>
                         <h3 class="profile-username text-center">
-                            {{ $user->karyawan->nama_lengkap ?? $user->name }}
+                            {{ $karyawan->nama_lengkap ?? $user->name }}
                         </h3>
                         <p class="text-muted text-center">
-                            {{ $user->karyawan->jabatan->nama_jabatan ?? 'Belum ada jabatan' }}
+                            {{ optional($karyawan->jabatan)->nama_jabatan ?? 'Belum ada jabatan' }}
                         </p>
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>NIP</b> <a class="float-right">{{ $user->karyawan->nip ?? '-' }}</a>
+                                <b>NIP</b> <a class="float-right">{{ $karyawan->nip ?? '-' }}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Status</b> 
                                 <a class="float-right">
-                                    @if($user->karyawan && $user->karyawan->is_complete)
+                                    @if($karyawan->is_complete)
                                         <span class="badge badge-success">Lengkap</span>
                                     @else
                                         <span class="badge badge-warning">Belum Lengkap</span>
@@ -54,7 +67,7 @@
                 <!-- Nav tabs -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Data Karyawan - {{ $user->karyawan->nama_lengkap ?? $user->name }}</h3>
+                        <h3 class="card-title">Data Karyawan - {{ $karyawan->nama_lengkap ?? $user->name }}</h3>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -88,11 +101,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="kesehatan-tab" data-toggle="pill" href="#kesehatan" role="tab">Kesehatan</a>
                             </li>
-                            @if($user->karyawan && $user->karyawan->jabatan)
-                                @if(in_array($user->karyawan->jabatan->kode_jabatan, ['03', '06']))
+                            @if($karyawan->jabatan)
+                                @if(in_array($karyawan->jabatan->kode_jabatan, ['03', '06']))
                                 <li class="nav-item">
                                     <a class="nav-link" id="khusus-tab" data-toggle="pill" href="#khusus" role="tab">
-                                        {{ $user->karyawan->jabatan->kode_jabatan == '03' ? 'Satpam' : 'Driver' }}
+                                        {{ $karyawan->jabatan->kode_jabatan == '03' ? 'Satpam' : 'Driver' }}
                                     </a>
                                 </li>
                                 @endif
@@ -105,35 +118,36 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">NIP</th>
-                                        <td>{{ $user->karyawan->nip ?? '-' }}</td>
+                                        <td>{{ $karyawan->nip ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Unit PLN</th>
-                                        <td>{{ $user->karyawan->unitpln->nama_unit ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->unitpln)->nama_unit ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Sub Unit</th>
-                                        <td>{{ $user->karyawan->subunit->nama_sub_unit ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->subunit)->nama_sub_unit ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Jabatan</th>
-                                        <td>{{ $user->karyawan->jabatan->nama_jabatan ?? '-' }}</td>
+                                        <td>
+                                            {{ optional($karyawan->jabatan)->nama_jabatan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tipe TAD</th>
-                                        <td>{{ $user->karyawan->tad->nama_tad ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->tad)->nama_tad ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Project</th>
-                                        <td>{{ $user->karyawan->project->nama_project ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->project)->nama_project ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tanggal Mulai Kerja</th>
-                                        <td>{{ $user->karyawan->tanggal_mulai_kerja ? date('d-m-Y', strtotime($user->karyawan->tanggal_mulai_kerja)) : '-' }}</td>
+                                        <td>{{ $karyawan->tanggal_mulai_aktif ? date('d-m-Y', strtotime($karyawan->tanggal_mulai_aktif)) : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Status Kontrak</th>
-                                        <td>{{ ucwords(str_replace('_', ' ', $user->karyawan->status_kontrak ?? '-')) }}</td>
+                                        <td>{{ ucwords(str_replace('_', ' ', $karyawan->status_kontrak ?? '-')) }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -143,31 +157,31 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Nama Lengkap</th>
-                                        <td>{{ $user->karyawan->nama_lengkap ?? '-' }}</td>
+                                        <td>{{ $karyawan->nama_lengkap ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Jenis Kelamin</th>
-                                        <td>{{ $user->karyawan->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                        <td>{{ $karyawan->jenis_kelamin == 'L' ? 'Laki-laki' : ($karyawan->jenis_kelamin == 'P' ? 'Perempuan' : '-') }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tempat Lahir</th>
-                                        <td>{{ $user->karyawan->tempat_lahir ?? '-' }}</td>
+                                        <td>{{ $karyawan->tempat_lahir ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tanggal Lahir</th>
-                                        <td>{{ $user->karyawan->tanggal_lahir ? date('d-m-Y', strtotime($user->karyawan->tanggal_lahir)) : '-' }}</td>
+                                        <td>{{ $karyawan->tanggal_lahir ? date('d-m-Y', strtotime($karyawan->tanggal_lahir)) : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Agama</th>
-                                        <td>{{ $user->karyawan->agama ?? '-' }}</td>
+                                        <td>{{ $karyawan->agama ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Status Nikah</th>
-                                        <td>{{ ucwords(str_replace('_', ' ', $user->karyawan->status_nikah ?? '-')) }}</td>
+                                        <td>{{ ucwords(str_replace('_', ' ', $karyawan->status_nikah ?? '-')) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Jenis TAD</th>
-                                        <td>{{ $user->karyawan->tad->nama_tad ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->tad)->nama_tad ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -177,27 +191,27 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Tinggi Badan</th>
-                                        <td>{{ $user->karyawan->tinggi_badan ? $user->karyawan->tinggi_badan . ' cm' : '-' }}</td>
+                                        <td>{{ $karyawan->tinggi_badan ? $karyawan->tinggi_badan . ' cm' : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Berat Badan</th>
-                                        <td>{{ $user->karyawan->berat_badan ? $user->karyawan->berat_badan . ' kg' : '-' }}</td>
+                                        <td>{{ $karyawan->berat_badan ? $karyawan->berat_badan . ' kg' : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Warna Kulit</th>
-                                        <td>{{ $user->karyawan->warna_kulit ?? '-' }}</td>
+                                        <td>{{ $karyawan->warna_kulit ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Warna Rambut</th>
-                                        <td>{{ $user->karyawan->warna_rambut ?? '-' }}</td>
+                                        <td>{{ $karyawan->warna_rambut ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Bentuk Muka</th>
-                                        <td>{{ $user->karyawan->bentuk_muka ?? '-' }}</td>
+                                        <td>{{ $karyawan->bentuk_muka ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Ciri Khas</th>
-                                        <td>{{ $user->karyawan->ciri_khas ?? '-' }}</td>
+                                        <td>{{ $karyawan->ciri_khas ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -207,27 +221,27 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">No HP Utama</th>
-                                        <td>{{ $user->karyawan->no_HP_utama ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_HP_utama ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No HP Cadangan</th>
-                                        <td>{{ $user->karyawan->no_HP_cadangan ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_HP_cadangan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Email Pribadi</th>
-                                        <td>{{ $user->karyawan->email_pribadi ?? '-' }}</td>
+                                        <td>{{ $karyawan->email_pribadi ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Alamat</th>
-                                        <td>{{ $user->karyawan->alamat ?? '-' }}</td>
+                                        <td>{{ $karyawan->alamat ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nama Kontak Darurat</th>
-                                        <td>{{ $user->karyawan->nama_kontak_darurat ?? '-' }}</td>
+                                        <td>{{ $karyawan->nama_kontak_darurat ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nomor Kontak Darurat</th>
-                                        <td>{{ $user->karyawan->nomor_darurat ?? '-' }}</td>
+                                        <td>{{ $karyawan->nomor_darurat ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -237,23 +251,23 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Pendidikan Terakhir</th>
-                                        <td>{{ $user->karyawan->pendidikan->nama_pendidikan ?? '-' }}</td>
+                                        <td>{{ optional($karyawan->pendidikan)->nama_pendidikan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nama Sekolah/Univ</th>
-                                        <td>{{ $user->karyawan->nama_sekolah ?? '-' }}</td>
+                                        <td>{{ $karyawan->nama_sekolah ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Jurusan</th>
-                                        <td>{{ $user->karyawan->jurusan ?? '-' }}</td>
+                                        <td>{{ $karyawan->jurusan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tahun Lulus</th>
-                                        <td>{{ $user->karyawan->tahun_lulus ?? '-' }}</td>
+                                        <td>{{ $karyawan->tahun_lulus ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>IPK/Nilai</th>
-                                        <td>{{ $user->karyawan->nilai_ijazah ?? '-' }}</td>
+                                        <td>{{ $karyawan->nilai_ijazah ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -263,19 +277,19 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">NIK</th>
-                                        <td>{{ $user->karyawan->nik ?? '-' }}</td>
+                                        <td>{{ $karyawan->nik ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>NPWP</th>
-                                        <td>{{ $user->karyawan->npwp ?? '-' }}</td>
+                                        <td>{{ $karyawan->npwp ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No KK</th>
-                                        <td>{{ $user->karyawan->no_kk ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_kk ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No Akte Kelahiran</th>
-                                        <td>{{ $user->karyawan->no_akte ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_akte ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -285,23 +299,23 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Nama Bank</th>
-                                        <td>{{ $user->karyawan->nama_bank ?? '-' }}</td>
+                                        <td>{{ $karyawan->nama_bank ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No Rekening</th>
-                                        <td>{{ $user->karyawan->no_rg_bank ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_rg_bank ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No BPJS Kesehatan</th>
-                                        <td>{{ $user->karyawan->no_bpjs ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_bpjs ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No BPJS TK</th>
-                                        <td>{{ $user->karyawan->no_bpjstk ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_bpjstk ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No BPLK</th>
-                                        <td>{{ $user->karyawan->no_rek_bplk ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_rek_bplk ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -312,8 +326,8 @@
                                     <tr>
                                         <th width="30%">Surat Lamaran</th>
                                         <td>
-                                            @if($user->karyawan->file_surat_lamaran)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_surat_lamaran) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_surat_lamaran)
+                                                <a href="{{ asset('storage/' . $karyawan->file_surat_lamaran) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -322,8 +336,8 @@
                                     <tr>
                                         <th>CV</th>
                                         <td>
-                                            @if($user->karyawan->file_cv)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_cv) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_cv)
+                                                <a href="{{ asset('storage/' . $karyawan->file_cv) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -332,8 +346,8 @@
                                     <tr>
                                         <th>Pakta Integritas</th>
                                         <td>
-                                            @if($user->karyawan->file_pakta_integritas)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_pakta_integritas) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_pakta_integritas)
+                                                <a href="{{ asset('storage/' . $karyawan->file_pakta_integritas) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -342,8 +356,8 @@
                                     <tr>
                                         <th>Data Consist</th>
                                         <td>
-                                            @if($user->karyawan->file_data_consist)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_data_consist) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_data_consist)
+                                                <a href="{{ asset('storage/' . $karyawan->file_data_consist) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -357,15 +371,15 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Pengalaman Kerja 1</th>
-                                        <td>{{ $user->karyawan->pengalaman_kerja_1 ?? '-' }}</td>
+                                        <td>{{ $karyawan->pengalaman_kerja_1 ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Pengalaman Kerja 2</th>
-                                        <td>{{ $user->karyawan->pengalaman_kerja_2 ?? '-' }}</td>
+                                        <td>{{ $karyawan->pengalaman_kerja_2 ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Pengalaman Kerja 3</th>
-                                        <td>{{ $user->karyawan->pengalaman_kerja_3 ?? '-' }}</td>
+                                        <td>{{ $karyawan->pengalaman_kerja_3 ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -375,13 +389,13 @@
                                 <table class="table table-borderless mt-3">
                                     <tr>
                                         <th width="30%">Tanggal MCU</th>
-                                        <td>{{ $user->karyawan->tanggal_mcu ? date('d-m-Y', strtotime($user->karyawan->tanggal_mcu)) : '-' }}</td>
+                                        <td>{{ $karyawan->tanggal_mcu ? date('d-m-Y', strtotime($karyawan->tanggal_mcu)) : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>File Hasil MCU</th>
                                         <td>
-                                            @if($user->karyawan->file_hasil_mcu)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_hasil_mcu) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_hasil_mcu)
+                                                <a href="{{ asset('storage/' . $karyawan->file_hasil_mcu) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -389,21 +403,21 @@
                                     </tr>
                                     <tr>
                                         <th>Perokok</th>
-                                        <td>{{ $user->karyawan->perokok ? 'Ya' : 'Tidak' }}</td>
+                                        <td>{{ $karyawan->perokok ? 'Ya' : 'Tidak' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Penyakit Bawaan</th>
-                                        <td>{{ $user->karyawan->penyakit_bawaan ?? '-' }}</td>
+                                        <td>{{ $karyawan->penyakit_bawaan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tanggal SKCK</th>
-                                        <td>{{ $user->karyawan->tanggal_skck ? date('d-m-Y', strtotime($user->karyawan->tanggal_skck)) : '-' }}</td>
+                                        <td>{{ $karyawan->tanggal_skck ? date('d-m-Y', strtotime($karyawan->tanggal_skck)) : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>File SKCK</th>
                                         <td>
-                                            @if($user->karyawan->file_skck)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_skck) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_skck)
+                                                <a href="{{ asset('storage/' . $karyawan->file_skck) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -411,13 +425,13 @@
                                     </tr>
                                     <tr>
                                         <th>Tanggal BNN</th>
-                                        <td>{{ $user->karyawan->tanggal_bnn ? date('d-m-Y', strtotime($user->karyawan->tanggal_bnn)) : '-' }}</td>
+                                        <td>{{ $karyawan->tanggal_bnn ? date('d-m-Y', strtotime($karyawan->tanggal_bnn)) : '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>File BNN</th>
                                         <td>
-                                            @if($user->karyawan->file_bnn)
-                                                <a href="{{ asset('storage/' . $user->karyawan->file_bnn) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                            @if($karyawan->file_bnn)
+                                                <a href="{{ asset('storage/' . $karyawan->file_bnn) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                             @else
                                                 -
                                             @endif
@@ -427,24 +441,24 @@
                             </div>
 
                             <!-- KHUSUS SATPAM (03) / DRIVER (06) -->
-                            @if($user->karyawan && $user->karyawan->jabatan)
-                                @if($user->karyawan->jabatan->kode_jabatan == '03')
+                            @if($karyawan->jabatan)
+                                @if($karyawan->jabatan->kode_jabatan == '03')
                                 <div class="tab-pane fade" id="khusus" role="tabpanel">
                                     <h5>Data Khusus Satpam</h5>
                                     <table class="table table-borderless mt-3">
                                         <tr>
                                             <th width="30%">No KTA</th>
-                                            <td>{{ $user->karyawan->no_kta ?? '-' }}</td>
+                                            <td>{{ $karyawan->no_kta ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Masa Berlaku KTA</th>
-                                            <td>{{ $user->karyawan->masa_berlaku_kta ? date('d-m-Y', strtotime($user->karyawan->masa_berlaku_kta)) : '-' }}</td>
+                                            <td>{{ $karyawan->masa_berlaku_kta ? date('d-m-Y', strtotime($karyawan->masa_berlaku_kta)) : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>File KTA</th>
                                             <td>
-                                                @if($user->karyawan->file_kta)
-                                                    <a href="{{ asset('storage/' . $user->karyawan->file_kta) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                @if($karyawan->file_kta)
+                                                    <a href="{{ asset('storage/' . $karyawan->file_kta) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                                 @else
                                                     -
                                                 @endif
@@ -452,17 +466,17 @@
                                         </tr>
                                         <tr>
                                             <th>Pangkat Garda</th>
-                                            <td>{{ ucwords($user->karyawan->pangkat_garda ?? '-') }}</td>
+                                            <td>{{ ucwords($karyawan->pangkat_garda ?? '-') }}</td>
                                         </tr>
                                         <tr>
                                             <th>No Sertifikat Garda</th>
-                                            <td>{{ $user->karyawan->no_sertifikat_garda ?? '-' }}</td>
+                                            <td>{{ $karyawan->no_sertifikat_garda ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>File Sertifikat Garda</th>
                                             <td>
-                                                @if($user->karyawan->file_sertifikat_garda)
-                                                    <a href="{{ asset('storage/' . $user->karyawan->file_sertifikat_garda) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                @if($karyawan->file_sertifikat_garda)
+                                                    <a href="{{ asset('storage/' . $karyawan->file_sertifikat_garda) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                                 @else
                                                     -
                                                 @endif
@@ -470,23 +484,23 @@
                                         </tr>
                                     </table>
                                 </div>
-                                @elseif($user->karyawan->jabatan->kode_jabatan == '06')
+                                @elseif($karyawan->jabatan->kode_jabatan == '06')
                                 <div class="tab-pane fade" id="khusus" role="tabpanel">
                                     <h5>Data Khusus Driver</h5>
                                     <table class="table table-borderless mt-3">
                                         <tr>
                                             <th width="30%">No SIM A</th>
-                                            <td>{{ $user->karyawan->no_sim_a ?? '-' }}</td>
+                                            <td>{{ $karyawan->no_sim_a ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Masa Berlaku SIM</th>
-                                            <td>{{ $user->karyawan->masa_berlaku_sim ? date('d-m-Y', strtotime($user->karyawan->masa_berlaku_sim)) : '-' }}</td>
+                                            <td>{{ $karyawan->masa_berlaku_sim ? date('d-m-Y', strtotime($karyawan->masa_berlaku_sim)) : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>File SIM</th>
                                             <td>
-                                                @if($user->karyawan->file_sim)
-                                                    <a href="{{ asset('storage/' . $user->karyawan->file_sim) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                @if($karyawan->file_sim)
+                                                    <a href="{{ asset('storage/' . $karyawan->file_sim) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                                 @else
                                                     -
                                                 @endif
@@ -494,7 +508,7 @@
                                         </tr>
                                         <tr>
                                             <th>Jumlah Tilang 6 Bulan</th>
-                                            <td>{{ $user->karyawan->jumlah_tilang_6_bulan ?? '-' }}</td>
+                                            <td>{{ $karyawan->jumlah_tilang_6_bulan ?? '-' }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -507,6 +521,7 @@
                 <!-- /.card -->
             </div>
         </div>
+        @endif
     </div>
 </section>
 

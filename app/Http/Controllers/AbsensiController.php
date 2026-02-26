@@ -84,6 +84,6 @@ class AbsensiController extends Controller
             return back()->with('success','Absen pulang berhasil');
         }
 
-        return back()->with('error','Aksi tidak valid');
+        return back()->with('error','Anda sudah absen hari ini');
     }
 }

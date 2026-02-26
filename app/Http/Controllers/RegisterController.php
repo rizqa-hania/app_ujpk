@@ -9,18 +9,18 @@ class RegisterController extends Controller
 public function register(Request $request)
 {
     $request->validate([
-        'nama' => 'required',
+        'name' => 'required',
         'email' => 'required|email|unique:users',
         'password' => 'required|min:6'
     ]);
 
     $karyawan = \App\Models\Karyawan::create([
-        'nama' => $request->nama,
+        'nama' => $request->name,
         'nip' => uniqid(), // atau sistem NIP kamu
     ]);
 
     \App\Models\User::create([
-        'name' => $request->nama,
+        'name' => $request->name,
         'email' => $request->email,
         'password' => bcrypt($request->password),
         'role' => 'karyawan',

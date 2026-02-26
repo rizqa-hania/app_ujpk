@@ -12,7 +12,7 @@
                         <select name="nama" class="form-control" id="karyawan">
                             <option value="">-- Pilih Karyawan --</option>
                             @foreach($karyawan as $k)
-                            <option value="{{ $u->id }}" {{ old('id') == $u->id ? 'selected' : '' }}">{{ $k->nama_depan }}</option>
+                            <option value="{{ $k->id }}" {{ old('id') == $k->id ? 'selected' : '' }}">{{ $k->nama_lengkap }}</option>
                             @endforeach
                         </select>
                     </div>

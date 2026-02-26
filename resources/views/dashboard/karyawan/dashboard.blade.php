@@ -68,6 +68,9 @@
                         <a href="{{ route('lembur.index') }}" class="btn btn-app btn-block">
                             <i class="fas fa-overtime"></i> Lembur
                         </a>
+                         <a href="{{ route('izin.create') }}" class="btn btn-app btn-block">
+                            <i class="fas fa-overtime"></i> Izin
+                        </a>
                     </div>
                 </div>
             </div>
