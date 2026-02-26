@@ -38,12 +38,7 @@
                                     @endif
                                 </td>
                                 <td>
-<<<<<<< HEAD
-                                    
-=======
->>>>>>> 33b1abb40bc3a6c1d249b63d1b934b65b1824e5c
                                     <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}" method="POST">
-                                    <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
                                         {{ csrf_field() }}
                                         @method('DELETE')
                                         <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
