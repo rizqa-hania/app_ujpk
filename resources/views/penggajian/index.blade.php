@@ -4,15 +4,13 @@
     <div class="col-12">
         <div class="card"> 
             <div class="card-header">
-                <h3 class="card-title">Penggajian</h3> 
+                <h3 class="card-title">Data Periode Penggajian</h3> 
                 <div class="card-tools">
-                    <a href="{{ route('penggajian.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Penggajian
-                    </a>
+                    <a href="{{ route('penggajian.create') }}" class="btn btn-primary btn-sm"> + Periode Gaji</a>
                 </div>
             </div>
             <div class="card-body table-responsive"> 
-                <table class="table table-stripped table-hover"> 
+                <table id="table" class="table table-striped table-hover"> 
                     <thead>
                         <tr>
                             <th>No</th>
@@ -29,7 +27,6 @@
                                 <td>{{ $v->periode_bulan }}</td>
                                 <td>{{ $v->periode_tahun }}</td>
                                 <td>
-                                    <td>
                                     @if($v->status == 'draft')
                                         <span class="badge badge-secondary">Draft</span>
                                     @elseif($v->status == 'approved')
@@ -40,12 +37,11 @@
                                         <span class="badge badge-info">{{ $v->status }}</span>
                                     @endif
                                 </td>
-                                </td>
                                 <td>
-                                    <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
                                     <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}" method="POST">
                                         {{ csrf_field() }}
                                         @method('DELETE')
+                                        <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
                                             Hapus
                                         </button>

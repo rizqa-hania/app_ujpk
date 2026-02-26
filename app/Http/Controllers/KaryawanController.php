@@ -70,11 +70,11 @@ class KaryawanController extends Controller
     
     /* ================= CREATE NEW USER & KARYAWAN ================= */
     
-    public function createNew()
+    public function createNew(Request $request)
     {
         // Buat user baru untuk karyawan
-        $user = ser::create([
-            'name' => 'Karyawan Baru ' . date('His'),
+        $user = \App\User::create([
+            'name' => $request->input('nama_karyawan', 'Karyawan Baru-' . date('His')),
             'email' => 'karyawan_' . time() . '@example.com',
             'password' => bcrypt('password123'),
             'role' => 'karyawan',
@@ -137,7 +137,14 @@ class KaryawanController extends Controller
             return redirect()->back()->with('error', 'User ID tidak ditemukan. Silakan buat karyawan baru terlebih dahulu.');
         }
 
-        // Cek apakah sudah ada karyawan
+        // Cek apakah NIP sudah digunakan oleh karyawan lain
+        $existingKaryawan = Karyawan::where('nip', $validated['nip'])->first();
+        
+        if ($existingKaryawan && $existingKaryawan->user_id != $userId) {
+            return redirect()->back()->with('error', 'NIP tersebut sudah digunakan oleh karyawan lain. Silakan gunakan NIP yang berbeda.');
+        }
+
+        // Cek apakah sudah ada karyawan untuk user ini
         $karyawan = $this->getKaryawan();
         
         if ($karyawan) {
@@ -493,7 +500,10 @@ class KaryawanController extends Controller
             'is_complete' => true
         ]);
 
-        return redirect()->route('karyawan.dashboard')
+        // Hapus session karyawan jika ada
+        session()->forget('karyawan_user_id');
+
+        return redirect()->route('admin.karyawan.index')
             ->with('success', 'Selamat! Data karyawan berhasil disimpan lengkap.');
     }
 

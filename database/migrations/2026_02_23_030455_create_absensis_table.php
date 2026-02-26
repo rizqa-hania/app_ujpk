@@ -25,8 +25,8 @@ class CreateAbsensisTable extends Migration
             $table->string('foto_masuk')->nullable();
             $table->string('foto_pulang')->nullable();
 
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
+          $table->decimal('latitude', 11, 8)->nullable();
+        $table->decimal('longitude', 11, 8)->nullable();    
 
             $table->integer('jarak')->nullable(); // meter
 
