@@ -16,7 +16,18 @@
       @auth
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-user mr-1"></i> {{ auth()->user()->name }}
+          <i class="far fa-user mr-1"></i> 
+          @if(isset($karyawan))
+            @if(is_object($karyawan) && $karyawan instanceof \App\Karyawan)
+              {{ $karyawan->nama_lengkap ?? auth()->user()->name }}
+            @elseif(is_array($karyawan) && count($karyawan) > 0)
+              {{ $karyawan[0]->nama_lengkap ?? auth()->user()->name }}
+            @else
+              {{ auth()->user()->name }}
+            @endif
+          @else
+            {{ auth()->user()->name }}
+          @endif
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">User Menu</span>

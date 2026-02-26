@@ -57,7 +57,7 @@
                             @else {{-- Jika Aktif --}}
                                 <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST" class="mr-1">
                                     @csrf @method('PUT')
-                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
                                 </form>
                             @endif
 

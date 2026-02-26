@@ -34,8 +34,9 @@ class DetailController extends Controller
         $penggajian = Penggajian::findOrFail($id);
         $karyawan = Karyawan::all();
         $komponen = Komponen::all();
+        $detail = Detail::all();
 
-        return view('detail.create', compact('penggajian', 'karyawan', 'komponen'));
+        return view('detail.create', compact('penggajian', 'karyawan', 'komponen', 'detail'));
     }
 
     /**

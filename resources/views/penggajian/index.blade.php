@@ -29,7 +29,6 @@
                                 <td>{{ $v->periode_bulan }}</td>
                                 <td>{{ $v->periode_tahun }}</td>
                                 <td>
-                                    <td>
                                     @if($v->status == 'draft')
                                         <span class="badge badge-secondary">Draft</span>
                                     @elseif($v->status == 'approved')
@@ -40,10 +39,9 @@
                                         <span class="badge badge-info">{{ $v->status }}</span>
                                     @endif
                                 </td>
-                                </td>
                                 <td>
-                                    <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
                                     <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}" method="POST">
+                                    <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
                                         {{ csrf_field() }}
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">

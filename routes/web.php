@@ -15,6 +15,8 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
+
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -72,8 +74,6 @@ Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
 
 //karyawan
 Route::prefix('karyawan')->name('karyawan.')->group(function () {
-    // Buat user karyawan bar
-    
     // Step 1 - Data Kerja
     Route::get('/step1', [KaryawanController::class, 'step1'])->name('step1');
     Route::post('/step1', [KaryawanController::class, 'storestep1'])->name('storestep1');
