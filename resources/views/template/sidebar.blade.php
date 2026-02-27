@@ -107,8 +107,12 @@
                 </li>
 
                 {{-- PENGGAJIAN --}}
-                <li class="nav-item has-treeview {{ request()->is('penggajian*') || request()->is('komponen*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('penggajian*') || request()->is('komponen*') ? 'active' : '' }}">
+                <li class="nav-item has-treeview 
+                    {{ request()->is('penggajian*') || request()->is('komponen*') ? 'menu-open' : '' }}">
+
+                    <a href="#"
+                       class="nav-link 
+                       {{ request()->is('penggajian*') || request()->is('komponen*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>
                             Penggajian

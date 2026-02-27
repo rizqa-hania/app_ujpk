@@ -40,7 +40,11 @@
                         <label for="nilai">Nilai (otomatis)</label>
                         <input type="number" name="nilai" id="value" class="form-control" readonly required> 
                     </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                    <a href="{{route('detail.index', $penggajian->penggajian_id )}}" class="btn btn-success btn-sm">Kembali</a>
                 </div>
+                
             </form>
             </div>
         </div>
@@ -48,9 +52,9 @@
 </div>
 
 <script>
-    document.getElementById('karyawan').addEventListener('change', function () {
+    document.getElementById('tipe').addEventListener('change', function () {
         let karyawanId = this.value;
-        const nipInput = document.getElementById('nip');
+        const nipInput = document.getElementById('tipe');
 
         if (karyawanId) {
             fetch('/get-user-nip/' + karyawanId)
