@@ -15,8 +15,7 @@ use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
-
-
+use App\Http\Controllers\Admin\JadwalAbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -228,3 +227,7 @@ Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store')
 Route::delete('/izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
 Route::get('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
 Route::get('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+
+//JADWAL ABSENSI
+Route::get('/jadwal-absensi', [JadwalAbsensiController::class, 'index'])->name('jadwal.index');
+Route::post('/jadwal-absensi/update', [JadwalAbsensiController::class, 'update'])->name('jadwal.update');

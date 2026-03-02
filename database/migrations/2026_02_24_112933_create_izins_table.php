@@ -13,15 +13,17 @@ class CreateIzinsTable extends Migration
             $table->bigIncrements('izin_id');
             $table->unsignedBigInteger('user_id');
 
+            // TAMBAHAN
+            $table->enum('jenis', ['izin','cuti','sakit']);
+
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
 
             $table->text('keterangan');
             $table->string('file_bukti')->nullable();
 
-            // jangan enum lagi
-           $table->enum('status', ['pending','disetujui','ditolak'])->default('pending');
-            // pending | disetujui | ditolak
+            $table->enum('status', ['pending','disetujui','ditolak'])
+                  ->default('pending');
 
             $table->timestamps();
 

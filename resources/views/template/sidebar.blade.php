@@ -157,27 +157,40 @@
                             </a>
                         </li>
 
-                        {{-- ABSENSI --}}
-                        <li class="nav-item has-treeview {{ request()->is('absensi*') ? 'menu-open' : '' }}">
-                            <a href="#"
-                               class="nav-link {{ request()->is('absensi*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-camera"></i>
-                                <p>
-                                    Absensi
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
+                       {{-- ABSENSI --}}
+                            <li class="nav-item has-treeview 
+                                {{ request()->is('absensi*') || request()->is('jadwal*') ? 'menu-open' : '' }}">
 
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('absensi.index') }}"
-                                       class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Absensi Karyawan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                <a href="#"
+                                class="nav-link 
+                                {{ request()->is('absensi*') || request()->is('jadwal*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-camera"></i>
+                                    <p>
+                                        Absensi
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+
+                                <ul class="nav nav-treeview">
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('absensi.index') }}"
+                                        class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Absensi Karyawan</p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="{{ route('jadwal.index') }}"
+                                        class="nav-link {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
+                                            <i class="far fa-calendar-alt nav-icon"></i>
+                                            <p>Jadwal Absensi</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
 
                         {{-- PENGGAJIAN --}}
                         <li class="nav-item has-treeview 

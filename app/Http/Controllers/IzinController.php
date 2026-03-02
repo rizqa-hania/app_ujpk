@@ -28,32 +28,35 @@ class IzinController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'keterangan' => 'required'
-        ]);
+{
+    $request->validate([
+        'jenis' => 'required|in:izin,cuti,sakit',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'keterangan' => 'required',
+        'file_bukti' => 'nullable|mimes:jpg,png,pdf|max:2048'
+    ]);
 
-        $fileName = null;
+    $fileName = null;
 
-        if($request->hasFile('file_bukti')){
-            $fileName = time().'.'.$request->file('file_bukti')->extension();
-            $request->file('file_bukti')->move(public_path('bukti_izin'), $fileName);
-        }
-
-        Izin::create([
-            'user_id' => Auth::id(),
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'keterangan' => $request->keterangan,
-            'file_bukti' => $fileName,
-            'status' => 'pending'
-        ]);
-
-        return redirect()->route('izin.index')
-            ->with('success','Pengajuan izin berhasil dikirim');
+    if($request->hasFile('file_bukti')){
+        $fileName = time().'.'.$request->file('file_bukti')->extension();
+        $request->file('file_bukti')->move(public_path('bukti_izin'), $fileName);
     }
+
+    Izin::create([
+        'user_id' => Auth::id(),
+        'jenis' => $request->jenis, // TAMBAHAN
+        'tanggal_mulai' => $request->tanggal_mulai,
+        'tanggal_selesai' => $request->tanggal_selesai,
+        'keterangan' => $request->keterangan,
+        'file_bukti' => $fileName,
+        'status' => 'pending'
+    ]);
+
+    return redirect()->route('izin.index')
+        ->with('success','Pengajuan berhasil dikirim');
+}
 
     public function edit($id)
     {
