@@ -71,9 +71,16 @@ Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::get('/karyawan/{id}', [AdminController::class, 'karyawanShow'])->name('admin.karyawan.show');
 });
 
+ // tambah karyawan
+    Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.tambah.index');
+    Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.tambah.create');
+    Route::post('/karyawan/store', [KaryawanController::class, 'store'])->name('karyawan.tambah.store');
+    Route::delete('/karyawan/{Id}', [KaryawanController::class, 'destroy'])->name('karyawan.tambah.destroy');
 
 //karyawan
 Route::prefix('karyawan')->name('karyawan.')->group(function () {
+   
+
     // Step 1 - Data Kerja
     Route::get('/step1', [KaryawanController::class, 'step1'])->name('step1');
     Route::post('/step1', [KaryawanController::class, 'storestep1'])->name('storestep1');

@@ -18,6 +18,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'nip',
         'is_active',
         'is_profile_complete',
     ];

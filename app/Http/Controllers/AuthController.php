@@ -17,25 +17,34 @@ class AuthController extends Controller
     }
 
 
-   public function login(Request $request) {
-    $credentials = $request->validate([
-        'email'=>'required|email',
-        'password'=>'required'
+   public function login(Request $request)
+{  //kenapa pake login? karena Karena kamu punya 2 tipe identitas login dalam 1 tabel yang sama:admin dan karyawan. jika pake 'email' ='', itu bakal eror karena karyawan tidak pake email
+    $request->validate([
+        'login' => 'required',
+        'password' => 'required'
     ]);
 
-    if(Auth::attempt($credentials)) {
+    $loginInput = $request->login;
+
+    $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'nip';
+
+    if (Auth::attempt([
+        $field => $loginInput,
+        'password' => $request->password,
+        'is_active' => 1
+    ])) {
+
         $request->session()->regenerate();
 
-        // Redirect berdasarkan role
-        if(Auth::user()->role == 'admin'){
+        if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('karyawan.dashboard');
         }
+
+        return redirect()->route('karyawan.dashboard');
     }
 
     return back()->withErrors([
-        'email' => 'Email atau password salah'
+        'login' => 'Email/NIP atau password salah'
     ]);
 }
 
