@@ -17,26 +17,51 @@ class AuthController extends Controller
     }
 
 
-   public function login(Request $request) {
-    $credentials = $request->validate([
-        'email'=>'required|email',
-        'password'=>'required'
+   public function login(Request $request)
+{  //kenapa pake login? karena Karena kamu punya 2 tipe identitas login dalam 1 tabel yang sama:admin dan karyawan. jika pake 'email' ='', itu bakal eror karena karyawan tidak pake email
+{
+    $request->validate([
+        'login' => 'required',
+        'password' => 'required'
     ]);
 
-    if(Auth::attempt($credentials)) {
+    $loginInput = $request->login;
+
+    // Tentukan apakah email atau NIP
+    $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) 
+                ? 'email' 
+                : 'nip';
+
+    if (Auth::attempt([
+        $field => $loginInput,
+        'password' => $request->password,
+        'is_active' => 1
+    ])) {
+
         $request->session()->regenerate();
 
-        // Redirect berdasarkan role
-        if(Auth::user()->role == 'admin'){
+        $user = Auth::user(); // WAJIB ADA
+
+        // ADMIN
+        if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
-        } else {
+        }
+
+        // KARYAWAN
+        if ($user->role === 'karyawan') {
+
+            if (!$user->is_profile_complete) {
+                return redirect()->route('karyawan.step1');
+            }
+
             return redirect()->route('karyawan.dashboard');
         }
     }
 
     return back()->withErrors([
-        'email' => 'Email atau password salah'
+        'login' => 'Email/NIP atau password salah'
     ]);
+}
 }
 
     public function logout(Request $request)
@@ -47,6 +72,7 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+    /*
   public function showRegister()
 {
     return view('auth.register');
@@ -102,7 +128,8 @@ public function completeRegister(Request $request)
         'role'=>'karyawan'
     ]);
 
+<<<<<<< HEAD
     return redirect()->route('login')->with('success', 'Registrasi berhasil!');
+}*/
+
 }
-}
-//

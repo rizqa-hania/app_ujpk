@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Karyawan;
 use App\Jabatan;
 use App\MasterUnitPln;
@@ -14,9 +17,49 @@ use App\MasterTad;
 
 class KaryawanController extends Controller
 {
+
+    public function index()
+    {
+        $karyawans = User::where('role', 'karyawan')->get();
+        return view('karyawan.tambah.index', compact('karyawans'));
+    }
+
+    public function create()
+    {
+        return view('karyawan.tambah.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+           'nip' => 'required|numeric|unique:users,nip',
+            'password' => 'required|min:6'
+        ]);
+
+        User::create([
+        'name' => $request->name,
+        'nip' => $request->nip,
+        'password' => Hash::make($request->password),
+        'role' => 'karyawan'
+]);
+
+        return redirect()->route('karyawan.tambah.index')->with('success', 'Karyawan berhasil dibuat');
+    }
+
+    public function destroy($id)
+    {
+        User::where('user_id', $id)->where('role', 'karyawan')->delete();
+
+        return back()->with('success', 'Karyawan berhasil dihapus');
+    }
+
+
+
+
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     private function getCurrentUserId()
@@ -73,7 +116,7 @@ class KaryawanController extends Controller
     public function createNew(Request $request)
     {
         // Buat user baru untuk karyawan
-        $user = \App\User::create([
+        $user = User::create([
             'name' => $request->input('nama_karyawan', 'Karyawan Baru-' . date('His')),
             'email' => 'karyawan_' . time() . '@example.com',
             'password' => bcrypt('password123'),
@@ -104,6 +147,7 @@ class KaryawanController extends Controller
 
     public function step1()
     {
+        $user = auth()->user();
         $karyawan = $this->getKaryawan();
         $unitpln = MasterUnitPln::all();
         $jabatan = Jabatan::all();
@@ -112,7 +156,7 @@ class KaryawanController extends Controller
         $project = MasterProject::all();
         $pendidikan = MasterPendidikan::all();
 
-        return view('karyawan.step1', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan'));
+        return view('karyawan.step1', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan','user'));
     }
 
     public function storestep1(Request $request)
@@ -649,3 +693,6 @@ class KaryawanController extends Controller
             ->with('success', 'Semua data berhasil disimpan.');
     }
 }
+
+
+
