@@ -92,7 +92,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Unit PLN</label>
                         <select name="unitpln_id" class="form-control" required>
-                            <option value="">-- Pilih Unit PLN --</option>
+                            <option value=""> Pilih Unit PLN </option>
                             @foreach($unitpln as $unit)
                                 <option value="{{ $unit->unitpln_id }}" {{ old('unitpln_id', optional($karyawan)->unitpln_id) == $unit->unitpln_id ? 'selected' : '' }}>
                                     {{ $unit->nama_unit }}
@@ -104,7 +104,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Jabatan</label>
                         <select name="jabatan_id" class="form-control" required>
-                            <option value="">-- Pilih Jabatan --</option>
+                            <option value=""> Pilih Jabatan </option>
                             @foreach($jabatan as $j)
                                 <option value="{{ $j->jabatan_id }}" {{ old('jabatan_id', optional($karyawan)->jabatan_id) == $j->jabatan_id ? 'selected' : '' }}>
                                     {{ $j->nama_jabatan }}
@@ -116,7 +116,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Sub Unit</label>
                         <select name="sub_id" class="form-control" required>
-                            <option value="">-- Pilih Sub Unit --</option>
+                            <option value=""> Pilih Sub Unit </option>
                             @foreach($subunit as $sub)
                                 <option value="{{ $sub->sub_id }}" {{ old('sub_id', optional($karyawan)->sub_id) == $sub->sub_id ? 'selected' : '' }}>
                                     {{ $sub->nama_sub_unit }}
@@ -128,7 +128,7 @@
                     <div class="col-md-6 mb-4">
                         <label>TAD</label>
                         <select name="tad_id" class="form-control" required>
-                            <option value="">-- Pilih TAD --</option>
+                            <option value=""> Pilih TAD </option>
                             @foreach($tad as $t)
                                 <option value="{{ $t->tad_id }}" {{ old('tad_id', optional($karyawan)->tad_id) == $t->tad_id ? 'selected' : '' }}>
                                     {{ $t->nama_tad }}
@@ -140,7 +140,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Project</label>
                         <select name="project_id" class="form-control" required>
-                            <option value="">-- Pilih Project --</option>
+                            <option value=""> Pilih Project </option>
                             @foreach($project as $p)
                                 <option value="{{ $p->project_id }}" {{ old('project_id', optional($karyawan)->project_id) == $p->project_id ? 'selected' : '' }}>
                                     {{ $p->nama_project }}
@@ -152,7 +152,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Pendidikan</label>
                         <select name="pendidikan_id" class="form-control" required>
-                            <option value="">-- Pilih Pendidikan --</option>
+                            <option value=""> Pilih Pendidikan </option>
                             @foreach($pendidikan as $pen)
                                 <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
                                     {{ $pen->nama_pendidikan }}

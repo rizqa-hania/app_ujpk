@@ -65,7 +65,9 @@
                             <a href="{{ route('karyawan.profile') }}"
                                class="nav-link {{ request()->routeIs('karyawan.profile') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
-                                <p>Profil Saya</p>
+                                <p>Profil Saya
+                                    
+                                </p>
                             </a>
                         </li>
 

@@ -97,7 +97,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Golongan Darah</label>
                         <select name="gol_darah" class="form-control">
-                            <option value="">-- Pilih --</option>
+                            <option value=""> Pilih </option>
                             <option value="A" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'A' ? 'selected' : '' }}>A</option>
                             <option value="B" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'B' ? 'selected' : '' }}>B</option>
                             <option value="AB" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'AB' ? 'selected' : '' }}>AB</option>

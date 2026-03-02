@@ -118,7 +118,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Jenis Kelamin</label>
                         <select name="jenis_kelamin" class="form-control">
-                            <option value="">-- Pilih --</option>
+                            <option value=""> Pilih </option>
                             <option value="laki-laki" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="perempuan" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
@@ -137,7 +137,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Status Nikah</label>
                         <select name="status_nikah" class="form-control">
-                            <option value="">-- Pilih --</option>
+                            <option value=""> Pilih </option>
                             <option value="belum_menikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'belum_menikah' ? 'selected' : '' }}>Belum Menikah</option>
                             <option value="sudah_nikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'sudah_nikah' ? 'selected' : '' }}>Sudah Menikah</option>
                             <option value="cerai" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'cerai' ? 'selected' : '' }}>Cerai</option>

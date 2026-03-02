@@ -5,34 +5,60 @@ namespace App\Http\Controllers;
 use App\Lembur;
 use App\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LemburController extends Controller
 {
     public function index()
-    {
-       $data = Lembur::get();
-        return view('lembur.index', compact('data'));
+{
+    if (Auth::user()->role == 'admin') {
+        $data = Lembur::orderBy('created_at','desc')->get();
+    } else {
+        $data = Lembur::where('karyawan_id', Auth::user()->karyawan_id)
+                ->orderBy('created_at','desc')
+                ->get();
     }
 
+    return view('lembur.index', compact('data'));
+}
     public function create()
     {
         return view('lembur.create');
     }
+    
+public function store(Request $request)
+{
+    $request->validate([
+        'nip' => 'required',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required',
+    ]);
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nip' => 'required',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'jam_mulai' => 'required',
-            'jam_selesai' => 'required',
-        ]);
+    // Cari karyawan berdasarkan NIP
+    $karyawan = Karyawan::where('nip', $request->nip)->first();
 
-        Lembur::create($request->all());
-
-        return redirect()->route('lembur.index')->with('success', 'Pengajuan lembur berhasil dibuat');
+    if (!$karyawan) {
+        return back()->withErrors([
+            'nip' => 'NIP tidak ditemukan di data karyawan'
+        ])->withInput();
     }
+
+    Lembur::create([
+        'nip' => $request->nip,
+        'karyawan_id' => $karyawan->id, // karena PK = id
+        'tanggal_mulai' => $request->tanggal_mulai,
+        'tanggal_selesai' => $request->tanggal_selesai,
+        'jam_mulai' => $request->jam_mulai,
+        'jam_selesai' => $request->jam_selesai,
+        'keterangan' => $request->keterangan,
+        'status' => 'pending'
+    ]);
+
+    return redirect()->route('lembur.index')
+        ->with('success', 'Pengajuan lembur berhasil dibuat');
+}
 
     public function updateStatus(Request $request, $id)
     {

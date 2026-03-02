@@ -503,7 +503,7 @@ class KaryawanController extends Controller
         // Hapus session karyawan jika ada
         session()->forget('karyawan_user_id');
 
-        return redirect()->route('admin.karyawan.index')
+        return redirect()->route('karyawan.dashboard')
             ->with('success', 'Selamat! Data karyawan berhasil disimpan lengkap.');
     }
 

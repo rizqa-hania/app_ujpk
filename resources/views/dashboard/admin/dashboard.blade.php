@@ -103,18 +103,18 @@
                 </div>
             </div>
 
-            {{-- Izin --}}
+           {{-- Izin --}}
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="small-box bg-warning elevation-3 dashboard-box">
                     <div class="inner">
-                        <h3>{{ $totalIzin }}</h3>
-                        <p>Total Izin</p>
+                        <h3 class="text-white">{{ $totalIzin }}</h3>
+                        <p class="text-white">Total Izin</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-envelope-open-text"></i>
+                        <i class="fas fa-envelope-open-text text-white"></i>
                     </div>
-                    <a href="{{ route('izin.index') }}" class="small-box-footer">
-                        Lihat Detail <i class="fas fa-arrow-circle-right"></i>
+                    <a href="{{ route('izin.index') }}" class="small-box-footer text-white">
+                        Lihat Detail <i class="fas fa-arrow-circle-right text-white"></i>
                     </a>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                     <div class="icon">
                         <i class="fas fa-clock"></i>
                     </div>
-                    <a href="{{ route('lembur.index') }}" class="small-box-footer">
+                    <a href="{{ route('lembur.index') }}" class="small-box-footer text-white">
                         Lihat Detail <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -175,12 +175,23 @@
 .dashboard-box {
     transition: all 0.3s ease;
 }
+
 .dashboard-box:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
+
 .small-box h3 {
     font-weight: 700;
+}
+
+/*  Biar Lihat Detail putih */
+.dashboard-box .small-box-footer {
+    color: #ffffff !important;
+}
+
+.dashboard-box .small-box-footer:hover {
+    color: #ffffff !important;
 }
 </style>
 

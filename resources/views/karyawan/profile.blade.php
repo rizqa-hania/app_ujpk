@@ -135,7 +135,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Unit PLN</label>
                                                 <select name="unitpln_id" class="form-control" required>
-                                                    <option value="">-- Pilih Unit PLN --</option>
+                                                    <option value=""> Pilih Unit PLN </option>
                                                     @foreach($unitpln as $unit)
                                                         <option value="{{ $unit->unitpln_id }}" {{ old('unitpln_id', optional($karyawan)->unitpln_id) == $unit->unitpln_id ? 'selected' : '' }}>
                                                             {{ $unit->nama_unit }}
@@ -148,7 +148,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Jabatan</label>
                                                 <select name="jabatan_id" class="form-control" required>
-                                                    <option value="">-- Pilih Jabatan --</option>
+                                                    <option value=""> Pilih Jabatan </option>
                                                     @foreach($jabatan as $j)
                                                         <option value="{{ $j->jabatan_id }}" {{ old('jabatan_id', optional($karyawan)->jabatan_id) == $j->jabatan_id ? 'selected' : '' }}>
                                                             {{ $j->nama_jabatan }}
@@ -164,7 +164,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Sub Unit</label>
                                                 <select name="sub_id" class="form-control" required>
-                                                    <option value="">-- Pilih Sub Unit --</option>
+                                                    <option value=""> Pilih Sub Unit </option>
                                                     @foreach($subunit as $sub)
                                                         <option value="{{ $sub->sub_id }}" {{ old('sub_id', optional($karyawan)->sub_id) == $sub->sub_id ? 'selected' : '' }}>
                                                             {{ $sub->nama_sub_unit }}
@@ -177,7 +177,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>TAD</label>
                                                 <select name="tad_id" class="form-control" required>
-                                                    <option value="">-- Pilih TAD --</option>
+                                                    <option value=""> Pilih TAD </option>
                                                     @foreach($tad as $t)
                                                         <option value="{{ $t->tad_id }}" {{ old('tad_id', optional($karyawan)->tad_id) == $t->tad_id ? 'selected' : '' }}>
                                                             {{ $t->nama_tad }}
@@ -193,7 +193,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Project</label>
                                                 <select name="project_id" class="form-control" required>
-                                                    <option value="">-- Pilih Project --</option>
+                                                    <option value="">Pilih Project </option>
                                                     @foreach($project as $p)
                                                         <option value="{{ $p->project_id }}" {{ old('project_id', optional($karyawan)->project_id) == $p->project_id ? 'selected' : '' }}>
                                                             {{ $p->nama_project }}
@@ -202,19 +202,18 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+
+                                           <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Pendidikan</label>
-                                                <select name="pendidikan_id" class="form-control" required>
-                                                    <option value="">-- Pilih Pendidikan --</option>
-                                                    @foreach($pendidikan as $pen)
-                                                        <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
-                                                            {{ $pen->nama_pendidikan }}
-                                                        </option>
-                                                    @endforeach
+                                                <label>Status Karyawan</label>
+                                                <select name="status_karyawan" class="form-control">
+                                                    <option value="aktif" {{ old('status_karyawan', optional($karyawan)->status_karyawan) == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                                                    <option value="nonaktif" {{ old('status_karyawan', optional($karyawan)->status_karyawan) == 'nonaktif' ? 'selected' : '' }}>Non Aktif</option>
                                                 </select>
                                             </div>
                                         </div>
+
+                                     
                                     </div>
 
                                     <div class="row">
@@ -236,15 +235,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Status Karyawan</label>
-                                                <select name="status_karyawan" class="form-control">
-                                                    <option value="aktif" {{ old('status_karyawan', optional($karyawan)->status_karyawan) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                                    <option value="nonaktif" {{ old('status_karyawan', optional($karyawan)->status_karyawan) == 'nonaktif' ? 'selected' : '' }}>Non Aktif</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                     
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Keterangan</label>
@@ -294,7 +285,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Jenis Kelamin</label>
                                                 <select name="jenis_kelamin" class="form-control">
-                                                    <option value="">-- Pilih --</option>
+                                                    <option value=""> Pilih </option>
                                                     <option value="laki-laki" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                                                     <option value="perempuan" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                                                 </select>
@@ -319,7 +310,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Status Nikah</label>
                                                 <select name="status_nikah" class="form-control">
-                                                    <option value="">-- Pilih --</option>
+                                                    <option value=""> Pilih </option>
                                                     <option value="belum_menikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'belum_menikah' ? 'selected' : '' }}>Belum Menikah</option>
                                                     <option value="sudah_nikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'sudah_nikah' ? 'selected' : '' }}>Sudah Menikah</option>
                                                     <option value="cerai" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'cerai' ? 'selected' : '' }}>Cerai</option>
@@ -358,7 +349,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Gol. Darah</label>
                                                 <select name="gol_darah" class="form-control">
-                                                    <option value="">-- Pilih --</option>
+                                                    <option value=""> Pilih </option>
                                                     <option value="A" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'A' ? 'selected' : '' }}>A</option>
                                                     <option value="B" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'B' ? 'selected' : '' }}>B</option>
                                                     <option value="AB" {{ old('gol_darah', optional($karyawan)->gol_darah) == 'AB' ? 'selected' : '' }}>AB</option>
@@ -459,7 +450,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Pendidikan Terakhir</label>
                                                 <select name="pendidikan_id" class="form-control">
-                                                    <option value="">-- Pilih Pendidikan --</option>
+                                                    <option value=""> Pilih Pendidikan </option>
                                                     @foreach($pendidikan as $pen)
                                                         <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
                                                             {{ $pen->nama_pendidikan }}
@@ -850,7 +841,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Perokok</label>
                                                 <select name="perokok" class="form-control">
-                                                    <option value="">-- Pilih --</option>
+                                                    <option value=""> Pilih </option>
                                                     <option value="1" {{ old('perokok', optional($karyawan)->perokok) == '1' ? 'selected' : '' }}>Ya</option>
                                                     <option value="0" {{ old('perokok', optional($karyawan)->perokok == '0') ? 'selected' : '' }}>Tidak</option>
                                                 </select>
@@ -976,7 +967,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Jumlah Tilang 6 Bulan</label>
+                                                <label>Jumlah Tilang </label>
                                                 <input type="number" name="jumlah_tilang_6_bulan" class="form-control" value="{{ old('jumlah_tilang_6_bulan', optional($karyawan)->jumlah_tilang_6_bulan) }}" min="0">
                                             </div>
                                         </div>
@@ -1027,7 +1018,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                             <div class="form-group">
                                                 <label>Pangkat Garda</label>
                                                 <select name="pangkat_garda" class="form-control">
-                                                    <option value="">-- Pilih --</option>
+                                                    <option value=""> Pilih </option>
                                                     <option value="pratama" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'pratama' ? 'selected' : '' }}>Pratama</option>
                                                     <option value="madya" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'madya' ? 'selected' : '' }}>Madya</option>
                                                     <option value="utama" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'utama' ? 'selected' : '' }}>Utama</option>

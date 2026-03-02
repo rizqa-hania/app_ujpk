@@ -124,6 +124,7 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('/profile/update', [KaryawanController::class, 'updateProfile'])->name('profile.update');
 });
 
+
 //DASHBOARD SEMUANYA
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
