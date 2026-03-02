@@ -58,10 +58,13 @@ public function sendOtp(Request $request)
 
     $otp = rand(100000,999999);
 
-    $user = User::updateOrCreate(
+    $user = User::firstOrCreate(
         ['email' => $request->email],
-        ['otp' => $otp]
+
     );
+
+    $user->otp = $otp;
+    $user->save();
 
     Mail::raw("Kode OTP kamu: $otp", function ($message) use ($request) {
         $message->to($request->email)
@@ -78,10 +81,13 @@ public function verifyOtp(Request $request)
                 ->first();
 
     if(!$user){
-        return back()->with('error','OTP Salah');
+        return back()->with('error','OTP Salah')->with('step',2)->with('email',$request->email);
     }
 
-    return back()->with('step',3)->with('email',$request->email);
+    return redirect()
+        ->route('register')
+        ->with('step', 3)
+        ->with('email', $request->email);
 }
 
 public function completeRegister(Request $request)
@@ -96,7 +102,7 @@ public function completeRegister(Request $request)
         'role'=>'karyawan'
     ]);
 
-    return redirect('/login');
+    return redirect()->route('login')->with('success', 'Registrasi berhasil!');
 }
 }
 //
