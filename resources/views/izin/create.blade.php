@@ -27,6 +27,17 @@
                     <form action="{{ route('izin.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
+                        {{-- Jenis --}}
+                        <div class="form-group">
+                            <label>Jenis</label>
+                            <select name="jenis" class="form-control" required>
+                                <option value="">-- Pilih Jenis --</option>
+                                <option value="izin" {{ old('jenis')=='izin'?'selected':'' }}>Izin</option>
+                                <option value="cuti" {{ old('jenis')=='cuti'?'selected':'' }}>Cuti</option>
+                                <option value="sakit" {{ old('jenis')=='sakit'?'selected':'' }}>Sakit</option>
+                            </select>
+                        </div>
+
                         {{-- Tanggal Mulai --}}
                         <div class="form-group">
                             <label>Tanggal Mulai</label>

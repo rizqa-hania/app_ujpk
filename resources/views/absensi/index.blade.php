@@ -91,33 +91,39 @@
                                 <td>{{ $item->jam_masuk ?? '-' }}</td>
                                 <td>{{ $item->jam_pulang ?? '-' }}</td>
                                <td>
-                                    @switch($item->status)
+                                @switch($item->status)
 
-                                        @case('lengkap')
-                                            <span class="badge badge-success">Lengkap</span>
-                                        @break
+                                    @case('tepat waktu')
+                                        <span class="badge badge-success">Tepat Waktu</span>
+                                    @break
 
-                                        @case('tidak lengkap')
-                                            <span class="badge badge-secondary">Tidak Lengkap</span>
-                                        @break
+                                    @case('terlambat')
+                                        <span class="badge badge-warning">Terlambat</span>
+                                    @break
 
-                                        @case('terlambat')
-                                            <span class="badge badge-warning">Terlambat</span>
-                                        @break
+                                    @case('lengkap')
+                                        <span class="badge badge-primary">Lengkap</span>
+                                    @break
 
-                                        @case('terlambat dan tidak lengkap')
-                                            <span class="badge badge-danger">Terlambat & Tidak Lengkap</span>
-                                        @break
+                                    @case('tidak lengkap')
+                                        <span class="badge badge-secondary">Tidak Lengkap</span>
+                                    @break
 
-                                        @case('izin')
-                                            <span class="badge badge-info">Izin</span>
-                                        @break
+                                    @case('terlambat dan tidak lengkap')
+                                        <span class="badge badge-danger">Terlambat & Tidak Lengkap</span>
+                                    @break
 
-                                        @default
-                                            <span class="badge badge-dark">-</span>
+                                    @case('izin')
+                                        <span class="badge badge-info">Izin</span>
+                                    @break
 
-                                    @endswitch
-                                </td>
+                                    @default
+                                        <span class="badge badge-dark">
+                                            {{ $item->status ?? '-' }}
+                                        </span>
+
+                                @endswitch
+                            </td>
                             </tr>
                         @empty
                             <tr>
