@@ -19,6 +19,7 @@ class AuthController extends Controller
 
    public function login(Request $request)
 {  //kenapa pake login? karena Karena kamu punya 2 tipe identitas login dalam 1 tabel yang sama:admin dan karyawan. jika pake 'email' ='', itu bakal eror karena karyawan tidak pake email
+{
     $request->validate([
         'login' => 'required',
         'password' => 'required'
@@ -26,7 +27,10 @@ class AuthController extends Controller
 
     $loginInput = $request->login;
 
-    $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'nip';
+    // Tentukan apakah email atau NIP
+    $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) 
+                ? 'email' 
+                : 'nip';
 
     if (Auth::attempt([
         $field => $loginInput,
@@ -36,16 +40,28 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        if (Auth::user()->role === 'admin') {
+        $user = Auth::user(); // WAJIB ADA
+
+        // ADMIN
+        if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('karyawan.dashboard');
+        // KARYAWAN
+        if ($user->role === 'karyawan') {
+
+            if (!$user->is_profile_complete) {
+                return redirect()->route('karyawan.step1');
+            }
+
+            return redirect()->route('karyawan.dashboard');
+        }
     }
 
     return back()->withErrors([
         'login' => 'Email/NIP atau password salah'
     ]);
+}
 }
 
     public function logout(Request $request)
@@ -56,6 +72,7 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+    /*
   public function showRegister()
 {
     return view('auth.register');
@@ -106,6 +123,6 @@ public function completeRegister(Request $request)
     ]);
 
     return redirect('/login');
+}*/
+
 }
-}
-//

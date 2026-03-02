@@ -86,7 +86,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <label>NIP</label>
-                        <input type="text" name="nip" class="form-control" value="{{ old('nip', optional($karyawan)->nip) }}" required>
+                        <input type="text" name="nip" class="form-control" value="{{ $user->nip }}" required>
                     </div>
 
                     <div class="col-md-6 mb-4">

@@ -147,6 +147,7 @@ class KaryawanController extends Controller
 
     public function step1()
     {
+        $user = auth()->user();
         $karyawan = $this->getKaryawan();
         $unitpln = MasterUnitPln::all();
         $jabatan = Jabatan::all();
@@ -155,7 +156,7 @@ class KaryawanController extends Controller
         $project = MasterProject::all();
         $pendidikan = MasterPendidikan::all();
 
-        return view('karyawan.step1', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan'));
+        return view('karyawan.step1', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan','user'));
     }
 
     public function storestep1(Request $request)
