@@ -87,7 +87,7 @@
                     <div class="col-md-6 mb-4">
                         <label>Pendidikan</label>
                         <select name="pendidikan_id" class="form-control" required>
-                            <option value="">-- Pilih Pendidikan --</option>
+                            <option value=""> Pilih Pendidikan </option>
                             @foreach($pendidikan as $pen)
                                 <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
                                     {{ $pen->nama_pendidikan }}

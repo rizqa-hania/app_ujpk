@@ -11,14 +11,15 @@ class Lembur extends Model
     protected $primaryKey = 'lembur_id';
 
     protected $fillable = [
-        'nip',
-        'tanggal_mulai',
-        'tanggal_selesai',
-        'jam_mulai',
-        'jam_selesai',
-        'status',
-        'keterangan',
-    ];
+    'nip',
+    'karyawan_id',
+    'tanggal_mulai',
+    'tanggal_selesai',
+    'jam_mulai',
+    'jam_selesai',
+    'status',
+    'keterangan'
+];
 
     public function karyawan()
     {

@@ -128,7 +128,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                     <div class="col-md-6 mb-4">
                         <label>Perokok</label>
                         <select name="perokok" class="form-control">
-                            <option value="">-- Pilih --</option>
+                            <option value=""> Pilih </option>
                             <option value="1" {{ old('perokok', optional($karyawan)->perokok) == '1' ? 'selected' : '' }}>Ya</option>
                             <option value="0" {{ old('perokok', optional($karyawan)->perokok == '0') ? 'selected' : '' }}>Tidak</option>
                         </select>
@@ -143,7 +143,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                 <div class="text-end mt-2">
                     <button type="submit" class="btn btn-primary-custom">
                         @if($showDriverSatpam)
-                            Lanjut (Driver/Satpam) →
+                            Lanjut →
                         @else
                             Selesai →
                         @endif

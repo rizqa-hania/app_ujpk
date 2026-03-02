@@ -100,7 +100,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i> 
                     Anda memasuki step khusus karena jabatan Anda adalah 
-                    @if($isDriver && $isSatpam) Driver & Satpam
+                    @if($isDriver && $isSatpam) 
                     @elseif($isDriver) Driver
                     @elseif($isSatpam) Satpam
                     @endif
@@ -129,7 +129,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                         @endif
                     </div>
                     <div class="col-md-6 mb-4">
-                        <label>Jumlah Tilang 6 Bulan Terakhir</label>
+                        <label>Jumlah Tilang</label>
                         <input type="number" name="jumlah_tilang_6_bulan" class="form-control" value="{{ old('jumlah_tilang_6_bulan', optional($karyawan)->jumlah_tilang_6_bulan) }}" min="0" placeholder="0">
                     </div>
                 </div>
@@ -160,7 +160,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                     <div class="col-md-6 mb-4">
                         <label>Pangkat Garda</label>
                         <select name="pangkat_garda" class="form-control">
-                            <option value="">-- Pilih Pangkat --</option>
+                            <option value=""> Pilih Pangkat </option>
                             <option value="pratama" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'pratama' ? 'selected' : '' }}>Pratama</option>
                             <option value="madya" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'madya' ? 'selected' : '' }}>Madya</option>
                             <option value="utama" {{ old('pangkat_garda', optional($karyawan)->pangkat_garda) == 'utama' ? 'selected' : '' }}>Utama</option>
@@ -183,7 +183,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                 @if(!$showDriverSatpam)
                 <div class="alert alert-success">
                     <i class="fas fa-check-circle"></i> 
-                    Anda tidak memerlukan data tambahan Driver/Satpam. Silakan klik tombol selesai untuk menyelesaikan pengisisan data.
+                    Anda tidak memerlukan data tambahan. Silakan klik tombol selesai untuk menyelesaikan pengisisan data.
                 </div>
                 @endif
 
