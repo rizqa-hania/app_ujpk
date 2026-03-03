@@ -1,13 +1,45 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\JadwalAbsensi;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class JadwalAbsensiController extends Controller
 {
+    /*
+    =====================================
+    TAMPILKAN JADWAL
+    =====================================
+    */
     public function index()
+    {
+        $jadwal = JadwalAbsensi::first();
+
+        if (!$jadwal) {
+            $jadwal = JadwalAbsensi::create([
+                'senin' => true,
+                'selasa' => true,
+                'rabu' => true,
+                'kamis' => true,
+                'jumat' => true,
+                'sabtu' => false,
+                'minggu' => false,
+            ]);
+        }
+
+        return view('jadwal.index', compact('jadwal'));
+    }
+
+    /*
+    =====================================
+    UPDATE JADWAL
+    =====================================
+    */
+    public function update(Request $request)
     {
         $jadwal = JadwalAbsensi::first();
 
@@ -15,77 +47,61 @@ class JadwalAbsensiController extends Controller
             $jadwal = JadwalAbsensi::create([]);
         }
 
-        return view('jadwal.index', compact('jadwal'));
-    }
+        $hariList = ['senin','selasa','rabu','kamis','jumat','sabtu','minggu'];
 
-    public function update(Request $request)
-{
-    $jadwal = JadwalAbsensi::first();
+        $data = [];
 
-    if (!$jadwal) {
-        $jadwal = JadwalAbsensi::create([]);
-    }
+        foreach ($hariList as $hari) {
 
-    $hariList = ['senin','selasa','rabu','kamis','jumat','sabtu','minggu'];
+            // checkbox aktif / tidak
+            $data[$hari] = $request->has($hari);
 
-    $data = [];
+            // jam masuk
+            $data['jam_masuk_'.$hari] = $request->input('jam_masuk_'.$hari);
 
-    foreach ($hariList as $hari) {
+            // jam pulang
+            $data['jam_pulang_'.$hari] = $request->input('jam_pulang_'.$hari);
+        }
 
-        // status aktif
-        $data[$hari] = $request->has($hari);
+        $jadwal->update($data);
 
-        // jam masuk
-        $data['jam_masuk_'.$hari] = $request->input('jam_masuk_'.$hari);
-
-        // jam pulang
-        $data['jam_pulang_'.$hari] = $request->input('jam_pulang_'.$hari);
-    }
-
-    $jadwal->update($data);
-
-    return back()->with('success','Jadwal berhasil diperbarui');
-}
-
-    public function store(Request $request)
-{
-    $userId = Auth::id();
-    $today  = Carbon::today()->toDateString();
-    $now    = Carbon::now();
-
-    /*
-    =========================
-    CEK JADWAL AKTIF
-    =========================
-    */
-
-    $jadwal = JadwalAbsensi::first();
-
-    if (!$jadwal) {
-        return back()->with('error','Jadwal absensi belum disetting admin');
-    }
-
-    $mapHari = [
-        'Monday' => 'senin',
-        'Tuesday' => 'selasa',
-        'Wednesday' => 'rabu',
-        'Thursday' => 'kamis',
-        'Friday' => 'jumat',
-        'Saturday' => 'sabtu',
-        'Sunday' => 'minggu'
-    ];
-
-    $hariInggris = Carbon::now()->format('l');
-    $hariDb = $mapHari[$hariInggris];
-
-    if (!$jadwal->$hariDb) {
-        return back()->with('error','Hari ini absensi tidak aktif');
+        return back()->with('success','Jadwal berhasil diperbarui');
     }
 
     /*
-    =========================
-    LANJUT LOGIC LAMA LU
-    =========================
+    =====================================
+    CEK APAKAH HARI INI AKTIF
+    (Dipakai oleh controller absensi)
+    =====================================
     */
+    public static function cekHariAktif()
+    {
+        $jadwal = JadwalAbsensi::first();
+
+        if (!$jadwal) {
+            return false;
+        }
+
+        $mapHari = [
+            'monday'    => 'senin',
+            'tuesday'   => 'selasa',
+            'wednesday' => 'rabu',
+            'thursday'  => 'kamis',
+            'friday'    => 'jumat',
+            'saturday'  => 'sabtu',
+            'sunday'    => 'minggu',
+        ];
+
+        $hariInggris = strtolower(Carbon::now()->format('l'));
+
+        if (!isset($mapHari[$hariInggris])) {
+            return false;
+        }
+
+        $hariDb = $mapHari[$hariInggris];
+
+        return (bool) $jadwal->$hariDb;
     }
+
+        
 }

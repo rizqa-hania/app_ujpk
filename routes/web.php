@@ -231,3 +231,4 @@ Route::get('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.r
 //JADWAL ABSENSI
 Route::get('/jadwal-absensi', [JadwalAbsensiController::class, 'index'])->name('jadwal.index');
 Route::post('/jadwal-absensi/update', [JadwalAbsensiController::class, 'update'])->name('jadwal.update');
+

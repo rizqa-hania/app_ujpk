@@ -11,7 +11,14 @@
 
             <div class="card-body">
 
-                {{-- ALERT --}}
+                {{-- ERROR VALIDATION --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                {{-- SESSION ALERT --}}
                 @if(session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -31,11 +38,11 @@
                 <div class="row mb-4">
 
                     <div class="col-md-12 text-center mb-3">
-                        <button class="btn btn-success" onclick="openCamera('masuk')">
+                        <button type="button" class="btn btn-success" onclick="openCamera('masuk')">
                             Absen Masuk
                         </button>
 
-                        <button class="btn btn-primary" onclick="openCamera('pulang')">
+                        <button type="button" class="btn btn-primary" onclick="openCamera('pulang')">
                             Absen Pulang
                         </button>
                     </div>
@@ -45,11 +52,11 @@
                             <video id="video" autoplay playsinline></video>
                         </div>
 
-                        <button class="btn btn-warning mt-3" onclick="submitAbsen()">
+                        <button type="button" class="btn btn-warning mt-3" onclick="submitAbsen()">
                             Absen Sekarang
                         </button>
 
-                        <button class="btn btn-danger mt-2" onclick="closeCamera()">
+                        <button type="button" class="btn btn-danger mt-2" onclick="closeCamera()">
                             Batal
                         </button>
                     </div>
@@ -90,40 +97,25 @@
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->jam_masuk ?? '-' }}</td>
                                 <td>{{ $item->jam_pulang ?? '-' }}</td>
-                               <td>
-                                @switch($item->status)
+                                <td>
+                                    @php
+                                        $status = $item->status_final ?? '-';
+                                    @endphp
 
-                                    @case('tepat waktu')
-                                        <span class="badge badge-success">Tepat Waktu</span>
-                                    @break
-
-                                    @case('terlambat')
+                                    @if($status == 'lengkap')
+                                        <span class="badge badge-success">Lengkap</span>
+                                    @elseif($status == 'terlambat')
                                         <span class="badge badge-warning">Terlambat</span>
-                                    @break
-
-                                    @case('lengkap')
-                                        <span class="badge badge-primary">Lengkap</span>
-                                    @break
-
-                                    @case('tidak lengkap')
-                                        <span class="badge badge-secondary">Tidak Lengkap</span>
-                                    @break
-
-                                    @case('terlambat dan tidak lengkap')
-                                        <span class="badge badge-danger">Terlambat & Tidak Lengkap</span>
-                                    @break
-
-                                    @case('izin')
-                                        <span class="badge badge-info">Izin</span>
-                                    @break
-
-                                    @default
-                                        <span class="badge badge-dark">
-                                            {{ $item->status ?? '-' }}
-                                        </span>
-
-                                @endswitch
-                            </td>
+                                    @elseif($status == 'pulang cepat')
+                                        <span class="badge badge-danger">Pulang Cepat</span>
+                                    @elseif($status == 'terlambat dan pulang cepat')
+                                        <span class="badge badge-danger">Terlambat & Pulang Cepat</span>
+                                    @elseif($status == 'belum lengkap')
+                                        <span class="badge badge-secondary">Belum Lengkap</span>
+                                    @else
+                                        <span class="badge badge-dark">{{ $status }}</span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -142,7 +134,6 @@
     </div>
 </div>
 
-
 <style>
 .camera-box {
     border: 1px solid #ddd;
@@ -158,22 +149,15 @@
 }
 </style>
 
-
 <script>
 const video = document.getElementById('video');
 const cameraSection = document.getElementById('cameraSection');
 
 let stream = null;
-let currentType = null;
 
-// ===========================
-// BUKA KAMERA
-// ===========================
 async function openCamera(type) {
 
-    currentType = type;
     document.getElementById('absenType').value = type;
-
     cameraSection.style.display = "block";
 
     try {
@@ -185,25 +169,26 @@ async function openCamera(type) {
         video.srcObject = stream;
 
     } catch (err) {
-        console.error("Camera error:", err);
-        alert("Kamera tidak bisa diakses. Izinkan akses kamera.");
+        alert("Kamera tidak bisa diakses. Pastikan izin kamera aktif.");
     }
 }
 
-// ===========================
-// TUTUP KAMERA
-// ===========================
 function closeCamera() {
     if (stream) {
         stream.getTracks().forEach(track => track.stop());
+        stream = null;
     }
     cameraSection.style.display = "none";
 }
 
-// ===========================
-// SUBMIT ABSEN
-// ===========================
 function submitAbsen() {
+
+    const type = document.getElementById('absenType').value;
+
+    if (!type) {
+        alert("Tipe absen tidak terdeteksi");
+        return;
+    }
 
     if (!video.videoWidth) {
         alert("Kamera belum siap");
@@ -217,23 +202,26 @@ function submitAbsen() {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0);
 
-    const imageData = canvas.toDataURL('image/png');
-
-    document.getElementById('photo').value = imageData;
+    document.getElementById('photo').value = canvas.toDataURL('image/png');
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
 
-            document.getElementById('latitude').value  = position.coords.latitude;
-            document.getElementById('longitude').value = position.coords.longitude;
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                document.getElementById('latitude').value  = position.coords.latitude;
+                document.getElementById('longitude').value = position.coords.longitude;
+                document.getElementById('absenForm').submit();
+            },
+            function() {
+                document.getElementById('absenForm').submit();
+            }
+        );
 
-            document.getElementById('absenForm').submit();
-            closeCamera();
-        });
     } else {
         document.getElementById('absenForm').submit();
-        closeCamera();
     }
+
+    closeCamera();
 }
 </script>
 

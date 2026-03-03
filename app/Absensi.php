@@ -6,22 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absensi extends Model
 {
-    protected $table = 'absensis';
-
-    protected $primaryKey = 'absensi_id';
-
     protected $fillable = [
         'user_id',
         'tanggal',
         'jam_masuk',
+        'status_masuk',
         'jam_pulang',
-        'status',
-        'foto_masuk',
-        'foto_pulang',
+        'status_pulang',
+        'status_final',
         'latitude',
-        'longitude',
-        'jarak'
+        'longitude'
     ];
+
 
     public function user()
     {

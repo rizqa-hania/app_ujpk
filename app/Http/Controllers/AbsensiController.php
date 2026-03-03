@@ -15,115 +15,132 @@ class AbsensiController extends Controller
         $userId = Auth::id();
 
         $dataAbsensi = Absensi::where('user_id', $userId)
-                        ->orderBy('tanggal','desc')
-                        ->get();
+            ->orderBy('tanggal', 'desc')
+            ->get();
 
         return view('absensi.index', compact('dataAbsensi'));
     }
 
-   public function store(Request $request)
-{
-    $userId = Auth::id();
-    $today  = Carbon::today()->toDateString();
-    $now    = Carbon::now();
-
-    /*
-    =========================
-    CEK JADWAL
-    =========================
-    */
-
-    $jadwal = JadwalAbsensi::first();
-
-    if (!$jadwal) {
-        return back()->with('error','Jadwal absensi belum disetting admin');
-    }
-
-    Carbon::setLocale('id');
-    $hari = strtolower(Carbon::now()->translatedFormat('l'));
-
-    // Cek hari aktif
-    if (!$jadwal->$hari) {
-        return back()->with(
-            'error',
-            'Maaf, anda absen di luar hari kerja. Tidak bisa absen saat ini.'
-        );
-    }
-
-    // Ambil jam sesuai hari
-    $fieldJamMasuk  = 'jam_masuk_' . $hari;
-    $fieldJamPulang = 'jam_pulang_' . $hari;
-
-    $jamMasuk  = $jadwal->$fieldJamMasuk;
-    $jamPulang = $jadwal->$fieldJamPulang;
-
-    if (!$jamMasuk || !$jamPulang) {
-        return back()->with('error','Jam kerja hari ini belum diatur admin');
-    }
-
-    /*
-    =========================
-    CEK ABSEN HARI INI
-    =========================
-    */
-
-    $absen = Absensi::where('user_id', $userId)
-                    ->where('tanggal', $today)
-                    ->first();
-
-    /*
-    =========================
-    ABSEN MASUK (TIDAK DIBLOKIR SEBELUM JAM)
-    =========================
-    */
-    if (!$absen && $request->type == 'masuk') {
-
-        $batasMasuk = Carbon::parse($today . ' ' . $jamMasuk);
-
-        // HANYA TENTUKAN STATUS, BUKAN BLOKIR
-        $status = $now->gt($batasMasuk)
-            ? 'terlambat'
-            : 'tepat waktu';
-
-        Absensi::create([
-            'user_id'   => $userId,
-            'tanggal'   => $today,
-            'jam_masuk' => $now->format('H:i:s'),
-            'status'    => $status,
-            'latitude'  => $request->latitude,
-            'longitude' => $request->longitude
+    public function store(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|in:masuk,pulang'
         ]);
 
-        return back()->with('success','Absen masuk berhasil');
-    }
+        $userId = Auth::id();
+        $now    = Carbon::now();
+        $today  = $now->toDateString();
 
-    /*
-    =========================
-    ABSEN PULANG (TETAP DIBLOKIR SEBELUM JAM PULANG)
-    =========================
-    */
-    if ($absen && !$absen->jam_pulang && $request->type == 'pulang') {
+        $jadwal = JadwalAbsensi::first();
 
+        if (!$jadwal) {
+            return back()->with('error', 'Jadwal belum disetting');
+        }
+
+        /*
+        =========================================
+        MAPPING HARI INGGRIS → INDONESIA
+        =========================================
+        */
+
+        $mapHari = [
+            'monday'    => 'senin',
+            'tuesday'   => 'selasa',
+            'wednesday' => 'rabu',
+            'thursday'  => 'kamis',
+            'friday'    => 'jumat',
+            'saturday'  => 'sabtu',
+            'sunday'    => 'minggu',
+        ];
+
+        $hariInggris = strtolower($now->format('l'));
+
+        if (!isset($mapHari[$hariInggris])) {
+            return back()->with('error', 'Format hari tidak dikenali');
+        }
+
+        $hari = $mapHari[$hariInggris];
+
+        /*
+        =========================================
+        CEK APAKAH HARI AKTIF
+        =========================================
+        */
+
+        if (!$jadwal->$hari) {
+            return back()->with('error', 'Hari ini bukan hari kerja');
+        }
+
+        $jamMasuk  = $jadwal->{'jam_masuk_' . $hari};
+        $jamPulang = $jadwal->{'jam_pulang_' . $hari};
+
+        if (!$jamMasuk || !$jamPulang) {
+            return back()->with('error', 'Jam kerja belum disetting');
+        }
+
+        $batasMasuk  = Carbon::parse($today . ' ' . $jamMasuk);
         $batasPulang = Carbon::parse($today . ' ' . $jamPulang);
 
-        if ($now->lt($batasPulang)) {
-            return back()->with('error','Belum waktunya absen pulang');
+        $absen = Absensi::where('user_id', $userId)
+            ->where('tanggal', $today)
+            ->first();
+
+        /*
+        =========================================
+        ABSEN MASUK
+        =========================================
+        */
+        if (!$absen && $request->type == 'masuk') {
+
+            $statusMasuk = $now->gt($batasMasuk)
+                ? 'terlambat'
+                : 'tepat waktu';
+
+            Absensi::create([
+                'user_id'      => $userId,
+                'tanggal'      => $today,
+                'jam_masuk'    => $now->format('H:i:s'),
+                'status_masuk' => $statusMasuk,
+                'status_final' => 'belum lengkap'
+            ]);
+
+            return back()->with('success', 'Absen masuk berhasil');
         }
 
-        $absen->jam_pulang = $now->format('H:i:s');
+        /*
+        =========================================
+        ABSEN PULANG
+        =========================================
+        */
+        if ($absen && !$absen->jam_pulang && $request->type == 'pulang') {
 
-        // Finalisasi status
-        if ($absen->status == 'terlambat') {
-            $absen->status = 'terlambat';
-        } else {
-            $absen->status = 'lengkap';
+            $statusPulang = $now->lt($batasPulang)
+                ? 'pulang cepat'
+                : 'tepat waktu';
+
+            $absen->jam_pulang    = $now->format('H:i:s');
+            $absen->status_pulang = $statusPulang;
+
+            $final = [];
+
+            if ($absen->status_masuk == 'terlambat') {
+                $final[] = 'terlambat';
+            }
+
+            if ($statusPulang == 'pulang cepat') {
+                $final[] = 'pulang cepat';
+            }
+
+            if (empty($final)) {
+                $final[] = 'lengkap';
+            }
+
+            $absen->status_final = implode(' dan ', $final);
+            $absen->save();
+
+            return back()->with('success', 'Absen pulang berhasil');
         }
 
-        $absen->save();
-
-        return back()->with('success','Absen pulang berhasil');
+        return back()->with('error', 'Anda Sudah Absen Hari ini');
     }
-
-    return back()->with('error','Aksi tidak valid');
-}
 }
