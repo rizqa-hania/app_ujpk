@@ -32,7 +32,7 @@
 
       <!-- STEP 1: EMAIL -->
       @if(session('step',1) == 1)
-      <form action="/send-otp" method="POST">
+      <form action="{{ route('send-otp') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
           <input type="email" 
@@ -54,7 +54,7 @@
 
       <!-- STEP 2: OTP -->
       @if(session('step') == 2)
-      <form action="/verify-otp" method="POST">
+      <form action="{{ route('verify-otp') }}" method="POST">
         @csrf
         <input type="hidden" name="email" value="{{ session('email') }}">
 
@@ -79,7 +79,7 @@
 
       <!-- STEP 3: DATA DIRI -->
       @if(session('step') == 3)
-      <form action="/complete-register" method="POST">
+      <form action="{{ route('complete-register') }}" method="POST">
         @csrf
         <input type="hidden" name="email" value="{{ session('email') }}">
 

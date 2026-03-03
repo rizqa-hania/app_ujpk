@@ -91,4 +91,5 @@ class UserController extends Controller
     User::where('user_id', $id)->delete();
         return redirect()->route('users.index');
     }
+    
 }
