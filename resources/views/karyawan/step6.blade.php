@@ -1,72 +1,140 @@
 <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
     .form-card {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         overflow: hidden;
     }
 
     .form-header {
         background: linear-gradient(135deg, #0d6efd, #0a58ca);
-        padding: 20px 30px;
+        padding: 22px 30px;
         color: white;
     }
 
     .form-header h5 {
         margin: 0;
         font-weight: 600;
+        font-size: 18px;
         letter-spacing: 0.5px;
-        font-size: 1.1rem;
     }
 
     .form-body {
         padding: 35px;
-        background-color: #ffffff;
     }
 
-    .form-control, .form-select {
-        border-radius: 10px;
-        padding: 12px 15px;
-        border: 1px solid #e0e6ed;
-        transition: 0.2s;
-        font-size: 0.95rem;
+    /* GRID 2 KOLOM */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 30px;
     }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13,110,253,.15);
+    .form-group {
+        display: flex;
+        flex-direction: column;
     }
 
     label {
         font-weight: 600;
         margin-bottom: 8px;
-        color: #34495e;
-        font-size: 0.9rem;
+        color: #2c3e50;
+        font-size: 14px;
     }
 
-    .mb-4 {
-        margin-bottom: 25px !important;
+    input, select, textarea {
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid #dfe6ed;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .form-full {
+        grid-column: 1 / -1;
+    }
+
+    .form-footer {
+        margin-top: 30px;
+        text-align: right;
     }
 
     .btn-primary-custom {
         background: linear-gradient(135deg, #0d6efd, #0a58ca);
         border: none;
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 12px 35px;
         font-weight: 600;
-        transition: 0.2s;
         color: white;
-        font-size: 0.95rem;
+        cursor: pointer;
+        transition: 0.2s ease;
+        font-size: 14px;
     }
 
     .btn-primary-custom:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(13,110,253,.35);
-        background: linear-gradient(135deg, #0b5ed7, #0956c9);
+    }
+
+    .alert {
+        background-color: #ffeaea;
+        color: #c0392b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+
+    .file-info {
+        font-size: 12px;
+        color: #28a745;
+        margin-top: 5px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #0d6efd;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        grid-column: 1 / -1;
+        border-bottom: 1px solid #eef2f7;
+        padding-bottom: 6px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-<div class="container py-4">
+<div class="container">
     <div class="card form-card">
 
         <div class="form-header">
@@ -75,71 +143,69 @@
 
         <form action="{{ route('karyawan.storestep6') }}" method="POST" enctype="multipart/form-data">
             @csrf
-
             <div class="form-body">
+
                 @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                    <div class="alert">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
-                <h5 style="color: #0d6efd; margin-bottom: 20px;">KTP</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
+                <div class="form-grid">
+
+                    <!-- KTP -->
+                    <div class="section-title">KTP</div>
+                    <div class="form-group">
                         <label>No. KTP</label>
-                        <input type="text" name="no_ktp" class="form-control" value="{{ old('no_ktp', optional($karyawan)->no_ktp) }}">
+                        <input type="text" name="no_ktp" value="{{ old('no_ktp', optional($karyawan)->no_ktp) }}">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>File KTP (PDF/Foto)</label>
-                        <input type="file" name="file_ktp" class="form-control" accept="image/*,.pdf">
+                        <input type="file" name="file_ktp" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_ktp)
-                            <small class="text-success">File sudah ada: {{ $karyawan->file_ktp }}</small>
+                            <span class="file-info">✓ File sudah diupload</span>
                         @endif
                     </div>
-                </div>
 
-                <hr style="margin: 25px 0; border-color: #e0e6ed;">
-
-                <h5 style="color: #0d6efd; margin-bottom: 20px;">Kartu Keluarga</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
+                    <!-- KK -->
+                    <div class="section-title">Kartu Keluarga</div>
+                    <div class="form-group">
                         <label>No. KK</label>
-                        <input type="text" name="no_kk" class="form-control" value="{{ old('no_kk', optional($karyawan)->no_kk) }}">
+                        <input type="text" name="no_kk" value="{{ old('no_kk', optional($karyawan)->no_kk) }}">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>File KK (PDF/Foto)</label>
-                        <input type="file" name="file_kk" class="form-control" accept="image/*,.pdf">
+                        <input type="file" name="file_kk" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_kk)
-                            <small class="text-success">File sudah ada: {{ $karyawan->file_kk }}</small>
+                            <span class="file-info">✓ File sudah diupload</span>
                         @endif
                     </div>
-                </div>
 
-                <hr style="margin: 25px 0; border-color: #e0e6ed;">
-
-                <h5 style="color: #0d6efd; margin-bottom: 20px;">NPWP</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
+                    <!-- NPWP -->
+                    <div class="section-title">NPWP</div>
+                    <div class="form-group">
                         <label>No. NPWP</label>
-                        <input type="text" name="no_npwp" class="form-control" value="{{ old('no_npwp', optional($karyawan)->no_npwp) }}">
+                        <input type="text" name="no_npwp" value="{{ old('no_npwp', optional($karyawan)->no_npwp) }}">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>File NPWP (PDF/Foto)</label>
-                        <input type="file" name="file_npwp" class="form-control" accept="image/*,.pdf">
+                        <input type="file" name="file_npwp" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_npwp)
-                            <small class="text-success">File sudah ada: {{ $karyawan->file_npwp }}</small>
+                            <span class="file-info">✓ File sudah diupload</span>
                         @endif
                     </div>
+
                 </div>
 
-                <div class="text-end mt-2">
-                    <button type="submit" class="btn btn-primary-custom">
-                        Lanjut →
-                    </button>
+                <div class="form-footer">
+                    <button type="submit" class="btn-primary-custom">Lanjut →</button>
                 </div>
 
             </div>
         </form>
-
     </div>
 </div>

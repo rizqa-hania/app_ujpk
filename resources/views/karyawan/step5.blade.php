@@ -1,51 +1,88 @@
 <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
     .form-card {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         overflow: hidden;
     }
 
     .form-header {
         background: linear-gradient(135deg, #0d6efd, #0a58ca);
-        padding: 20px 30px;
+        padding: 22px 30px;
         color: white;
     }
 
     .form-header h5 {
         margin: 0;
         font-weight: 600;
+        font-size: 18px;
         letter-spacing: 0.5px;
-        font-size: 1.1rem;
     }
 
     .form-body {
         padding: 35px;
-        background-color: #ffffff;
     }
 
-    .form-control, .form-select {
-        border-radius: 10px;
-        padding: 12px 15px;
-        border: 1px solid #e0e6ed;
-        transition: 0.2s;
-        font-size: 0.95rem;
+    /* ✅ 2 KOLOM KE BAWAH */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 30px;
     }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13,110,253,.15);
+    .form-group {
+        display: flex;
+        flex-direction: column;
     }
 
     label {
         font-weight: 600;
         margin-bottom: 8px;
-        color: #34495e;
-        font-size: 0.9rem;
+        color: #2c3e50;
+        font-size: 14px;
     }
 
-    .mb-4 {
-        margin-bottom: 25px !important;
+    input, select {
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid #dfe6ed;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    }
+
+    /* Full 1 baris */
+    .form-full {
+        grid-column: span 2;
+    }
+
+    .text-success {
+        font-size: 12px;
+        color: #27ae60;
+        margin-top: 5px;
+    }
+
+    .form-footer {
+        margin-top: 35px;
+        text-align: right;
     }
 
     .btn-primary-custom {
@@ -54,20 +91,29 @@
         border-radius: 12px;
         padding: 12px 35px;
         font-weight: 600;
-        transition: 0.2s;
         color: white;
-        font-size: 0.95rem;
+        cursor: pointer;
+        transition: 0.2s ease;
+        font-size: 14px;
     }
 
     .btn-primary-custom:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(13,110,253,.35);
-        background: linear-gradient(135deg, #0b5ed7, #0956c9);
+    }
+
+    .alert {
+        background-color: #ffeaea;
+        color: #c0392b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 14px;
     }
 </style>
 
-<div class="container py-4">
-    <div class="card form-card">
+<div class="container">
+    <div class="form-card">
 
         <div class="form-header">
             <h5>Step 5 - Pendidikan</h5>
@@ -77,41 +123,53 @@
             @csrf
 
             <div class="form-body">
+
                 @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                    <div class="alert">
+                        <ul style="margin:0; padding-left:18px;">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
-                <div class="row">
-                    <div class="col-md-6 mb-4">
+                <div class="form-grid">
+
+                    <div class="form-group">
                         <label>Pendidikan</label>
-                        <select name="pendidikan_id" class="form-control" required>
-                            <option value=""> Pilih Pendidikan </option>
+                        <select name="pendidikan_id" required>
+                            <option value="">Pilih Pendidikan</option>
                             @foreach($pendidikan as $pen)
-                                <option value="{{ $pen->pendidikan_id }}" {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
+                                <option value="{{ $pen->pendidikan_id }}"
+                                    {{ old('pendidikan_id', optional($karyawan)->pendidikan_id) == $pen->pendidikan_id ? 'selected' : '' }}>
                                     {{ $pen->nama_pendidikan }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="col-md-6 mb-4">
-                        <label>Nama Universitas/Sekolah</label>
-                        <input type="text" name="nama_perguruan" class="form-control" value="{{ old('nama_perguruan', optional($karyawan)->nama_perguruan) }}">
+                    <div class="form-group">
+                        <label>Nama Universitas / Sekolah</label>
+                        <input type="text" name="nama_perguruan"
+                               value="{{ old('nama_perguruan', optional($karyawan)->nama_perguruan) }}">
                     </div>
 
-                    <div class="col-md-12 mb-4">
-                        <label>File Ijazah (PDF/Foto)</label>
-                        <input type="file" name="file_ijazah" class="form-control" accept="image/*,.pdf">
+                    <div class="form-group form-full">
+                        <label>File Ijazah (PDF / Foto)</label>
+                        <input type="file" name="file_ijazah" accept="image/*,.pdf">
+
                         @if(optional($karyawan)->file_ijazah)
-                            <small class="text-success">File sudah ada: {{ $karyawan->file_ijazah }}</small>
+                            <span class="text-success">
+                                File sudah ada: {{ $karyawan->file_ijazah }}
+                            </span>
                         @endif
                     </div>
+
                 </div>
 
-                <div class="text-end mt-2">
-                    <button type="submit" class="btn btn-primary-custom">
+                <div class="form-footer">
+                    <button type="submit" class="btn-primary-custom">
                         Lanjut →
                     </button>
                 </div>

@@ -86,6 +86,7 @@
                     </a>
                 </li>
 
+              
                 {{-- ABSENSI --}}
                 <li class="nav-item has-treeview {{ request()->is('absensi*') ? 'menu-open' : '' }}">
                     <a href="#"
@@ -156,6 +157,15 @@
                                 <p>Tambah Admin</p>
                             </a>
                         </li>
+
+                            <li class="nav-item">
+                    <a href="{{ route('karyawan.tambah.index') }}"
+                       class="nav-link {{ request()->routeIs('karyawan.tambah.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-shield"></i>
+                        <p>Tambah Karyawan</p>
+                    </a>
+                </li>
+
 
                        {{-- ABSENSI --}}
                             <li class="nav-item has-treeview 

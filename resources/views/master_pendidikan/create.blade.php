@@ -1,42 +1,81 @@
 @extends('template.layout')
 @section('content')
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">Tambah Pendidikan</div>
+        <div class="card shadow-sm">
 
-<form action="{{ route ('master_pendidikan.store') }}" method="POST">
-    {{ csrf_field( ) }}
-            <div class="card-body">
+            <!-- Header -->
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold mb-0">
+                    Tambah Pendidikan
+                </h3>
+            </div>
 
- <div class="mb-3">
-<label name="nama_pendidikan" class="form-table">Pendidikan: </label>
-    <input type="text" class = "form-control" name="nama_pendidikan" value="{{old('nama_pendidikan')}}">
-@if($errors->has('nama_pendidikan'))
-<span class="text-danger">{{ $errors->first('nama_pendidikan')}}</span>   
-@endif
- </div>
+            <!-- Form -->
+            <form action="{{ route('master_pendidikan.store') }}" method="POST">
+                @csrf
 
-<div class="mb-3">
-<label name="kode_pendidikan" class="form-table">Kode Pendidikan:</label>
-  <input type="text" class = "form-control" name="kode_pendidikan"
-   value="{{old('kode_pendidikan')}}">
-</div>
+                <div class="card-body">
 
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-        <a href="{{route('master_pendidikan.index')}}" class="btn btn-success btn-sm">Kembali</a>
+                    <!-- Nama Pendidikan -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Pendidikan
+                        </label>
+                        <input type="text"
+                               name="nama_pendidikan"
+                               class="form-control @error('nama_pendidikan') is-invalid @enderror"
+                               value="{{ old('nama_pendidikan') }}"
+                               placeholder="Masukkan nama pendidikan">
+
+                        @error('nama_pendidikan')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Kode Pendidikan -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Kode Pendidikan
+                        </label>
+                        <input type="text"
+                               name="kode_pendidikan"
+                               class="form-control @error('kode_pendidikan') is-invalid @enderror"
+                               value="{{ old('kode_pendidikan') }}"
+                               placeholder="Masukkan kode pendidikan">
+
+                        @error('kode_pendidikan')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+
+                    <a href="{{ route('master_pendidikan.index') }}"
+                       class="btn btn-secondary btn-sm mr-2">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
-</form>
-        </div>
+
     </div>
-</div>
 </div>
 
 @endsection
-
-
-
-
- 

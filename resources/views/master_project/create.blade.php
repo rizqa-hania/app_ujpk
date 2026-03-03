@@ -1,42 +1,81 @@
 @extends('template.layout')
 @section('content')
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">Tambah Project </div>
+        <div class="card shadow-sm">
 
-<form action="{{ route ('master_project.store') }}" method="POST">
-    {{ csrf_field( ) }}
-            <div class="card-body">
+            <!-- Header -->
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold mb-0">
+                    Tambah Project
+                </h3>
+            </div>
 
- <div class="mb-3">
-<label name="nama_project" class="form-table">Project: </label>
-    <input type="text" class = "form-control" name="nama_project" value="{{old('nama_project')}}">
-@if($errors->has('nama_jabatan'))
-<span class="text-danger">{{ $errors->first('nama_jabatan')}}</span>   
-@endif
- </div>
+            <!-- Form -->
+            <form action="{{ route('master_project.store') }}" method="POST">
+                @csrf
 
-<div class="mb-3">
-<label name="kode_project" class="form-table">Kode Project:</label>
-  <input type="text" class = "form-control" name="kode_project"
-   value="{{old('kode_project')}}">
-</div>
+                <div class="card-body">
 
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-        <a href="{{route('master_project.index')}}" class="btn btn-success btn-sm">Kembali</a>
+                    <!-- Nama Project -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Project
+                        </label>
+                        <input type="text"
+                               name="nama_project"
+                               class="form-control @error('nama_project') is-invalid @enderror"
+                               value="{{ old('nama_project') }}"
+                               placeholder="Masukkan nama project">
+
+                        @error('nama_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Kode Project -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Kode Project
+                        </label>
+                        <input type="text"
+                               name="kode_project"
+                               class="form-control @error('kode_project') is-invalid @enderror"
+                               value="{{ old('kode_project') }}"
+                               placeholder="Masukkan kode project">
+
+                        @error('kode_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+
+                    <a href="{{ route('master_project.index') }}"
+                       class="btn btn-secondary btn-sm mr-2">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
-</form>
-        </div>
+
     </div>
-</div>
 </div>
 
 @endsection
-
-
-
-
- 
