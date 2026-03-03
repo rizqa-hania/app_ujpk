@@ -54,15 +54,14 @@ Route::delete('/admin/{Id}', [AdminController::class, 'destroy'])->name('admin.d
 
 
 // Auth
-Route::get('/', [AuthController::class,'showLogin'])->name('login');
+Route::get('/login', [AuthController::class,'showLogin'])->name('login');
+Route::get('/', function() { return redirect()->route('login'); });
 Route::post('/login', [AuthController::class,'login'])->name('login.process');
 Route::get('/register', [AuthController::class,'showRegister'])->name('register');
-Route::get('/register', [AuthController::class, 'showRegister']);
-Route::post('/send-otp', [AuthController::class, 'sendOtp']);
-Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
-Route::post('/complete-register', [AuthController::class, 'completeRegister']);
+Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send-otp');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify-otp');
+Route::post('/complete-register', [AuthController::class, 'completeRegister'])->name('complete-register');
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');
-
 // Admin Dashboard
 Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::get('/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');

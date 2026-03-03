@@ -1,42 +1,81 @@
 @extends('template.layout')
 @section('content')
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">Tambah Unit  </div>
+        <div class="card shadow-sm">
 
-<form action="{{ route ('master_unit_pln.store') }}" method="POST">
-    {{ csrf_field( ) }}
-            <div class="card-body">
+            <!-- Header -->
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold mb-0">
+                    Tambah Unit PLN
+                </h3>
+            </div>
 
- <div class="mb-3">
-<label name="nama_unit" class="form-table">Unit: </label>
-    <input type="text" class = "form-control" name="nama_unit" value="{{old('nama_unit')}}">
-@if($errors->has('nama_unit'))
-<span class="text-danger">{{ $errors->first('nama_unit')}}</span>   
-@endif
- </div>
+            <!-- Form -->
+            <form action="{{ route('master_unit_pln.store') }}" method="POST">
+                @csrf
 
-<div class="mb-3">
-<label name="kode_unit" class="form-table">Kode Unit:</label>
-  <input type="text" class = "form-control" name="kode_unit"
-   value="{{old('kode_unit')}}">
-</div>
+                <div class="card-body">
 
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-        <a href="{{route('master_unit_pln.index')}}" class="btn btn-success btn-sm">Kembali</a>
+                    <!-- Nama Unit -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Unit
+                        </label>
+                        <input type="text"
+                               name="nama_unit"
+                               class="form-control @error('nama_unit') is-invalid @enderror"
+                               value="{{ old('nama_unit') }}"
+                               placeholder="Masukkan nama unit">
+
+                        @error('nama_unit')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Kode Unit -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Kode Unit
+                        </label>
+                        <input type="text"
+                               name="kode_unit"
+                               class="form-control @error('kode_unit') is-invalid @enderror"
+                               value="{{ old('kode_unit') }}"
+                               placeholder="Masukkan kode unit">
+
+                        @error('kode_unit')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    
+                    <a href="{{ route('master_unit_pln.index') }}" 
+                       class="btn btn-secondary btn-sm mr-2">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
-</form>
-        </div>
+
     </div>
-</div>
 </div>
 
 @endsection
-
-
-
-
- 

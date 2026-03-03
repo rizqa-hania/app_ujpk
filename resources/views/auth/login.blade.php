@@ -33,10 +33,16 @@
         Login Admin & Karyawan
       </p>
 
-      {{-- Error Message --}}
+      {{-- Messages --}}
       @if(session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
+        </div>
+      @endif
+
+      @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
       @endif
 
@@ -83,7 +89,7 @@
       </a>
 
       <p class="mt-3 text-center">
-        <a href="/register">Belum punya akun? Daftar</a>
+        <a href="{{ route('register') }}">Belum punya akun? Daftar</a>
       </p>
 
     </div>

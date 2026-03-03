@@ -1,6 +1,13 @@
 @extends('template.layout')
 
 @section('content')
+<div class="row mb-3">
+    <div class="col-12">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
 

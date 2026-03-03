@@ -1,51 +1,87 @@
 <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
     .form-card {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         overflow: hidden;
     }
 
     .form-header {
         background: linear-gradient(135deg, #0d6efd, #0a58ca);
-        padding: 20px 30px;
+        padding: 22px 30px;
         color: white;
     }
 
     .form-header h5 {
         margin: 0;
         font-weight: 600;
+        font-size: 18px;
         letter-spacing: 0.5px;
-        font-size: 1.1rem;
     }
 
     .form-body {
         padding: 35px;
-        background-color: #ffffff;
     }
 
-    .form-control, .form-select {
-        border-radius: 10px;
-        padding: 12px 15px;
-        border: 1px solid #e0e6ed;
-        transition: 0.2s;
-        font-size: 0.95rem;
+    /* ✅ 2 KOLOM KE BAWAH */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 30px;
     }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13,110,253,.15);
+    .form-group {
+        display: flex;
+        flex-direction: column;
     }
 
     label {
         font-weight: 600;
         margin-bottom: 8px;
-        color: #34495e;
-        font-size: 0.9rem;
+        color: #2c3e50;
+        font-size: 14px;
     }
 
-    .mb-4 {
-        margin-bottom: 25px !important;
+    input, select, textarea {
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid #dfe6ed;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    /* Full 1 baris */
+    .form-full {
+        grid-column: span 2;
+    }
+
+    .form-footer {
+        margin-top: 35px;
+        text-align: right;
     }
 
     .btn-primary-custom {
@@ -54,20 +90,29 @@
         border-radius: 12px;
         padding: 12px 35px;
         font-weight: 600;
-        transition: 0.2s;
         color: white;
-        font-size: 0.95rem;
+        cursor: pointer;
+        transition: 0.2s ease;
+        font-size: 14px;
     }
 
     .btn-primary-custom:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(13,110,253,.35);
-        background: linear-gradient(135deg, #0b5ed7, #0956c9);
+    }
+
+    .alert {
+        background-color: #ffeaea;
+        color: #c0392b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 14px;
     }
 </style>
 
-<div class="container py-4">
-    <div class="card form-card">
+<div class="container">
+    <div class="form-card">
 
         <div class="form-header">
             <h5>Step 2 - Data Pribadi</h5>
@@ -77,86 +122,100 @@
             @csrf
 
             <div class="form-body">
+
                 @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                    <div class="alert">
+                        <ul style="margin:0; padding-left:18px;">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
-                <div class="row">
-                    <div class="col-md-6 mb-4">
+                <div class="form-grid">
+
+                    <div class="form-group">
                         <label>Foto Diri (3x4)</label>
-                        <input type="file" name="file_foto_diri" class="form-control" accept="image/*,.pdf">
-                        @if(optional($karyawan)->file_foto_diri)
-                            <small class="text-success">File sudah ada: {{ $karyawan->file_foto_diri }}</small>
-                        @endif
+                        <input type="file" name="file_foto_diri" accept="image/*,.pdf">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" class="form-control" value="{{ old('nama_lengkap', optional($karyawan)->nama_lengkap) }}">
+                        <input type="text" name="nama_lengkap"
+                               value="{{ old('nama_lengkap', optional($karyawan)->nama_lengkap) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Nama Panggilan</label>
-                        <input type="text" name="nama_panggilan" class="form-control" value="{{ old('nama_panggilan', optional($karyawan)->nama_panggilan) }}">
+                        <input type="text" name="nama_panggilan"
+                               value="{{ old('nama_panggilan', optional($karyawan)->nama_panggilan) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" class="form-control" value="{{ old('tempat_lahir', optional($karyawan)->tempat_lahir) }}">
+                        <input type="text" name="tempat_lahir"
+                               value="{{ old('tempat_lahir', optional($karyawan)->tempat_lahir) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', optional($karyawan)->tanggal_lahir) }}">
-                        @if(optional($karyawan)->tanggal_lahir)
-                            <small class="text-muted">Terakhir: {{ \Carbon\Carbon::parse(optional($karyawan)->tanggal_lahir)->format('d/m/Y') }}</small>
-                        @endif
+                        <input type="date" name="tanggal_lahir"
+                               value="{{ old('tanggal_lahir', optional($karyawan)->tanggal_lahir) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Jenis Kelamin</label>
-                        <select name="jenis_kelamin" class="form-control">
-                            <option value=""> Pilih </option>
-                            <option value="laki-laki" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="perempuan" {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        <select name="jenis_kelamin">
+                            <option value="">Pilih</option>
+                            <option value="laki-laki"
+                                {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'laki-laki' ? 'selected' : '' }}>
+                                Laki-laki
+                            </option>
+                            <option value="perempuan"
+                                {{ old('jenis_kelamin', optional($karyawan)->jenis_kelamin) == 'perempuan' ? 'selected' : '' }}>
+                                Perempuan
+                            </option>
                         </select>
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Agama</label>
-                        <input type="text" name="agama" class="form-control" value="{{ old('agama', optional($karyawan)->agama) }}">
+                        <input type="text" name="agama"
+                               value="{{ old('agama', optional($karyawan)->agama) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Suku Bangsa</label>
-                        <input type="text" name="suku_bangsa" class="form-control" value="{{ old('suku_bangsa', optional($karyawan)->suku_bangsa) }}">
+                        <input type="text" name="suku_bangsa"
+                               value="{{ old('suku_bangsa', optional($karyawan)->suku_bangsa) }}">
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Status Nikah</label>
-                        <select name="status_nikah" class="form-control">
-                            <option value=""> Pilih </option>
-                            <option value="belum_menikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'belum_menikah' ? 'selected' : '' }}>Belum Menikah</option>
-                            <option value="sudah_nikah" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'sudah_nikah' ? 'selected' : '' }}>Sudah Menikah</option>
-                            <option value="cerai" {{ old('status_nikah', optional($karyawan)->status_nikah) == 'cerai' ? 'selected' : '' }}>Cerai</option>
+                        <select name="status_nikah">
+                            <option value="">Pilih</option>
+                            <option value="belum_menikah">Belum Menikah</option>
+                            <option value="sudah_nikah">Sudah Menikah</option>
+                            <option value="cerai">Cerai</option>
                         </select>
                     </div>
 
-                    <div class="col-md-6 mb-4">
+                    <div class="form-group">
                         <label>Jumlah Anak</label>
-                        <input type="number" name="jumlah_anak" class="form-control" value="{{ old('jumlah_anak', optional($karyawan)->jumlah_anak) }}" min="0">
+                        <input type="number" name="jumlah_anak" min="0"
+                               value="{{ old('jumlah_anak', optional($karyawan)->jumlah_anak) }}">
                     </div>
 
-                    <div class="col-md-12 mb-4">
+                    <div class="form-group form-full">
                         <label>Alamat</label>
-                        <textarea name="alamat" class="form-control" rows="3">{{ old('alamat', optional($karyawan)->alamat) }}</textarea>
+                        <textarea name="alamat">{{ old('alamat', optional($karyawan)->alamat) }}</textarea>
                     </div>
+
                 </div>
 
-                <div class="text-end mt-2">
-                    <button type="submit" class="btn btn-primary-custom">
+                <div class="form-footer">
+                    <button type="submit" class="btn-primary-custom">
                         Lanjut →
                     </button>
                 </div>
