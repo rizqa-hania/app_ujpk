@@ -11,18 +11,41 @@
 </div>
 
 <div class="card">
-    <div class="card-header d-flex justify-content-between">
+    <div class="card-header">
 
+    <div class="d-flex justify-content-between align-items-center mb-2">
         <h5 class="mb-0">Data Izin</h5>
 
-        {{-- Hanya USER yang bisa ajukan izin --}}
         @if(Auth::user()->role == 'user')
             <a href="{{ route('izin.create') }}" class="btn btn-primary">
                 Ajukan Izin
             </a>
         @endif
-
     </div>
+
+    <!-- FORM SEARCH -->
+    <form method="GET" action="{{ route('izin.index') }}">
+        <div class="input-group input-group-sm" style="max-width: 300px;">
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Cari user / jenis / status / tanggal..."
+                   value="{{ request('search') }}">
+
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">
+                    Cari
+                </button>
+
+                <a href="{{ route('izin.index') }}"
+                   class="btn btn-outline-secondary">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+
+</div>
 
     <div class="card-body">
 
@@ -128,9 +151,11 @@
                 @endforelse
                 </tbody>
             </table>
+            <div class="mt-3">
+    {{ $dataIzin->withQueryString()->links() }}
+</div>
         </div>
 
     </div>
 </div>
-
 @endsection

@@ -64,4 +64,9 @@
         </div>
     </div>
 </div>
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush
 @endsection

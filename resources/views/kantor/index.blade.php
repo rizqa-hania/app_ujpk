@@ -32,3 +32,8 @@
     </tr>
     @endforeach
 </table>
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush

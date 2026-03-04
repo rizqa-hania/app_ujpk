@@ -76,57 +76,53 @@ Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::delete('/karyawan/{Id}', [KaryawanController::class, 'destroy'])->name('karyawan.tambah.destroy');
 
 //karyawan
-Route::prefix('karyawan')->name('karyawan.')->group(function () {
-   
+Route::prefix('karyawan')->name('karyawan.')->middleware(['auth'])->group(function () {
 
-    // Step 1 - Data Kerja
+    // Dashboard pakai middleware check profile
+    Route::get('/dashboard', [KaryawanController::class, 'dashboard'])
+        ->name('dashboard')
+        ->middleware('check.profile.complete');
+
+    // Step-step input data karyawan
     Route::get('/step1', [KaryawanController::class, 'step1'])->name('step1');
     Route::post('/step1', [KaryawanController::class, 'storestep1'])->name('storestep1');
-    
-    // Step 2 - Data Pribadi
+
     Route::get('/step2', [KaryawanController::class, 'step2'])->name('step2');
     Route::post('/step2', [KaryawanController::class, 'storestep2'])->name('storestep2');
-    
-    // Step 3 - Data Fisik
+
     Route::get('/step3', [KaryawanController::class, 'step3'])->name('step3');
     Route::post('/step3', [KaryawanController::class, 'storestep3'])->name('storestep3');
-    
-    // Step 4 - Kontak
+
     Route::get('/step4', [KaryawanController::class, 'step4'])->name('step4');
     Route::post('/step4', [KaryawanController::class, 'storestep4'])->name('storestep4');
-    
-    // Step 5 - Pendidikan
+
     Route::get('/step5', [KaryawanController::class, 'step5'])->name('step5');
     Route::post('/step5', [KaryawanController::class, 'storestep5'])->name('storestep5');
-    
-    // Step 6 - Identitas Resmi
+
     Route::get('/step6', [KaryawanController::class, 'step6'])->name('step6');
     Route::post('/step6', [KaryawanController::class, 'storestep6'])->name('storestep6');
-    
-    // Step 7 - Bank & BPJS
+
     Route::get('/step7', [KaryawanController::class, 'step7'])->name('step7');
     Route::post('/step7', [KaryawanController::class, 'storestep7'])->name('storestep7');
-    
-    // Step 8 - Dokumen
+
     Route::get('/step8', [KaryawanController::class, 'step8'])->name('step8');
     Route::post('/step8', [KaryawanController::class, 'storestep8'])->name('storestep8');
-    
-    // Step 9 - Pengalaman Kerja
+
     Route::get('/step9', [KaryawanController::class, 'step9'])->name('step9');
     Route::post('/step9', [KaryawanController::class, 'storestep9'])->name('storestep9');
-    
-    // Step 10 - Kesehatan
+
     Route::get('/step10', [KaryawanController::class, 'step10'])->name('step10');
     Route::post('/step10', [KaryawanController::class, 'storestep10'])->name('storestep10');
-    
-    // Step 11 - Driver/Satpam
+
     Route::get('/step11', [KaryawanController::class, 'step11'])->name('step11');
     Route::post('/step11', [KaryawanController::class, 'storestep11'])->name('storestep11');
-    
-    Route::get('/dashboard', [KaryawanController::class, 'dashboard'])->name('dashboard');
-    Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
+
+    // Profile
     Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [KaryawanController::class, 'updateProfile'])->name('profile.update');
+
+    // Optional finish route, biasanya nggak dipakai langsung
+    Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
 });
 
 

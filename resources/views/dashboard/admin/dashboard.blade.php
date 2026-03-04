@@ -1,15 +1,16 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 
 @section('content')
 
 <section class="content">
     <div class="container-fluid">
+        
 
         <div class="row">
 
             {{-- TAD --}}
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="small-box bg-primary elevation-3 dashboard-box">
+                <div class="small-box bg-primary elevation-3 dashboard-box" >
                     <div class="inner">
                         <h3>{{ $totalTad }}</h3>
                         <p>Total TAD</p>
@@ -152,7 +153,11 @@
             </div>
 
                <div class="col-lg-3 col-6">
-                <div class="small-box bg-indigo">
+<<<<<<< HEAD
+                <div class="small-box bg-indigo elevation-3 dashboard-box">
+=======
+                <div class="small-box bg-indigo dashboard-box">
+>>>>>>> 6a44499e5d30edd432739d668405ec4e17fd506b
                     <div class="inner">
                         <h3>{{ $totalKaryawan }}</h3>
                         <p>Total Karyawan</p>
@@ -160,8 +165,7 @@
                     <div class="icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <a href="{{ route('admin.karyawan.index') 
-                    }}" class="small-box-footer">
+                    <a href="{{ route('admin.karyawan.index')}}" class="small-box-footer">
                         Lihat Data <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
