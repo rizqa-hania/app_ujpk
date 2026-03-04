@@ -29,7 +29,7 @@
 
                         <div class="form-group">
                             <label>NIP</label>
-                            <input type="text" name="nip" class="form-control" required>
+                            <input type="text" name="nip" class="form-control" value="{{ auth()->user()->nip }}"required>
                         </div>
 
                         <div class="form-group">
@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="text-right">
-                            <a href="{{ route('lembur.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('karyawan.dashboard') }}" class="btn btn-secondary">
                                 Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">

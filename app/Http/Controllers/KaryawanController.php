@@ -534,23 +534,29 @@ class KaryawanController extends Controller
     /* ================= FINISH ================= */
 
     public function finish($karyawan = null)
-    {
-        if (!$karyawan) {
-            $karyawan = $this->getKaryawanOrFail();
-        }
-
-        $karyawan->update([
-            'tanggal_input' => now(),
-            'is_complete' => true
-        ]);
-
-        // Hapus session karyawan jika ada
-        session()->forget('karyawan_user_id');
-
-        return redirect()->route('karyawan.dashboard')
-            ->with('success', 'Selamat! Data karyawan berhasil disimpan lengkap.');
+{
+    if (!$karyawan) {
+        $karyawan = $this->getKaryawanOrFail();
     }
 
+    // Tandai karyawan selesai
+    $karyawan->update([
+        'tanggal_input' => now(),
+        'is_complete' => true
+    ]);
+
+    // Tandai profile lengkap di tabel users
+    $user = Auth::user();
+    $user->is_profile_complete = true;
+    $user->save();
+
+    // Hapus session sementara
+    session()->forget('karyawan_user_id');
+
+    // Redirect ke dashboard
+    return redirect()->route('karyawan.dashboard')
+        ->with('success', 'Selamat! Data karyawan berhasil disimpan lengkap.');
+}
     /* ================= PROFILE ================= */
 
     public function profile()

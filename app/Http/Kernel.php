@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
     'is_admin' => \App\Http\Middleware\IsAdmin::class,
     'is_karyawan' => \App\Http\Middleware\IsKaryawan::class,
         'check.step' => \App\Http\Middleware\CheckKaryawanStep::class,
+        'check.profile.complete' => \App\Http\Middleware\CheckProfileComplete::class,
 
        
 
