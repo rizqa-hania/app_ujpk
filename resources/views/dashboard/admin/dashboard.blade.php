@@ -4,6 +4,7 @@
 
 <section class="content">
     <div class="container-fluid">
+        
 
         <div class="row">
 
@@ -152,7 +153,7 @@
             </div>
 
                <div class="col-lg-3 col-6">
-                <div class="small-box bg-indigo">
+                <div class="small-box bg-indigo elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalKaryawan }}</h3>
                         <p>Total Karyawan</p>
@@ -160,8 +161,7 @@
                     <div class="icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <a href="{{ route('admin.karyawan.index') 
-                    }}" class="small-box-footer">
+                    <a href="{{ route('admin.karyawan.index')}}" class="small-box-footer">
                         Lihat Data <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>

@@ -9,15 +9,35 @@ use Carbon\Carbon;
 
 class IzinController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
-    if (Auth::user()->role == 'admin') {
-        $dataIzin = Izin::orderBy('created_at','desc')->get();
-    } else {
-        $dataIzin = Izin::where('user_id', Auth::id())
-                    ->orderBy('created_at','desc')
-                    ->get();
+    $query = Izin::with('user');
+
+    // Kalau user biasa → hanya lihat izin sendiri
+    if (auth()->user()->role == 'user') {
+        $query->where('user_id', auth()->id());
     }
+
+    // SEARCH
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where(function ($q) use ($search) {
+
+            $q->where('jenis', 'like', "%{$search}%")
+              ->orWhere('status', 'like', "%{$search}%")
+              ->orWhere('keterangan', 'like', "%{$search}%")
+              ->orWhere('tanggal_mulai', 'like', "%{$search}%")
+              ->orWhere('tanggal_selesai', 'like', "%{$search}%")
+              ->orWhereHas('user', function ($q2) use ($search) {
+                  $q2->where('name', 'like', "%{$search}%");
+              });
+
+        });
+    }
+
+    $dataIzin = $query->orderBy('created_at', 'desc')
+                      ->paginate(10);
 
     return view('izin.index', compact('dataIzin'));
 }

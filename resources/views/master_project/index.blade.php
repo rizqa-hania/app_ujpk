@@ -17,17 +17,42 @@
 
             <!-- Header -->
             <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <h3 class="card-title font-weight-bold mb-0">
-                        Data Master Project
-                    </h3>
 
-                    <a href="{{ route('master_project.create') }}" 
-                       class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Tambah Project
-                    </a>
-                </div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="card-title font-weight-bold mb-0">
+            Data Master Project
+        </h3>
+
+        <a href="{{ route('master_project.create') }}" 
+           class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Tambah Project
+        </a>
+    </div>
+
+    <!-- Form Search -->
+    <form method="GET" action="{{ route('master_project.index') }}">
+        <div class="input-group input-group-sm" style="max-width: 300px;">
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Cari kode / nama Project..."
+                   value="{{ request('search') }}">
+
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">
+                    Cari
+                </button>
+
+                <a href="{{ route('master_project.index') }}"
+                   class="btn btn-outline-secondary">
+                    Reset
+                </a>
             </div>
+        </div>
+    </form>
+
+</div>
+
 
             <!-- Body -->
             <div class="card-body p-0">
@@ -70,11 +95,13 @@
                     </tbody>
 
                 </table>
+                <div class="p-3">
+                    {{ $project->withQueryString()->links() }}
+                </div>
             </div>
 
         </div>
 
     </div>
 </div>
-
 @endsection

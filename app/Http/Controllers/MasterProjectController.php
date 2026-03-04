@@ -13,12 +13,24 @@ class MasterProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $project = MasterProject::orderBy('nama_project')->get();
-        return view('master_project.index', compact('project'));
+    public function index(Request $request)
+{
+    $query = MasterProject::query();
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where(function ($q) use ($search) {
+            $q->where('kode_project', 'like', "%{$search}%")
+              ->orWhere('nama_project', 'like', "%{$search}%");
+        });
     }
 
+    $project = $query->orderBy('nama_project')
+                     ->paginate(10);
+
+    return view('master_project.index', compact('project'));
+}
     /**
      * Show the form for creating a new resource.
      *

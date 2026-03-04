@@ -13,12 +13,24 @@ class MasterTadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $tad = MasterTad::orderBy('nama_tad')->get();
-        return view('master_tad.index', compact('tad'));
+    public function index(Request $request)
+{
+    $query = MasterTad::query();
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where(function ($q) use ($search) {
+            $q->where('kode_tad', 'like', "%{$search}%")
+              ->orWhere('nama_tad', 'like', "%{$search}%");
+        });
     }
 
+    $tad = $query->orderBy('nama_tad')
+                 ->paginate(10);
+
+    return view('master_tad.index', compact('tad'));
+}
     /**
      * Show the form for creating a new resource.
      *

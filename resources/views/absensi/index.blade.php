@@ -231,5 +231,9 @@ function submitAbsen() {
     closeCamera();
 }
 </script>
-
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush
 @endsection
