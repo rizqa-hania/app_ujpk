@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label>Jenis</label>
                             <select name="jenis" class="form-control" required>
-                                <option value="">-- Pilih Jenis --</option>
+                                <option value=""> Pilih Jenis </option>
                                 <option value="izin" {{ old('jenis')=='izin'?'selected':'' }}>Izin</option>
                                 <option value="cuti" {{ old('jenis')=='cuti'?'selected':'' }}>Cuti</option>
                                 <option value="sakit" {{ old('jenis')=='sakit'?'selected':'' }}>Sakit</option>
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="text-right">
-                            <a href="{{ route('izin.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('karyawan.dashboard') }}" class="btn btn-secondary">
                                 Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">

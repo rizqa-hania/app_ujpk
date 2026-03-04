@@ -9,17 +9,17 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="id" class="form-label">Nama Karyawan</label>
-                        <select name="nama" class="form-control" id="karyawan">
+                        <select name="karyawan_id" class="form-control" id="karyawan_id">
                             <option value="">-- Pilih Karyawan --</option>
                             @foreach($karyawan as $k)
-                            <option value="{{ $k->id }}" {{ old('id') == $k->id ? 'selected' : '' }}">{{ $k->nama_lengkap }}</option>
+                            <option value="{{ $k->id }}"  data-nip="{{$k->nip}}">{{ $k->nama_lengkap }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="nip">NIP (otomatis)</label>
-                        <input type="number" name="nip" id="nip" class="form-control" readonly required> 
+                        <input type="number" name="nip" id="nip" class="form-control" value="{{ auth()->user()->nip }}"  readonly required> 
                     </div>
                     <div class="mb-3">
                         <label for="kode" class="form-label">Kode Komponen</label>
@@ -51,6 +51,7 @@
     </div>
 </div>
 
+<!-- ini yang asli, yang punya mu ris hehe
 <script>
     document.getElementById('tipe').addEventListener('change', function () {
         let karyawanId = this.value;
@@ -70,5 +71,14 @@
             nipInput.value = '';
         }
     });
+</script>
+-->
+<script>
+document.getElementById('karyawan_id').addEventListener('change', function() {
+    let selectedOption = this.options[this.selectedIndex];
+    let nip = selectedOption.getAttribute('data-nip');
+    
+    document.getElementById('nip').value = nip ?? '';
+});
 </script>
 @endsection

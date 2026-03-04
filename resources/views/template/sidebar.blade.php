@@ -129,17 +129,18 @@
                                class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Penggajian</p>
-
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('lembur.index') }}"
-                               class="nav-link {{ request()->routeIs('lembur.index') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-overtime"></i>
-                                <p>Lembur</p>
+                         <li class="nav-item">
+                            <a href="{{ route('komponen.index') }}"
+                               class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Komponen</p>
                             </a>
                         </li>
+</ul>
+
+                            
                     @else
                         {{-- ADMIN MENU --}}
                         <li class="nav-item">
