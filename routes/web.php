@@ -195,6 +195,7 @@ Route::get('/komponen/create', [KomponenController::class, 'create'])->name('kom
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
 Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
 Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+Route::post('/komponen/import', [KomponenController::class, 'import'])->name('komponen.import');
 Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
 
 // DETAIL GAJI

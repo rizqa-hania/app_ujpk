@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\KomponenImport;
 use App\Komponen;
 
 class KomponenController extends Controller
@@ -112,5 +114,21 @@ class KomponenController extends Controller
     {
         Komponen::where('kode', $kode)->update(['status' => 2]);
         return redirect()->route('komponen.index');
+    }
+
+     public function import(Request $request) 
+    {
+        $request->validate([ 
+            'file' => 'required|mimes:xls,xlsx', 
+            ], [ 
+            'file.required' => 'file wajib di isi', 
+            ]); 
+
+            $file = $request->file('file'); 
+            $filename = $file->getClientOriginalName(); 
+
+            Excel::import(new KomponenImport, $file);
+
+            return redirect('/komponen')->with('success', 'Import file berhasil');
     }
 }

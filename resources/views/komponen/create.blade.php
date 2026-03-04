@@ -37,7 +37,7 @@
                         <select name="tipe_penghitungan" class="form-control">
                             <option value="">-- Pilih Tipe Penghitungan --</option>
                             <option value="nominal">Nominal (Tetap)</option>
-                            <option value="presentase">Persentase (%)</option>
+                            <option value="presentase">Presentase (%)</option>
                         </select>
                         @if ($errors->has('tipe_penghitungan'))
                         <span class="text-danger">{{ $errors->first('tipe_penghitungan') }}</span>
