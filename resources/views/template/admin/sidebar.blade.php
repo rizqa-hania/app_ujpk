@@ -222,7 +222,9 @@
                                     <a href="{{ route('penggajian.index') }}"
                                        class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Penggajian</p>
+                                        <p>
+                                            Penggajian
+                                        </p>
                                     </a>
                                 </li>
 

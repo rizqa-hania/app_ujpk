@@ -62,7 +62,7 @@
                                     @if($v->status == 0 || $v->status == 2) {{-- Jika Nonaktif --}}
                                         <form action="{{ route('komponen.aktif', $v->kode) }}" method="POST" class="mr-1">
                                             @csrf @method('PUT')
-                                            <button type="submit" class="btn btn-info btn-sm" onclick="return confirm('Aktifkan komponen ini?')">Aktifkan</button>
+                                            <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Aktifkan komponen ini?')">Aktifkan</button>
                                         </form>
                                     @else {{-- Jika Aktif --}}
                                         <form action="{{ route('komponen.nonaktif', $v->kode) }}" method="POST" class="mr-1">
@@ -70,7 +70,10 @@
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
                                         </form>
                                     @endif
-                                    
+                                    <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus komponen ini?')">Hapus</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
