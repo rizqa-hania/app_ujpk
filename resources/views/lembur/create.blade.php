@@ -25,12 +25,7 @@
                     @endif
 
                     <form action="{{ route('lembur.store') }}" method="POST">
-                        @csrf
-
-                        <div class="form-group">
-                            <label>NIP</label>
-                            <input type="text" name="nip" class="form-control" value="{{ auth()->user()->nip }}"required>
-                        </div>
+                        @csrf>
 
                         <div class="form-group">
                             <label>Tanggal Mulai</label>

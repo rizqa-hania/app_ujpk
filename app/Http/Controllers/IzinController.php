@@ -4,40 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\User;
 use App\Izin;
+use App\Absensi;
 use Carbon\Carbon;
 
 class IzinController extends Controller
 {
     public function index(Request $request)
 {
-    $query = Izin::with('user');
-
-    // Kalau user biasa → hanya lihat izin sendiri
-    if (auth()->user()->role == 'user') {
-        $query->where('user_id', auth()->id());
+    if(auth()->user()->role == 'admin'){
+        $query = Izin::with('user');
+    } else {
+        $query = Izin::where('user_id', auth()->id());
     }
 
-    // SEARCH
-    if ($request->filled('search')) {
-        $search = $request->search;
-
-        $query->where(function ($q) use ($search) {
-
-            $q->where('jenis', 'like', "%{$search}%")
-              ->orWhere('status', 'like', "%{$search}%")
-              ->orWhere('keterangan', 'like', "%{$search}%")
-              ->orWhere('tanggal_mulai', 'like', "%{$search}%")
-              ->orWhere('tanggal_selesai', 'like', "%{$search}%")
-              ->orWhereHas('user', function ($q2) use ($search) {
-                  $q2->where('name', 'like', "%{$search}%");
-              });
-
+    if($request->search){
+        $query->where(function($q) use ($request){
+            $q->where('jenis','like','%'.$request->search.'%')
+              ->orWhere('status','like','%'.$request->search.'%')
+              ->orWhere('tanggal_mulai','like','%'.$request->search.'%');
         });
     }
 
-    $dataIzin = $query->orderBy('created_at', 'desc')
-                      ->paginate(10);
+    $dataIzin = $query->latest()->paginate(10);
 
     return view('izin.index', compact('dataIzin'));
 }
@@ -53,29 +44,44 @@ class IzinController extends Controller
         'jenis' => 'required|in:izin,cuti,sakit',
         'tanggal_mulai' => 'required|date',
         'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-        'keterangan' => 'required',
-        'file_bukti' => 'nullable|mimes:jpg,png,pdf|max:2048'
+        'keterangan' => 'required|string',
+        'file_bukti' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048'
     ]);
 
-    $fileName = null;
+    $filePath = null;
 
-    if($request->hasFile('file_bukti')){
-        $fileName = time().'.'.$request->file('file_bukti')->extension();
-        $request->file('file_bukti')->move(public_path('bukti_izin'), $fileName);
+    if ($request->hasFile('file_bukti')) {
+        $filePath = $request->file('file_bukti')->store('bukti_izin', 'public');
     }
 
-    Izin::create([
-        'user_id' => Auth::id(),
-        'jenis' => $request->jenis, // TAMBAHAN
+    $izin = Izin::create([
+        'user_id' => auth()->id(),
+        'jenis' => $request->jenis,
         'tanggal_mulai' => $request->tanggal_mulai,
         'tanggal_selesai' => $request->tanggal_selesai,
         'keterangan' => $request->keterangan,
-        'file_bukti' => $fileName,
-        'status' => 'pending'
+        'file_bukti' => $filePath,
+        'status' => 'pending',
     ]);
 
+    // ambil semua admin
+    $admins = User::where('role','admin')->get();
+
+    foreach($admins as $admin){
+        Mail::raw(
+            "Ada pengajuan izin baru dari ".auth()->user()->name.
+            "\nJenis: ".$izin->jenis.
+            "\nTanggal: ".$izin->tanggal_mulai." sampai ".$izin->tanggal_selesai.
+            "\nKeterangan: ".$izin->keterangan,
+            function ($message) use ($admin) {
+                $message->to($admin->email)
+                        ->subject('Pengajuan Izin Baru');
+            }
+        );
+    }
+
     return redirect()->route('izin.index')
-        ->with('success','Pengajuan berhasil dikirim');
+        ->with('success','Pengajuan izin berhasil dikirim.');
 }
 
     public function edit($id)
@@ -119,33 +125,57 @@ class IzinController extends Controller
 
         return back()->with('success','Izin berhasil dihapus');
     }
-     public function approve($id)
+
+    public function approve($id)
 {
-    if (Auth::user()->role != 'admin') {
+    if(auth()->user()->role != 'admin'){
         abort(403);
     }
 
     $izin = Izin::findOrFail($id);
-    $izin->status = 'disetujui';
-    $izin->save();
 
-    return back()->with('success','Izin disetujui');
+    $izin->update([
+        'status' => 'disetujui'
+    ]);
+
+    $start = Carbon::parse($izin->tanggal_mulai);
+    $end   = Carbon::parse($izin->tanggal_selesai);
+
+    while ($start->lte($end)) {
+
+        Absensi::firstOrCreate(
+            [
+                'user_id' => $izin->user_id,
+                'tanggal' => $start->toDateString()
+            ],
+            [
+                'jam_masuk'    => null,
+                'jam_pulang'   => null,
+                'status_masuk' => null,
+                'status_pulang'=> null,
+                'status_final' => $izin->jenis
+            ]
+        );
+
+        $start->addDay();
+    }
+
+    return back()->with('success','Izin disetujui dan otomatis masuk absensi.');
 }
+
 
 public function reject($id)
 {
-    if (Auth::user()->role != 'admin') {
+    if(auth()->user()->role != 'admin'){
         abort(403);
     }
 
     $izin = Izin::findOrFail($id);
-    $izin->status = 'ditolak';
-    $izin->save();
 
-    return back()->with('success','Izin ditolak');
-}
-public function __construct()
-{
-    $this->middleware('auth');
+    $izin->update([
+        'status' => 'ditolak'
+    ]);
+
+    return back()->with('success','Izin ditolak.');
 }
 }

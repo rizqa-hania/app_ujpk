@@ -23,6 +23,21 @@ use App\Http\Controllers\IzinController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Mail;
+
+
+//COBA EMAIL
+Route::get('/test-mail', function () {
+
+    Mail::raw('Ini email test dari Laravel', function ($message) {
+        $message->to('zazqia.almaddina01@gmail.com')->subject('Test Email Laravel');
+    });
+
+    return "Email berhasil dikirim!";
+});
+
+
+
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -32,7 +47,7 @@ Route::get('/auth/google/callback', function () {
 
     $googleUser = Socialite::driver('google')->user();
 
-    $user = \App\Models\User::updateOrCreate(
+    $user = User::updateOrCreate(
         ['email' => $googleUser->email],
         [
             'name' => $googleUser->name,
@@ -217,14 +232,22 @@ Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.sc
 IZIN
 =========================
 */
-Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');
-Route::get('/izin/create', [IzinController::class, 'create'])->name('izin.create');
-Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store');
-Route::delete('/izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
-Route::get('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
-Route::get('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+
 
 //JADWAL ABSENSI
 Route::get('/jadwal-absensi', [JadwalAbsensiController::class, 'index'])->name('jadwal.index');
 Route::post('/jadwal-absensi/update', [JadwalAbsensiController::class, 'update'])->name('jadwal.update');
+Route::middleware(['auth'])->group(function(){
 
+    // CRUD Izin
+    Route::get('izin', [IzinController::class, 'index'])->name('izin.index');
+    Route::get('izin/create', [IzinController::class, 'create'])->name('izin.create');
+    Route::post('izin', [IzinController::class, 'store'])->name('izin.store');
+    Route::get('izin/{id}/edit', [IzinController::class, 'edit'])->name('izin.edit');
+    Route::put('izin/{id}', [IzinController::class, 'update'])->name('izin.update');
+    Route::delete('izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
+
+    // Approve / Reject (Admin Only)
+   Route::get('izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
+Route::get('izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+});

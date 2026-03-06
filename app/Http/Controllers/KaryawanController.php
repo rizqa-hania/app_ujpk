@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use App\Karyawan;
 use App\Jabatan;
 use App\MasterUnitPln;
@@ -132,16 +133,24 @@ class KaryawanController extends Controller
 
     /* ================= DASHBOARD ================= */
 
-    public function dashboard()
-    {
-        $karyawan = $this->getKaryawan();
-        
-        if (!$karyawan || !$karyawan->is_complete) {
-            return redirect()->route('karyawan.step1');
-        }
-
-        return view('dashboard.karyawan.dashboard', compact('karyawan'));
+   public function dashboard()
+{
+    $karyawan = $this->getKaryawan();
+    
+    if (!$karyawan || !$karyawan->is_complete) {
+        return redirect()->route('karyawan.step1');
     }
+
+    $today = Carbon::today();
+
+    $ulangTahunHariIni = Karyawan::whereMonth('tanggal_lahir', $today->month)
+        ->whereDay('tanggal_lahir', $today->day)
+        ->get();
+
+    return view('dashboard.karyawan.dashboard', 
+        compact('karyawan', 'ulangTahunHariIni')
+    );
+}
 
     /* ================= STEP 1: DATA KERJA ================= */
 

@@ -5,6 +5,24 @@
 <section class="content">
 <div class="container-fluid">
 
+    {{-- NOTIF ULANG TAHUN --}}
+    @if(isset($ulangTahunHariIni) && $ulangTahunHariIni->count() > 0)
+        <div class="alert alert-warning alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>🎉 Ulang Tahun Hari Ini!</strong>
+            <ul class="mb-0 mt-2">
+                @foreach($ulangTahunHariIni as $k)
+                    <li>
+                        {{ $k->nama_lengkap }}
+                        ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+<section class="content">
+<div class="container-fluid">
+
     <!-- PROFILE CARD -->
     <div class="row mb-4">
         <div class="col-md-12">

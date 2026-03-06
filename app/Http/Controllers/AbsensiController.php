@@ -31,17 +31,26 @@ class AbsensiController extends Controller
         $now    = Carbon::now();
         $today  = $now->toDateString();
 
+        /*
+        =========================================
+        CEK APAKAH HARI INI STATUS IZIN
+        =========================================
+        */
+
+        $cekIzin = Absensi::where('user_id', $userId)
+            ->where('tanggal', $today)
+            ->whereIn('status_final', ['izin','cuti','sakit'])
+            ->first();
+
+        if ($cekIzin) {
+            return back()->with('error', 'Hari ini Anda sedang '.$cekIzin->status_final);
+        }
+
         $jadwal = JadwalAbsensi::first();
 
         if (!$jadwal) {
             return back()->with('error', 'Jadwal belum disetting');
         }
-
-        /*
-        =========================================
-        MAPPING HARI INGGRIS → INDONESIA
-        =========================================
-        */
 
         $mapHari = [
             'monday'    => 'senin',
@@ -60,12 +69,6 @@ class AbsensiController extends Controller
         }
 
         $hari = $mapHari[$hariInggris];
-
-        /*
-        =========================================
-        CEK APAKAH HARI AKTIF
-        =========================================
-        */
 
         if (!$jadwal->$hari) {
             return back()->with('error', 'Hari ini bukan hari kerja');

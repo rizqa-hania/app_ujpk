@@ -29,25 +29,27 @@ class LemburController extends Controller
 public function store(Request $request)
 {
     $request->validate([
-        'nip' => 'required',
         'tanggal_mulai' => 'required|date',
         'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-        'jam_mulai' => 'required',
-        'jam_selesai' => 'required',
+        'jam_mulai' => 'required|date_format:H:i',
+        'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+        'keterangan' => 'nullable|string'
     ]);
 
-    // Cari karyawan berdasarkan NIP
-    $karyawan = Karyawan::where('nip', $request->nip)->first();
+    $user = Auth::user();
+
+    // pastikan user punya relasi karyawan
+    $karyawan = Karyawan::where('nip', $user->nip)->first();
 
     if (!$karyawan) {
         return back()->withErrors([
-            'nip' => 'NIP tidak ditemukan di data karyawan'
-        ])->withInput();
+            'error' => 'Data karyawan tidak ditemukan'
+        ]);
     }
 
     Lembur::create([
-        'nip' => $request->nip,
-        'karyawan_id' => $karyawan->id, // karena PK = id
+        'nip' => $karyawan->nip,
+        'karyawan_id' => $karyawan->id,
         'tanggal_mulai' => $request->tanggal_mulai,
         'tanggal_selesai' => $request->tanggal_selesai,
         'jam_mulai' => $request->jam_mulai,

@@ -31,7 +31,7 @@
 
             <!-- Body -->
             <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0">
+                <table id="table" class="table table-hover table-striped mb-0">
                     <thead class="bg-light">
                         <tr>
                             <th width="20%">Kode Unit</th>
