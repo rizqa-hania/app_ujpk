@@ -166,7 +166,10 @@
             </div>
 
                <div class="col-lg-3 col-6">
+<<<<<<< HEAD
 
+=======
+>>>>>>> c8517597ca4390d0549784e2c98932ebace98710
                 <div class="small-box bg-indigo elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalKaryawan }}</h3>
