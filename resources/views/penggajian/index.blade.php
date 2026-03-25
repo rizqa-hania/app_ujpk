@@ -6,7 +6,7 @@
             <div class="card-header">
                 <h3 class="card-title">Data Periode Penggajian</h3> 
                 <div class="card-tools">
-                    <a href="{{ route('penggajian.create') }}" class="btn btn-primary btn-sm"> + Periode Gaji</a>
+                    <a href="{{ route('penggajian.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Periode Gaji</a>
                 </div>
             </div>
             <div class="card-body table-responsive"> 
@@ -41,9 +41,10 @@
                                     <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}" method="POST">
                                         {{ csrf_field() }}
                                         @method('DELETE')
-                                        <a href="{{ route('detail.index', $v->penggajian_id) }}">Detail</a>
+                                        <a href="{{ route('detail.index', $v->penggajian_id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-eye"></i> Detail</a>
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">
-                                            Hapus
+                                           <i class="fas fa-trash"> Hapus</i>
                                         </button>
                                     </form>
                                 </td>
@@ -56,3 +57,8 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush

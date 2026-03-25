@@ -214,6 +214,7 @@ Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name(
 Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
+Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');
 
 //ABSENSI
 Route::middleware(['auth'])->group(function(){

@@ -3,20 +3,23 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header flex">
-                <h3 class="card-title">Data Komponen Gaji</h3>
-                <div class="card-tools">
-                <a href="{{ route('komponen.create') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> Komponen
-                </a>
-                <form action="{{ route('komponen.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" class="form-control" name="file">
-                    @error('file')
-                    <p style="color: red;">{{ $message }}</p>
-                    @enderror
-                    <button class="btn btn-info" type="submit">Import File Excel</button>
-                </form>
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h3 class="card-title">Data Komponen Gaji</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <form action="{{ route('komponen.import') }}" method="POST" enctype="multipart/form-data" style="display:inline-block;">
+                            @csrf
+                            <input type="file" name="file" class="form-control form-control-sm d-inline-block" style="width:180px;">
+                            <button class="btn btn-info btn-sm" type="submit">
+                               <i class="fas fa-file-excel"></i> Import File Excel
+                            </button>
+                        </form>
+                        <a href="{{ route('komponen.create') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Komponen 
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card-body table-responsive">
@@ -31,7 +34,7 @@
                             <th>Nilai</th>
                             <th>Status</th>
                             <th>Aksi</th>
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach ($komponen as $v)

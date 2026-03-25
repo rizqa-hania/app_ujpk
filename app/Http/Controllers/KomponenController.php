@@ -116,11 +116,11 @@ class KomponenController extends Controller
         return redirect()->route('komponen.index');
     }
 
-     public function import(Request $request) 
+    public function import(Request $request) 
     {
         $request->validate([ 
-            'file' => 'required|mimes:xls,xlsx', 
-            ], [ 
+            'file' => 'required|mimes:xls,xlsx', ],
+            [ 
             'file.required' => 'file wajib di isi', 
             ]); 
 

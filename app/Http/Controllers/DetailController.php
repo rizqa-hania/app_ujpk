@@ -8,6 +8,8 @@ use App\Penggajian;
 use App\Karyawan;
 use App\Komponen;
 use App\DetailKomponen;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class DetailController extends Controller
 {
@@ -45,25 +47,54 @@ class DetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $detail_id)
+    public function store(Request $request, $penggajian_id)
     {
         $request->validate([
-            'nama'             => 'required|string',
-            'nip'              => 'required|string|max:255|unique:karyawan',
+            'karyawan_id'      => 'required',
+            'nip'              => 'required|string|max:255',
+            'kode'             => 'required',
             'tipe'             => 'required',
             'nilai'            => 'required|numeric',
         ]);
 
-        $detail = Detail::findOrFail($detail_id);
+        // Cek apakah karyawan ini sudah dibuatkan form detailnya di bulan/penggajian ini, 
+        // Jika blm ada, buat auto; jika sdh ada, cukup tambahkan detail ke komponennya sja.
+        $detail = Detail::firstOrCreate(
+            [
+                'penggajian_id' => $penggajian_id,
+                'id'            => $request->karyawan_id // id di tabel detail digunakan sbg foreign karyawan (yg dinput adalah karyawan_id dr form)
+            ],
+            [
+                'kode'             => $request->kode,
+                'total_pendapatan' => 0,
+                'total_potongan'   => 0,
+                'gaji_bersih'      => 0
+            ]
+        );
+
+        // Perbaikan database: Hapus foreign key 'tipe' jika masih ada (karena kesalahan migration asli)
+        try {
+            if (Schema::hasColumn('detail_komponen', 'tipe')) {
+                Schema::table('detail_komponen', function ($table) {
+                    // Cek apakah FK ini ada, jika iya hapus.
+                    // Ini untuk mengatasi error "Integrity constraint violation"
+                    $table->dropForeign('detail_komponen_tipe_foreign');
+                });
+            }
+        } catch (\Exception $e) {
+            // Abaikan jika sudah terhapus atau tidak ada
+        }
 
         DetailKomponen::create([
-            'nama'             => $request->nama,
+            'detail_id'        => $detail->detail_id,
             'nip'              => $request->nip,
+            'kode'             => $request->kode,
             'tipe'             => $request->tipe,
             'nilai'            => $request->nilai
         ]);
 
-        return redirect()->route('detail.index', $request->penggajian_id);
+        // Opsional: Boleh dibuat auto-calculating juga untuk Total Pendapatan dll disini.
+        return redirect()->route('detail.index', $penggajian_id);
     }
 
     /**
@@ -110,7 +141,8 @@ class DetailController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Detail::where('detail_id', $id)->delete();
+        return redirect()->route('detail.index');
     }
 
     public function tambahkomponen()
