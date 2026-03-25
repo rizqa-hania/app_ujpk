@@ -23,7 +23,7 @@
 <div class="login-box">
   
   <div class="login-logo">
-    <b>APP</b>UJPK
+    <b>UJPK</b>
   </div>
 
   <div class="card card-outline card-primary">

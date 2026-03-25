@@ -38,7 +38,6 @@
                 <i class="fas fa-search fa-fw"></i>
             </button>
         </div>
-    </div>
 </div>
 
 <!-- Sidebar Menu -->
