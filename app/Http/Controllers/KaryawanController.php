@@ -21,6 +21,7 @@ class KaryawanController extends Controller
 
     public function index()
     {
+      
         $karyawans = User::where('role', 'karyawan')->get();
         return view('karyawan.tambah.index', compact('karyawans'));
     }
@@ -35,12 +36,16 @@ class KaryawanController extends Controller
         $request->validate([
             'name' => 'required',
            'nip' => 'required|numeric|unique:users,nip',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6'
         ]);
 
         User::create([
         'name' => $request->name,
         'nip' => $request->nip,
+        'email' => $request->email,
+        'tanggal_mulai_aktif' => $request->tanggal_mulai_aktif,
+        'unit_penempatan' => $request->unit_penempatan,
         'password' => Hash::make($request->password),
         'role' => 'karyawan'
 ]);
@@ -178,9 +183,9 @@ class KaryawanController extends Controller
             'tad_id' => 'required',
             'project_id' => 'required',
             'pendidikan_id' => 'required',
-            'tanggal_mulai_aktif' => 'required',
+              'tanggal_mulai_aktif' => 'required',
             'unit_penempatan' => 'required',
-            'status_karyawan' => 'required',
+                    'status_karyawan' => 'required',
             'keterangan' => 'nullable',
         ]);
 

@@ -14,12 +14,16 @@ class DashboardController extends Controller {
         $ulangTahunHariIni = Karyawan::whereMonth('tanggal_lahir', $today->month)
         ->whereDay('tanggal_lahir', $today->day)
         ->get();
+        $totalAbsensi = Absensi::where('karyawan_id', auth()->id())->count();
+        $totalIzin = Izin::where('karyawan_id', auth()->id())->count();
+        $totalLembur = Lembur::where('karyawan_id', auth()->id())->count();
+
         
         // Load karyawan with relationships
         $karyawan = Karyawan::where('user_id', $user->user_id)
             ->with(['jabatan', 'unitpln', 'subunit', 'tad', 'project', 'pendidikan'])
             ->first();
         
-        return view('dashboard.karyawan.dashboard', compact('karyawan', 'user','ulangTahunHariIni'));
-    }
+        return view('dashboard.karyawan.dashboard', compact('karyawan', 'user','ulangTahunHariIni','totalAbsensi','totalIzin','totalLembur'));
+         }
 }

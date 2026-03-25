@@ -1,5 +1,5 @@
 <!-- -->
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
  <div class="col-12">
         <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">

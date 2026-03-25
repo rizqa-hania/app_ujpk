@@ -23,6 +23,11 @@ class Lembur extends Model
 
     public function karyawan()
 {
-    return $this->belongsTo(Karyawan::class, 'karyawan_id', 'id');
+    return $this->belongsTo(Karyawan::class, 'karyawan_id');
 }
+
+public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

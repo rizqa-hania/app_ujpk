@@ -226,7 +226,7 @@
 
                     <div class="form-group">
                         <label>Tanggal Mulai Aktif</label>
-                        <input type="date" name="tanggal_mulai_aktif" value="{{ old('tanggal_mulai_aktif', optional($karyawan)->tanggal_mulai_aktif) }}">
+                        <input type="date" name="tanggal_mulai_aktif" value="value="{{ $user->tanggal_mulai_aktif }}"">
                         @if(optional($karyawan)->tanggal_mulai_aktif)
                             <small class="text-muted">
                                 Terakhir: {{ \Carbon\Carbon::parse(optional($karyawan)->tanggal_mulai_aktif)->format('d/m/Y') }}
@@ -236,7 +236,7 @@
 
                     <div class="form-group">
                         <label>Unit Penempatan</label>
-                        <input type="text" name="unit_penempatan" value="{{ old('unit_penempatan', optional($karyawan)->unit_penempatan) }}">
+                        <input type="text" name="unit_penempatan" value="value="{{ $user->unit_penempatan }}"">
                     </div>
 
                     <div class="form-group">

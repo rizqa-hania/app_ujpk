@@ -2,18 +2,42 @@
 
 return [
 
-    'default' => env('MAIL_MAILER', 'log'),
+     'default' => env('MAIL_MAILER', 'smtp'),
 
     'mailers' => [
+
         'smtp' => [
-            'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+    'transport' => 'smtp',
+    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'port' => env('MAIL_PORT', 587),
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'username' => env('MAIL_USERNAME'),
+    'password' => env('MAIL_PASSWORD'),
+    'timeout' => null,
+    'auth_mode' => null,
+    // Tambahkan ini jika error SSL muncul:
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],
+],
+
+        'log' => [
+            'transport' => 'log',
         ],
 
+        'array' => [
+            'transport' => 'array',
+        ],
+
+
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('MAIL_FROM_NAME'),
+    ],
         'ses' => [
             'transport' => 'ses',
         ],
