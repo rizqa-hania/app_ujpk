@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/test-mail', function () {
 
     Mail::raw('Ini email test dari Laravel', function ($message) {
-        $message->to('zazqia.almaddina01@gmail.com')->subject('Test Email Laravel');
+        $message->to('muhammadikhwan@gmail.com')->subject('Test Email Laravel');
     });
 
     return "Email berhasil dikirim!";
@@ -188,11 +188,17 @@ Route::get('/masterjabatan/create', [MasterJabatanController::class, 'create'])-
 Route::post('/masterjabatan', [MasterJabatanController::class, 'store'])->name('master_jabatan.store');
 Route::delete('/masterjabatan/{id}',[MasterJabatanController::class,'destroy'])->name('master_jabatan.destroy');
 
-//LEMBUR
-Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
-Route::get('/lembur/create', [LemburController::class, 'create'])->name('lembur.create');
-Route::post('/lembur', [LemburController::class, 'store'])->name('lembur.store');
-Route::put('/lembur/{lembur}/status', [LemburController::class, 'updateStatus'])->name('lembur.status');
+// LEMBUR
+Route::middleware(['auth'])->group(function() {
+
+    Route::get('lembur', [LemburController::class, 'index'])->name('lembur.index');
+
+    Route::get('lembur/create', [LemburController::class, 'create'])->name('lembur.create');
+    Route::post('lembur/store', [LemburController::class, 'store'])->name('lembur.store');
+
+    Route::post('/lembur/{id}/approve', [LemburController::class, 'approve'])->name('lembur.approve');
+    Route::post('/lembur/{id}/reject', [LemburController::class, 'reject'])->name('lembur.reject');
+});
 
 // PENGGAJIAN
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
@@ -247,8 +253,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('izin/{id}/edit', [IzinController::class, 'edit'])->name('izin.edit');
     Route::put('izin/{id}', [IzinController::class, 'update'])->name('izin.update');
     Route::delete('izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
-
-    // Approve / Reject (Admin Only)
-   Route::get('izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
-Route::get('izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+    Route::post('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
+    Route::post('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
 });

@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 
 @section('content')
 
@@ -11,12 +11,12 @@
 </div>
 
 <div class="card">
+
     <div class="card-header">
 
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="mb-0">Data Izin</h5>
 
-            {{-- Tombol Ajukan Izin hanya untuk karyawan --}}
             @if(Auth::user()->role == 'user')
                 <a href="{{ route('izin.create') }}" class="btn btn-primary">
                     Ajukan Izin
@@ -24,25 +24,26 @@
             @endif
         </div>
 
-        <!-- FORM SEARCH -->
+        <!-- SEARCH -->
         <form method="GET" action="{{ route('izin.index') }}">
-            <div class="input-group input-group-sm" style="max-width: 300px;">
-                <input type="text"
-                       name="search"
-                       class="form-control"
-                       placeholder="Cari user / jenis / status / tanggal..."
-                       value="{{ request('search') }}">
+            <div class="input-group input-group-sm" style="max-width:300px">
+
+                <input 
+                    type="text" 
+                    name="search"
+                    class="form-control"
+                    placeholder="Cari user / jenis / status / tanggal..."
+                    value="{{ request('search') }}"
+                >
 
                 <div class="input-group-append">
-                    <button type="submit" class="btn btn-secondary">
-                        Cari
-                    </button>
+                    <button type="submit" class="btn btn-secondary">Cari</button>
 
-                    <a href="{{ route('izin.index') }}"
-                       class="btn btn-outline-secondary">
+                    <a href="{{ route('izin.index') }}" class="btn btn-outline-secondary">
                         Reset
                     </a>
                 </div>
+
             </div>
         </form>
 
@@ -57,35 +58,34 @@
         @endif
 
         <div class="table-responsive">
+
             <table class="table table-bordered table-striped">
+
                 <thead class="thead-light">
                     <tr>
-                        {{-- Kolom User hanya untuk admin --}}
-                        @if(Auth::user()->role == 'admin')
-                            <th>User</th>
-                        @endif
+
+                        <th>User</th>
                         <th>Jenis</th>
                         <th>Tanggal</th>
                         <th>Keterangan</th>
                         <th>Status</th>
+                       
 
-                        {{-- Kolom Aksi hanya untuk admin --}}
                         @if(Auth::user()->role == 'admin')
-                            <th width="200">Aksi</th>
+                        <th width="200">Aksi</th>
                         @endif
+
                     </tr>
                 </thead>
 
                 <tbody>
-                @forelse($dataIzin as $item)
-                    <tr>
-                        {{-- USER (ADMIN ONLY) --}}
-                        @if(Auth::user()->role == 'admin')
-                            <td>{{ $item->user->name ?? '-' }}</td>
-                        @endif
 
-                        {{-- JENIS --}}
-                        <td>
+                    @forelse($dataIzin as $item)
+                    <tr>
+
+                       
+                            <td>{{ $item->user->name ?? '-' }}</td>
+                            <td>
                             @if($item->jenis == 'izin')
                                 <span class="badge badge-info">Izin</span>
                             @elseif($item->jenis == 'cuti')
@@ -95,13 +95,16 @@
                             @endif
                         </td>
 
-                        {{-- TANGGAL --}}
-                        <td>{{ $item->tanggal_mulai }} s/d {{ $item->tanggal_selesai }}</td>
+                        <td>
+                            {{ $item->tanggal_mulai }} 
+                            s/d 
+                            {{ $item->tanggal_selesai }}
+                        </td>
 
-                        {{-- KETERANGAN --}}
-                        <td>{{ $item->keterangan }}</td>
+                        <td>
+                            {{ $item->keterangan }}
+                        </td>
 
-                        {{-- STATUS --}}
                         <td>
                             @if($item->status == 'pending')
                                 <span class="badge badge-warning">Pending</span>
@@ -112,43 +115,58 @@
                             @endif
                         </td>
 
-                        {{-- AKSI (Hanya untuk admin) --}}
-                        @if(Auth::user()->role == 'admin')
-                            <td>
-                                @if($item->status == 'pending')
-                                    <a href="{{ route('izin.approve', $item->izin_id) }}" 
-                                       class="btn btn-sm btn-success">Setujui</a>
-                                    <a href="{{ route('izin.reject', $item->izin_id) }}" 
-                                       class="btn btn-sm btn-danger">Tolak</a>
-                                @else
-                                    <span class="text-muted">Tidak ada aksi</span>
-                                @endif
-                            </td>
+                        <td>
+
+                        @php
+                            $role = strtolower(Auth::user()->role ?? '');
+                        @endphp
+                        @if($role == 'admin')
+
+                            @if($item->status == 'pending')
+
+                                <form action="{{ route('izin.approve', $item->izin_id) }}" method="POST" style="display:inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Setujui
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('izin.reject', $item->izin_id) }}" method="POST" style="display:inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Tolak
+                                    </button>
+                                </form>
+
+                            @else
+                                <span class="text-muted">Tidak ada aksi</span>
+                            @endif
+
+                        {{-- USER --}}
+                        @else
+
+                            @if($item->status == 'pending')
+                                <span class="text-muted">Menunggu persetujuan</span>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+
                         @endif
 
-                        {{-- Kalau mau, untuk karyawan, tambah tombol hapus jika status pending --}}
-                        @if(Auth::user()->role == 'user' && $item->status == 'pending')
-                            <td>
-                                <form action="{{ route('izin.destroy', $item->izin_id) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus izin ini?')" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">Hapus</button>
-                                </form>
-                            </td>
-                        @elseif(Auth::user()->role == 'user')
-                            {{-- Kalau gak mau tombol hapus, bisa kosongin --}}
-                            <td></td>
-                        @endif
+                    </td>
 
                     </tr>
-                @empty
+
+                    @empty
                     <tr>
                         <td colspan="{{ Auth::user()->role == 'admin' ? 6 : 5 }}" class="text-center">
                             Belum ada data izin
                         </td>
                     </tr>
-                @endforelse
+                    @endforelse
+
                 </tbody>
+
             </table>
 
             <div class="mt-3">
@@ -158,6 +176,7 @@
         </div>
 
     </div>
+
 </div>
 
 @endsection

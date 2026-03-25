@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Karyawan PT UJPK</title>
+
+  <!-- Favicon / Logo -->
+<link rel="icon" href="assets/images/logo.png" type="image/png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -13,8 +15,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('AdminLTE/dist/css/adminlte.min.css')}}">
   <!-- Datatables -->
-   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap4.css">
-   @stack('css')
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap4.css">
+  @stack('css')
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -22,9 +24,6 @@
   <!-- Navbar -->
   @include('template.navbar')
   <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  @include('template.karyawan.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -56,6 +55,11 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- Sidebar sekarang di bawah konten -->
+  <div class="container-fluid mt-4">
+    @include('template.karyawan.sidebar')
+  </div>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

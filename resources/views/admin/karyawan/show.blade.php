@@ -146,8 +146,8 @@ $karyawan = $user->karyawan;
                                         <td>{{ $karyawan->tanggal_mulai_aktif ? date('d-m-Y', strtotime($karyawan->tanggal_mulai_aktif)) : '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Status Kontrak</th>
-                                        <td>{{ ucwords(str_replace('_', ' ', $karyawan->status_kontrak ?? '-')) }}</td>
+                                        <th>Status Karyawan</th>
+                                        <td>{{ ucwords(str_replace('_', ' ', $karyawan->status_karyawan ?? '-')) }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -198,20 +198,20 @@ $karyawan = $user->karyawan;
                                         <td>{{ $karyawan->berat_badan ? $karyawan->berat_badan . ' kg' : '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Warna Kulit</th>
-                                        <td>{{ $karyawan->warna_kulit ?? '-' }}</td>
+                                        <th>Ukuran Baju</th>
+                                        <td>{{ $karyawan->ukuran_baju ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Warna Rambut</th>
-                                        <td>{{ $karyawan->warna_rambut ?? '-' }}</td>
+                                        <th>Ukuran Celana</th>
+                                        <td>{{ $karyawan->ukuran_celana ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Bentuk Muka</th>
-                                        <td>{{ $karyawan->bentuk_muka ?? '-' }}</td>
+                                        <th>Ukuran Sepatu</th>
+                                        <td>{{ $karyawan->ukuran_sepatu ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Ciri Khas</th>
-                                        <td>{{ $karyawan->ciri_khas ?? '-' }}</td>
+                                        <th>Gologan Darah</th>
+                                        <td>{{ $karyawan->gol_darah ?? '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -230,6 +230,16 @@ $karyawan = $user->karyawan;
                                     <tr>
                                         <th>Email Pribadi</th>
                                         <td>{{ $karyawan->email_pribadi ?? '-' }}</td>
+                                    </tr>
+
+                                     <tr>
+                                        <th>Instagram</th>
+                                        <td>{{ $karyawan->instagram ?? '-' }}</td>
+                                    </tr>
+
+                                     <tr>
+                                        <th>Facebook</th>
+                                        <td>{{ $karyawan->facebook ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Alamat</th>
@@ -257,7 +267,7 @@ $karyawan = $user->karyawan;
                                         <th>Nama Sekolah/Univ</th>
                                         <td>{{ $karyawan->nama_sekolah ?? '-' }}</td>
                                     </tr>
-                                    <tr>
+                                  <!--  <tr>
                                         <th>Jurusan</th>
                                         <td>{{ $karyawan->jurusan ?? '-' }}</td>
                                     </tr>
@@ -269,6 +279,7 @@ $karyawan = $user->karyawan;
                                         <th>IPK/Nilai</th>
                                         <td>{{ $karyawan->nilai_ijazah ?? '-' }}</td>
                                     </tr>
+-->
                                 </table>
                             </div>
 
@@ -276,21 +287,22 @@ $karyawan = $user->karyawan;
                             <div class="tab-pane fade" id="identitas" role="tabpanel">
                                 <table class="table table-borderless mt-3">
                                     <tr>
-                                        <th width="30%">NIK</th>
-                                        <td>{{ $karyawan->nik ?? '-' }}</td>
+                                        <th width="30%">No KTP</th>
+                                        <td>{{ $karyawan->no_ktp ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>NPWP</th>
-                                        <td>{{ $karyawan->npwp ?? '-' }}</td>
+                                        <td>{{ $karyawan->no_npwp ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>No KK</th>
                                         <td>{{ $karyawan->no_kk ?? '-' }}</td>
                                     </tr>
-                                    <tr>
+                                   <!-- <tr>
                                         <th>No Akte Kelahiran</th>
                                         <td>{{ $karyawan->no_akte ?? '-' }}</td>
                                     </tr>
+                                    -->
                                 </table>
                             </div>
 
@@ -306,7 +318,7 @@ $karyawan = $user->karyawan;
                                         <td>{{ $karyawan->no_rg_bank ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <th>No BPJS Kesehatan</th>
+                                        <th>No BPJS </th>
                                         <td>{{ $karyawan->no_bpjs ?? '-' }}</td>
                                     </tr>
                                     <tr>

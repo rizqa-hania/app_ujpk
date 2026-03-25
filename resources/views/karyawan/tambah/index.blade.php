@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 
 <div class="row">
@@ -7,11 +7,11 @@
         <div class="card shadow-sm">
 
             <!-- Header -->
-            <div class="card-header">
+            <div class="card-header bg-white">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="card-title font-weight-bold mb-0">
+                    <h4 class="mb-0 font-weight-bold">
                         Data Karyawan
-                    </h3>
+                    </h4>
 
                     <a href="{{ route('karyawan.tambah.create') }}" 
                        class="btn btn-primary btn-sm">
@@ -21,33 +21,37 @@
             </div>
 
             <!-- Body -->
-            <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0">
-                    <thead class="bg-light">
-                        <tr>
+            <div class="card-body">
+                <table id="table"  class="table table-hover">
+                    <thead>
+                        <tr class="text-center">
                             <th width="5%">No</th>
-                            <th>Username</th>
-                            <th>NIP</th>
-                            <th>Role</th>
-                            <th width="15%" class="text-center">Aksi</th>
+                            <th class="text-center">Username</th>
+                            <th  class="text-center">NIP</th>
+                            <th  class="text-center">Email</th>
+                            <th class="text-center" width="10%">Role</th>
+                            <th class="text-center" width="15%">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @forelse ($karyawans as $a)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $a->name }}</td>
-                            <td>{{ $a->nip }}</td>
-                            <td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $a->name }}</td>
+                            <td  class="text-center">{{ $a->nip }}</td>
+                            <td class="text-center">{{ $a->email }}</td>
+                            <td class="text-center">
                                 <span class="badge badge-info">
-                                    {{ $a->role }}
+                                    {{ ucfirst($a->role) }}
                                 </span>
                             </td>
+
                             <td class="text-center">
+
                                 <form action="{{ route('karyawan.tambah.destroy', $a->user_id) }}" 
-                                      method="POST" 
-                                      style="display:inline;">
+                                      method="POST"
+                                      class="d-inline">
                                     @csrf
                                     @method('DELETE')
 
@@ -57,12 +61,14 @@
                                         <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
+
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                Data karyawan belum tersedia.
+                            <td colspan="6" class="text-center text-muted py-4">
+                                Data karyawan belum tersedia
                             </td>
                         </tr>
                         @endforelse
@@ -75,5 +81,11 @@
 
     </div>
 </div>
+
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush
 
 @endsection

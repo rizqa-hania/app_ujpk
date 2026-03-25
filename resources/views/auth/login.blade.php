@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login | Sistem Absensi</title>
+  <title>Login </title>
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700">
@@ -30,7 +30,7 @@
     <div class="card-body login-card-body">
 
       <p class="login-box-msg">
-        Login Admin & Karyawan
+        
       </p>
 
       {{-- Messages --}}
@@ -53,7 +53,7 @@
           <input type="text" 
           name="login" 
           class="form-control" 
-          placeholder="Email atau NIP" 
+          placeholder="Email, Username, NIP" 
           required>
           <div class="input-group-append">
             <div class="input-group-text">
@@ -76,14 +76,14 @@
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">
-          Sign In
+          Masuk
         </button>
 
       </form>
 
       <hr>
 
-      <!-- Google Login -->
+      <!-- Google Login 
       <a href="/auth/google" class="btn btn-danger btn-block">
         <i class="fab fa-google"></i> Login dengan Google
       </a>
@@ -96,7 +96,7 @@
   </div>
 </div>
 
-<!-- Scripts -->
+Scripts -->
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.min.js') }}"></script>

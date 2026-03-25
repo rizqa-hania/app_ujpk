@@ -1,20 +1,13 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 
 @section('content')
 
-<div class="row mb-3">
-    <div class="col-12">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-</div>
 <div class="card">
+
     <div class="card-header d-flex justify-content-between">
 
-        <h5 class="mb-0">Data Lembur</h5>
+        <h5>Data Lembur</h5>
 
-        {{-- Hanya USER yang bisa ajukan lembur --}}
         @if(Auth::user()->role == 'user')
             <a href="{{ route('lembur.create') }}" class="btn btn-primary">
                 Ajukan Lembur
@@ -32,107 +25,150 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="thead-light">
+
+            <table class="table table-bordered">
+
+                <thead>
                     <tr>
+
                         @if(Auth::user()->role == 'admin')
                             <th>NIP</th>
+                            <th>User</th>
                         @endif
+
                         <th>Tanggal</th>
                         <th>Jam</th>
                         <th>Keterangan</th>
                         <th>Status</th>
-                        <th width="200">Aksi</th>
+
+                        @if(Auth::user()->role == 'admin')
+                            <th width="200">Aksi</th>
+                        @endif
+
                     </tr>
                 </thead>
+
                 <tbody>
 
-                @forelse($data as $row)
+                    @forelse($data as $row)
+
                     <tr>
 
-                        {{-- Admin bisa lihat NIP --}}
                         @if(Auth::user()->role == 'admin')
-                            <td>{{ $row->nip }}</td>
+
+                            <td>
+                                {{ $row->nip ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $row->karyawan->user->name ?? '-' }}
+                            </td>
+
                         @endif
 
                         <td>
-                            {{ $row->tanggal_mulai }} 
-                            s/d 
+                            {{ $row->tanggal_mulai }}
+                            s/d
                             {{ $row->tanggal_selesai }}
                         </td>
 
                         <td>
-                            {{ $row->jam_mulai }} - {{ $row->jam_selesai }}
+                            {{ $row->jam_mulai }}
+                            -
+                            {{ $row->jam_selesai }}
                         </td>
 
-                        <td>{{ $row->keterangan }}</td>
+                        <td>
+                            {{ $row->keterangan }}
+                        </td>
 
                         <td>
+
                             @if($row->status == 'pending')
-                                <span class="badge badge-warning">Pending</span>
+                                <span class="badge badge-warning">
+                                    Pending
+                                </span>
+
                             @elseif($row->status == 'disetujui')
-                                <span class="badge badge-success">Disetujui</span>
+                                <span class="badge badge-success">
+                                    Disetujui
+                                </span>
+
                             @elseif($row->status == 'ditolak')
-                                <span class="badge badge-danger">Ditolak</span>
+                                <span class="badge badge-danger">
+                                    Ditolak
+                                </span>
+
                             @endif
+
                         </td>
+
+                        @if(Auth::user()->role == 'admin')
 
                         <td>
 
-                            {{-- ===================== --}}
-                            {{-- AKSI ADMIN --}}
-                            {{-- ===================== --}}
-                            @if(Auth::user()->role == 'admin' && $row->status == 'pending')
+                            @if($row->status == 'pending')
 
-                                <form action="{{ route('lembur.status', $row->lembur_id) }}"
-                                      method="POST"
-                                      style="display:inline;">
+                                <form 
+                                    action="{{ route('lembur.approve', $row->lembur_id) }}"
+                                    method="POST"
+                                    style="display:inline"
+                                >
+
                                     @csrf
-                                    @method('PUT')
 
-                                    <input type="hidden" name="status" value="disetujui">
-
-                                    <button class="btn btn-sm btn-success">
-                                        Setuju
+                                    <button class="btn btn-success btn-sm">
+                                        Setujui
                                     </button>
+
                                 </form>
 
-                                <form action="{{ route('lembur.status', $row->lembur_id) }}"
-                                      method="POST"
-                                      style="display:inline;">
+                                <form 
+                                    action="{{ route('lembur.reject', $row->lembur_id) }}"
+                                    method="POST"
+                                    style="display:inline"
+                                >
+
                                     @csrf
-                                    @method('PUT')
 
-                                    <input type="hidden" name="status" value="ditolak">
-
-                                    <button class="btn btn-sm btn-danger">
+                                    <button class="btn btn-danger btn-sm">
                                         Tolak
                                     </button>
+
                                 </form>
+
+                            @else
+
+                                <span class="text-muted">
+                                    Tidak ada aksi
+                                </span>
 
                             @endif
 
                         </td>
+
+                        @endif
 
                     </tr>
 
-                @empty
+                    @empty
+
                     <tr>
-                        <td colspan="6" class="text-center">
+                        <td colspan="{{ Auth::user()->role == 'admin' ? 7 : 5 }}" class="text-center">
                             Belum ada data lembur
                         </td>
                     </tr>
-                @endforelse
+
+                    @endforelse
 
                 </tbody>
+
             </table>
+
         </div>
 
     </div>
+
 </div>
-@push('js')
-<script>
-    new DataTable('#table');
-</script>
-@endpush
+
 @endsection

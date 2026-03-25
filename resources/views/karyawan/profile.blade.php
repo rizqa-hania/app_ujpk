@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.karyawan.layout')
 
 @php
 function formatDate($date) {

@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Izin extends Model
 {
+    protected $table = 'izins';
+
     protected $primaryKey = 'izin_id';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
 
     protected $fillable = [
         'user_id',
@@ -19,7 +25,7 @@ class Izin extends Model
     ];
 
     public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+{
+    return $this->belongsTo(User::class, 'user_id', 'user_id');
+}
 }

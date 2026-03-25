@@ -103,7 +103,7 @@
 
             {{-- Sub Unit --}}
             <div class="col-lg-3 col-md-6 mb-4">
-                <div class="small-box bg-teal elevation-3 dashboard-box">
+                <div class="small-box bg-pink" elevation-3 dashboard-box">
                     <div class="inner">
                         <h3>{{ $totalSubUnit }}</h3>
                         <p>Total Sub Unit</p>

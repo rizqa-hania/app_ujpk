@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use App\User;
 
 class AuthController extends Controller
@@ -16,53 +14,49 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function login(Request $request)
+    {
+        $request->validate([
+            'login' => 'required',
+            'password' => 'required'
+        ]);
 
-   public function login(Request $request)
-{  //kenapa pake login? karena Karena kamu punya 2 tipe identitas login dalam 1 tabel yang sama:admin dan karyawan. jika pake 'email' ='', itu bakal eror karena karyawan tidak pake email
-{
-    $request->validate([
-        'login' => 'required',
-        'password' => 'required'
-    ]);
+        $loginInput = $request->login;
 
-    $loginInput = $request->login;
+        // Cari user berdasarkan email / username / nip
+        $user = User::where('email', $loginInput)
+                    ->orWhere('name', $loginInput)
+                    ->orWhere('nip', $loginInput)
+                    ->first();
 
-    // Tentukan apakah email atau NIP
-    $field = filter_var($loginInput, FILTER_VALIDATE_EMAIL) 
-                ? 'email' 
-                : 'nip';
+        if ($user && Auth::attempt([
+            'email' => $user->email,
+            'password' => $request->password,
+            'is_active' => 1
+        ])) {
 
-    if (Auth::attempt([
-        $field => $loginInput,
-        'password' => $request->password,
-        'is_active' => 1
-    ])) {
+            $request->session()->regenerate();
 
-        $request->session()->regenerate();
-
-        $user = Auth::user(); // WAJIB ADA
-
-        // ADMIN
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
-        // KARYAWAN
-        if ($user->role === 'karyawan') {
-
-            if (!$user->is_profile_complete) {
-                return redirect()->route('karyawan.step1');
+            // ADMIN
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
             }
 
-            return redirect()->route('karyawan.dashboard');
-        }
-    }
+            // KARYAWAN
+            if ($user->role === 'karyawan') {
 
-    return back()->withErrors([
-        'login' => 'Email/NIP atau password salah'
-    ]);
-}
-}
+                if (!$user->is_profile_complete) {
+                    return redirect()->route('karyawan.step1');
+                }
+
+                return redirect()->route('karyawan.dashboard');
+            }
+        }
+
+        return back()->withErrors([
+            'login' => 'Email / Username / NIP atau password salah'
+        ]);
+    }
 
     public function logout(Request $request)
     {
@@ -71,6 +65,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
+
 
     /*
   public function showRegister()
@@ -128,7 +123,7 @@ public function completeRegister(Request $request)
         'role'=>'karyawan'
     ]);
 
-<<<<<<< HEAD
+
     return redirect()->route('login')->with('success', 'Registrasi berhasil!');
 }*/
 

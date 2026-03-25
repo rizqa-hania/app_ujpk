@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 
 <div class="row justify-content-center">
@@ -55,6 +55,26 @@
                         @enderror
                     </div>
 
+
+
+                     <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Email
+                        </label>
+                        <input type="email"
+                               name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               value="{{ old('email') }}"
+                               placeholder="Masukkan Email">
+
+                        @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
                     <!-- Password -->
                     <div class="form-group">
                         <label class="form-label font-weight-semibold">
@@ -71,6 +91,7 @@
                         </div>
                         @enderror
                     </div>
+
 
                     <!-- Role -->
                     <div class="form-group">
