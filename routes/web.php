@@ -14,6 +14,7 @@ use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\KantorController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\Admin\JadwalAbsensiController;
 use App\Http\Controllers\DashboardController;
@@ -25,6 +26,18 @@ use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
 
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {
+    
+    // URL unik agar tidak disangka ID oleh route DELETE
+    Route::get('/monitoring-presensi', [AbsensiController::class, 'monitoring'])->name('admin.absensi.monitoring');
+    
+    // Route rekap (Pastikan methodnya GET/POST sesuai form kamu)
+    Route::get('/rekap-absensi', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
+
+    // Resource lainnya di bawah
+    Route::resource('absensi', 'AbsensiController');
+});
 
 //COBA EMAIL
 Route::get('/test-mail', function () {
@@ -76,7 +89,7 @@ Route::get('/register', [AuthController::class,'showRegister'])->name('register'
 Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send-otp');
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('/complete-register', [AuthController::class, 'completeRegister'])->name('complete-register');
-Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+Route::delete('/logout', [AuthController::class,'logout'])->name('logout');
 // Admin Dashboard
 Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::get('/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');
@@ -226,6 +239,7 @@ Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detai
 Route::middleware(['auth'])->group(function(){
     Route::get('/absensi','AbsensiController@index')->name('absensi.index');
     Route::post('/absensi','AbsensiController@store')->name('absensi.store');
+    Route::get('/absensi/rekap', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
 });
 
 //kantor
@@ -256,3 +270,4 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
     Route::post('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
 });
+

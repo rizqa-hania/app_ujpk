@@ -17,7 +17,7 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="mb-0">Data Izin</h5>
 
-            @if(Auth::user()->role == 'user')
+            @if(strtolower(Auth::user()->role ?? '') != 'admin')
                 <a href="{{ route('izin.create') }}" class="btn btn-primary">
                     Ajukan Izin
                 </a>
@@ -64,14 +64,16 @@
                 <thead class="thead-light">
                     <tr>
 
-                        <th>User</th>
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
+                        <th>Nama Karyawan</th>
+                        @endif
                         <th>Jenis</th>
                         <th>Tanggal</th>
                         <th>Keterangan</th>
                         <th>Status</th>
                        
 
-                        @if(Auth::user()->role == 'admin')
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
                         <th width="200">Aksi</th>
                         @endif
 
@@ -84,8 +86,11 @@
                     <tr>
 
                        
-                            <td>{{ $item->user->name ?? '-' }}</td>
-                            <td>
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
+                        <td>{{ $item->user->karyawan->nama_lengkap ?? $item->user->name ?? '-' }}</td>
+                        @endif
+
+                        <td>
                             @if($item->jenis == 'izin')
                                 <span class="badge badge-info">Izin</span>
                             @elseif($item->jenis == 'cuti')
@@ -115,13 +120,11 @@
                             @endif
                         </td>
 
-                        <td>
-
                         @php
                             $role = strtolower(Auth::user()->role ?? '');
                         @endphp
                         @if($role == 'admin')
-
+                        <td>
                             @if($item->status == 'pending')
 
                                 <form action="{{ route('izin.approve', $item->izin_id) }}" method="POST" style="display:inline">
@@ -141,25 +144,14 @@
                             @else
                                 <span class="text-muted">Tidak ada aksi</span>
                             @endif
-
-                        {{-- USER --}}
-                        @else
-
-                            @if($item->status == 'pending')
-                                <span class="text-muted">Menunggu persetujuan</span>
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-
+                        </td>
                         @endif
-
-                    </td>
 
                     </tr>
 
                     @empty
                     <tr>
-                        <td colspan="{{ Auth::user()->role == 'admin' ? 6 : 5 }}" class="text-center">
+                        <td colspan="{{ strtolower(Auth::user()->role ?? '') == 'admin' ? 6 : 4 }}" class="text-center">
                             Belum ada data izin
                         </td>
                     </tr>

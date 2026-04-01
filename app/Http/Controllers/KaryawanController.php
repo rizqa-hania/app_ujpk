@@ -44,8 +44,6 @@ class KaryawanController extends Controller
         'name' => $request->name,
         'nip' => $request->nip,
         'email' => $request->email,
-        'tanggal_mulai_aktif' => $request->tanggal_mulai_aktif,
-        'unit_penempatan' => $request->unit_penempatan,
         'password' => Hash::make($request->password),
         'role' => 'karyawan'
 ]);

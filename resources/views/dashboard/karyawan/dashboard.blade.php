@@ -6,21 +6,38 @@
 <div class="container-fluid">
 
 {{-- NOTIF ULANG TAHUN --}}
-@if(isset($ulangTahunHariIni) && $ulangTahunHariIni->count() > 0)
-<div class="alert alert-warning alert-dismissible fade show">
-<button type="button" class="close" data-dismiss="alert">&times;</button>
-<strong>🎉 Ulang Tahun Hari Ini!</strong>
+<div class="birthday-card">
+<button type="button" class="close text-white" data-dismiss="alert">&times;</button>
+
+<strong>🎉 Ulang Tahun Hari Ini</strong>
+
 <ul class="mb-0 mt-2">
 @foreach($ulangTahunHariIni as $k)
-<li>
+<li onclick="ucapin('{{ $k->nama_lengkap }}')" style="cursor:pointer;">
 {{ $k->nama_lengkap }}
 ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
 </li>
 @endforeach
 </ul>
 </div>
-@endif
 
+<div id="birthdayModal" class="custom-modal">
+  <div class="modal-content">
+    <h5>🎉 Ulang Tahun!</h5>
+
+    <p id="namaUcapan"></p>
+
+    <!-- INPUT UCAPAN -->
+    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu di sini..."
+      style="width:100%; height:80px; border-radius:8px; padding:10px; border:1px solid #ccc;"></textarea>
+
+    <!-- BUTTON -->
+    <div style="margin-top:15px;">
+      <button onclick="kirimUcapan()">Kirim</button>
+      <button onclick="tutupModal()" style="background:#ccc; color:#000;">Tutup</button>
+    </div>
+  </div>
+</div>
 
 <!-- PROFILE CARD -->
 <div class="row mb-4">
@@ -199,5 +216,35 @@ style="background:#2f4bb2;color:white;">
 
 </div>
 </section>
+<script>
+let namaTerpilih = "";
 
+function ucapin(nama) {
+    namaTerpilih = nama;
+
+    document.getElementById("namaUcapan").innerText =
+        "Berikan ucapan untuk " + nama;
+
+    document.getElementById("birthdayModal").style.display = "block";
+}
+
+function tutupModal() {
+    document.getElementById("birthdayModal").style.display = "none";
+}
+
+function kirimUcapan() {
+    let pesan = document.getElementById("pesanUcapan").value;
+
+    if (pesan.trim() === "") {
+        alert("Isi ucapan dulu ya!");
+        return;
+    }
+
+    alert("Ucapan untuk " + namaTerpilih + ":\n\n" + pesan);
+
+    // reset
+    document.getElementById("pesanUcapan").value = "";
+    tutupModal();
+}
+</script>
 @endsection

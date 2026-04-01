@@ -1,13 +1,6 @@
-@extends('template.admin.layout')
+@extends('template.karyawan.layout')
 
 @section('content')
-<div class="row mb-3">
-    <div class="col-12">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-</div>
 <div class="row">
     <div class="col-12">
 
@@ -53,6 +46,7 @@
                             Absen Pulang
                         </button>
                     </div>
+
 
                     <div class="col-md-12 text-center" id="cameraSection" style="display:none;">
                         <div class="camera-box">
@@ -215,13 +209,13 @@ function submitAbsen() {
 
         navigator.geolocation.getCurrentPosition(
             function(position) {
-                document.getElementById('latitude').value  = position.coords.latitude;
-                document.getElementById('longitude').value = position.coords.longitude;
+                document.getElementById('latitude').value  = parseFloat(position.coords.latitude);
+                document.getElementById('longitude').value = parseFloat(position.coords.longitude);
                 document.getElementById('absenForm').submit();
             },
             function() {
-                document.getElementById('absenForm').submit();
-            }
+    alert("Lokasi wajib aktif!");
+}
         );
 
     } else {

@@ -76,6 +76,15 @@
                     </a>
                 </li>
 
+
+                 <li class="nav-item">
+                    <a href="{{ route('izin.create') }}"
+                       class="nav-link {{ request()->routeIs('izin.index') ? 'active' : '' }}">
+                       <i class="nav-icon fas fa-wallet"></i>
+                        <p>Slip Gaji</p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
     </div>

@@ -16,6 +16,112 @@
 
   <!-- AdminLTE -->
   <link rel="stylesheet" href="{{ asset('AdminLTE/dist/css/adminlte.min.css') }}">
+
+ <style>
+  body.login-page {
+    background: url("{{ asset('assets/images/pt-ujpk-gambar.webp') }}") no-repeat center center fixed;
+    background-size: cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* overlay biar fokus ke login */
+  body.login-page::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+  }
+
+  .login-box {
+    width: 450px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .login-logo b {
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+  }
+
+  
+.card {
+  background: rgba(255, 255, 255, 0.1) !important; /* transparan */
+  backdrop-filter: blur(15px); /* efek kaca */
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+  .login-card-body {
+  background: transparent !important;
+}
+
+  .login-box-msg {
+    font-size: 15px;
+    color: #ddd;
+    margin-bottom: 25px;
+  }
+
+  /* INPUT FIX */
+  .form-control {
+    height: 50px;
+    border-radius: 10px;
+    font-size: 15px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+  }
+
+  .form-control:focus {
+    background: rgba(234, 228, 228, 0.99);
+    box-shadow: none;
+    border-color: #4facfe;
+  }
+
+  .form-control::placeholder {
+    color: #fef7f7;
+  }
+
+  .input-group-text {
+    border-radius: 0 10px 10px 0;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+  }
+
+  /* 🔥 BUTTON LEBIH HIDUP */
+  .btn-primary {
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    border: none;
+    transition: 0.3s;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.03);
+    opacity: 0.95;
+  }
+
+  hr {
+    margin-top: 25px;
+    border-color: rgba(255,255,255,0.2);
+  }
+</style>
 </head>
 
 <body class="hold-transition login-page">
@@ -23,14 +129,14 @@
 <div class="login-box">
   
   <div class="login-logo">
-    <b>UJPK</b>
+    <b>APP UJPK</b>
   </div>
 
-  <div class="card card-outline card-primary">
+  <div class="card">
     <div class="card-body login-card-body">
 
       <p class="login-box-msg">
-        
+        Selamat Datang UJPK
       </p>
 
       {{-- Messages --}}
@@ -53,7 +159,7 @@
           <input type="text" 
           name="login" 
           class="form-control" 
-          placeholder="Email, Username, NIP" 
+          placeholder="Email, NIP, Username" 
           required>
           <div class="input-group-append">
             <div class="input-group-text">
@@ -83,20 +189,11 @@
 
       <hr>
 
-      <!-- Google Login 
-      <a href="/auth/google" class="btn btn-danger btn-block">
-        <i class="fab fa-google"></i> Login dengan Google
-      </a>
-
-      <p class="mt-3 text-center">
-        <a href="{{ route('register') }}">Belum punya akun? Daftar</a>
-      </p>
-
     </div>
   </div>
 </div>
 
-Scripts -->
+<!-- Scripts -->
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.min.js') }}"></script>

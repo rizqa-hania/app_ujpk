@@ -8,7 +8,7 @@
 
         <h5>Data Lembur</h5>
 
-        @if(Auth::user()->role == 'user')
+        @if(strtolower(Auth::user()->role ?? '') != 'admin')
             <a href="{{ route('lembur.create') }}" class="btn btn-primary">
                 Ajukan Lembur
             </a>
@@ -31,9 +31,9 @@
                 <thead>
                     <tr>
 
-                        @if(Auth::user()->role == 'admin')
-                            <th>NIP</th>
-                            <th>User</th>
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
+                        <th>NIP</th>
+                        <th>Nama Karyawan</th>
                         @endif
 
                         <th>Tanggal</th>
@@ -41,7 +41,7 @@
                         <th>Keterangan</th>
                         <th>Status</th>
 
-                        @if(Auth::user()->role == 'admin')
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
                             <th width="200">Aksi</th>
                         @endif
 
@@ -54,16 +54,14 @@
 
                     <tr>
 
-                        @if(Auth::user()->role == 'admin')
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
+                        <td>
+                            {{ $row->nip ?? '-' }}
+                        </td>
 
-                            <td>
-                                {{ $row->nip ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ $row->karyawan->user->name ?? '-' }}
-                            </td>
-
+                        <td>
+                            {{ $row->karyawan->nama_lengkap ?? $row->karyawan->user->name ?? '-' }}
+                        </td>
                         @endif
 
                         <td>
@@ -103,7 +101,7 @@
 
                         </td>
 
-                        @if(Auth::user()->role == 'admin')
+                        @if(strtolower(Auth::user()->role ?? '') == 'admin')
 
                         <td>
 
@@ -152,9 +150,8 @@
                     </tr>
 
                     @empty
-
                     <tr>
-                        <td colspan="{{ Auth::user()->role == 'admin' ? 7 : 5 }}" class="text-center">
+                        <td colspan="{{ strtolower(Auth::user()->role ?? '') == 'admin' ? 7 : 4 }}" class="text-center">
                             Belum ada data lembur
                         </td>
                     </tr>

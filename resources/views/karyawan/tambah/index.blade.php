@@ -58,7 +58,7 @@
                                     <button type="submit"
                                         onclick="return confirm('Apakah kamu yakin ingin menghapus karyawan ini?')"
                                         class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i> Hapus
+                                        <i class="fas fa-trash"></i> 
                                     </button>
                                 </form>
 
