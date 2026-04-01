@@ -210,6 +210,8 @@ Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->nam
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
 Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
+Route::get('/komponen/{kode}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
+Route::put('/komponen/{kode}', [KomponenController::class, 'update'])->name('komponen.update');
 Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
 Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
 Route::post('/komponen/import', [KomponenController::class, 'import'])->name('komponen.import');
@@ -221,6 +223,13 @@ Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create']
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
 Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');
+
+// LAPORAN
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/laporan/filter', [LaporanController::class, 'filter'])->name('report.filter');
+Route::post('/laporan/generate', [LaporanController::class, 'generatePDF'])->name('report.generate');
+Route::get('/laporan/transaksi/{id}', [LaporanController::class, 'generatePDFByTransaksi'])->name('laporan.generateid');
+
 
 //ABSENSI
 Route::middleware(['auth'])->group(function(){

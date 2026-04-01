@@ -23,6 +23,14 @@
                 </div>
             </div>
             <div class="card-body table-responsive">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <table id="table" class="table table-sm table-striped table-hover">
                     <thead>
                         <tr>
@@ -75,6 +83,7 @@
                                     @endif
                                     <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST">
                                         @csrf @method('DELETE')
+                                        <a href="{{ route('komponen.edit', $v->kode) }}" class="btn btn-success btn-sm">Edit</a>
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus komponen ini?')">Hapus</button>
                                     </form>
                                 </div>

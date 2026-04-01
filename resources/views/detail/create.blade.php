@@ -1,99 +1,137 @@
 @extends('template.admin.layout')
+
 @section('content')
 <div class="row">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header"></div>
+        <div class="card shadow">
+            <div class="card-header">
+                Update Detail Penggajian
+            </div>
             <form action="{{ route('detail.store', $penggajian->penggajian_id) }}" method="POST">
                 @csrf
                 <div class="card-body">
+                    <!-- Data Karyawan -->
                     <div class="mb-3">
-                        <label for="id" class="form-label">Nama Karyawan</label>
-                        <select name="karyawan_id" class="form-control" id="karyawan_id">
+                        <label for="karyawan_id" class="form-label">Nama Karyawan</label>
+                        <select name="karyawan_id" id="karyawan_id" class="form-control @error('karyawan_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Karyawan --</option>
                             @foreach($karyawan as $k)
-                            <option value="{{ $k->id }}"  data-nip="{{$k->nip}}">{{ $k->nama_lengkap }}</option>
+                                <option value="{{ $k->id }}" data-nip="{{ $k->nip }}" {{ old('karyawan_id') == $k->id ? 'selected' : '' }}>
+                                    {{ $k->nama_lengkap }}
+                                </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nip">NIP (otomatis)</label>
-                        <input type="number" name="nip" id="nip" class="form-control" value="{{ auth()->user()->nip }}"  readonly required> 
+                        @error('karyawan_id')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="kode" class="form-label">Kode Komponen</label>
-                        <select name="kode" id="tipe_id" class="form-control">
-                            <option value="">-- Pilih Komponen --</option>
-                            @foreach($komponen as $k)
-                            <option value="{{ $k->kode }}" data-tipe="{{ $k->tipe }}" data-nilai="{{ $k->nilai }}">{{ $k->kode }}</option>
-                            @endforeach
-                        </select>
+                        <label for="nip" class="form-label">NIP (otomatis)</label>
+                        <input type="text" name="nip" id="nip" class="form-control" readonly required placeholder="Terisi otomatis"> 
                     </div>
-                    <div class="mb-3">
-                        <label for="tipe">Tipe (otomatis)</label>
-                        <input type="text" name="tipe" id="tipe" class="form-control" readonly required> 
+
+                    <hr>
+
+                    <!-- Rincian Komponen Gaji -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <label class="form-label font-weight-bold">Komponen Gaji</label>
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-add-row">Tambah Komponen</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="nilai">Nilai (otomatis)</label>
-                        <input type="number" name="nilai" id="value" class="form-control" readonly required> 
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Kode Komponen</th>
+                                    <th>Tipe (otomatis)</th>
+                                    <th>Nilai (otomatis)</th>
+                                    <th width="50" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="komponen-list">
+                                <!-- Dynamic rows go here -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <a href="{{route('detail.index', $penggajian->penggajian_id )}}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
-                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
-                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
+                    <a href="{{ route('detail.index', $penggajian->penggajian_id) }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- ini yang asli, yang punya mu ris hehe
-<script>
-    document.getElementById('tipe').addEventListener('change', function () {
-        let karyawanId = this.value;
-        const nipInput = document.getElementById('tipe');
+{{-- Template Baris Baru --}}
+<template id="row-template">
+    <tr>
+        <td>
+            <select name="kode[]" class="form-control select-komponen" required>
+                <option value="">-- Pilih Komponen --</option>
+                @foreach($komponen as $ko)
+                    <option value="{{ $ko->kode }}" 
+                            data-tipe="{{ $ko->tipe }}" 
+                            data-nilai="{{ $ko->nilai }}" 
+                            data-tipe-penghitungan="{{ $ko->tipe_penghitungan }}">
+                        {{ $ko->kode }} - {{ $ko->komponen }}
+                    </option>
+                @endforeach
+            </select>
+        </td>
+        <td>
+            <input type="text" name="tipe[]" class="form-control input-tipe" readonly required>
+        </td>
+        <td>
+            <input type="number" step="0.01" name="nilai[]" class="form-control input-nilai" readonly required>
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-danger btn-sm btn-remove-row">
+                <i class="fas fa-trash"></i>
+            </button>
+        </td>
+    </tr>
+</template>
 
-        if (karyawanId) {
-            fetch('/get-user-nip/' + karyawanId)
-                .then(response => response.json())
-                .then(data => {
-                    nipInput.value = data.nip || '';
-                })
-                .catch(error => {
-                    console.error('Error fetching nip:', error);
-                    nipInput.value = '';
-                });
-        } else {
-            nipInput.value = '';
-        }
-    });
-</script>
--->
-<script>
-document.getElementById('karyawan_id').addEventListener('change', function() {
-
-    let selectedOption = this.options[this.selectedIndex];
-
-    let nip = selectedOption.getAttribute('data-nip');
-    
-    document.getElementById('nip').value = nip ?? '';
-});
-</script>
-<script>
-document.getElementById('tipe_id').addEventListener('change', function() {
-    let selectedOption = this.options[this.selectedIndex];
-
-    if (this.value === "") {
-        document.getElementById('tipe').value = '';
-        document.getElementById('value').value = '';
-    } else {
-        let tipe = selectedOption.getAttribute('data-tipe');
-        let nilai = selectedOption.getAttribute('data-nilai');
-
-        document.getElementById('tipe').value = tipe ?? '';
-        document.getElementById('value').value = nilai ?? '';
-    }
-});
-</script>
 @endsection
+
+@push('js')
+<script>
+$(document).ready(function() {
+    // Karyawan Change Handler
+    $('#karyawan_id').on('change', function() {
+        let selectedOption = $(this).find(':selected');
+        let nip = selectedOption.data('nip');
+        $('#nip').val(nip ?? '');
+    });
+
+    // Fungsi Add Row
+    $('#btn-add-row').on('click', function() {
+        let template = $('#row-template').html();
+        $('#komponen-list').append(template);
+    });
+
+    // Remove Row
+    $(document).on('click', '.btn-remove-row', function() {
+        $(this).closest('tr').remove();
+    });
+
+    // Komponen Change Handler (Dynamic)
+    $(document).on('change', '.select-komponen', function() {
+        let selectedOption = $(this).find(':selected');
+        let tr = $(this).closest('tr');
+        
+        let tipe = selectedOption.data('tipe');
+        let nilai = selectedOption.data('nilai');
+
+        tr.find('.input-tipe').val(tipe ?? '');
+        tr.find('.input-nilai').val(nilai ?? '');
+    });
+
+    // Initialize with 1 row
+    $('#btn-add-row').trigger('click');
+});
+</script>
+@endpush

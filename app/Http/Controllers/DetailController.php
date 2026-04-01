@@ -13,6 +13,44 @@ use Illuminate\Support\Facades\DB;
 
 class DetailController extends Controller
 {
+    private function penyebut($nilai) {
+        $nilai = abs($nilai);
+        $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+        $temp = "";
+        if ($nilai < 12) {
+            $temp = " ". $huruf[$nilai];
+        } else if ($nilai < 20) {
+            $temp = $this->penyebut($nilai - 10). " belas";
+        } else if ($nilai < 100) {
+            $temp = $this->penyebut((int)($nilai/10))." puluh". $this->penyebut($nilai % 10);
+        } else if ($nilai < 200) {
+            $temp = " seratus" . $this->penyebut($nilai - 100);
+        } else if ($nilai < 1000) {
+            $temp = $this->penyebut((int)($nilai/100)) . " ratus" . $this->penyebut($nilai % 100);
+        } else if ($nilai < 2000) {
+            $temp = " seribu" . $this->penyebut($nilai - 1000);
+        } else if ($nilai < 1000000) {
+            $temp = $this->penyebut((int)($nilai/1000)) . " ribu" . $this->penyebut($nilai % 1000);
+        } else if ($nilai < 1000000000) {
+            $temp = $this->penyebut((int)($nilai/1000000)) . " juta" . $this->penyebut($nilai % 1000000);
+        } else if ($nilai < 1000000000000) {
+            $temp = $this->penyebut((int)($nilai/1000000000)) . " milyar" . $this->penyebut(fmod($nilai,1000000000));
+        } else if ($nilai < 1000000000000000) {
+            $temp = $this->penyebut((int)($nilai/1000000000000)) . " trilyun" . $this->penyebut(fmod($nilai,1000000000000));
+        }     
+        return $temp;
+    }
+
+    private function terbilang($nilai) {
+        if($nilai<0) {
+            $hasil = "minus ". trim($this->penyebut($nilai));
+        } else {
+            $hasil = trim($this->penyebut($nilai));
+        }     		
+        return $hasil . ' rupiah';
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -51,50 +89,92 @@ class DetailController extends Controller
     {
         $request->validate([
             'karyawan_id'      => 'required',
-            'nip'              => 'required|string|max:255',
-            'kode'             => 'required',
-            'tipe'             => 'required',
-            'nilai'            => 'required|numeric',
+            'kode'             => 'required|array',
+            'tipe'             => 'required|array',
+            'nilai'            => 'required|array',
         ]);
 
-        // Cek apakah karyawan ini sudah dibuatkan form detailnya di bulan/penggajian ini, 
-        // Jika blm ada, buat auto; jika sdh ada, cukup tambahkan detail ke komponennya sja.
+        // Hack Penyelamat Schema (Jika masih ada FK tipe yang bermasalah)
+        try {
+            if (Schema::hasColumn('detail_komponen', 'tipe')) {
+                Schema::table('detail_komponen', function ($table) {
+                    try { $table->dropForeign(['tipe']); } catch (\Exception $e) {}
+                });
+            }
+        } catch (\Exception $e) {}
+
+        // 1. Cari atau Buat Header Penggajian Karyawan
         $detail = Detail::firstOrCreate(
             [
                 'penggajian_id' => $penggajian_id,
-                'id'            => $request->karyawan_id // id di tabel detail digunakan sbg foreign karyawan (yg dinput adalah karyawan_id dr form)
+                'id'            => $request->karyawan_id 
             ],
             [
-                'kode'             => $request->kode,
+                'kode'             => $request->kode[0], 
                 'total_pendapatan' => 0,
                 'total_potongan'   => 0,
                 'gaji_bersih'      => 0
             ]
         );
 
-        // Perbaikan database: Hapus foreign key 'tipe' jika masih ada (karena kesalahan migration asli)
-        try {
-            if (Schema::hasColumn('detail_komponen', 'tipe')) {
-                Schema::table('detail_komponen', function ($table) {
-                    // Cek apakah FK ini ada, jika iya hapus.
-                    // Ini untuk mengatasi error "Integrity constraint violation"
-                    $table->dropForeign('detail_komponen_tipe_foreign');
-                });
+        // Fetch Komponen details to know which are percentages
+        $allComponents = Komponen::whereIn('kode', $request->kode)->get()->keyBy('kode');
+
+        // 2. First Pass: Process all Pendapatan (Earnings)
+        $newPendapatan = 0;
+        $pendapatanIndices = [];
+
+        foreach ($request->kode as $index => $kode) {
+            $comp = $allComponents->get($kode);
+            if ($comp && $comp->tipe == 'pendapatan') {
+                $nilai_komponen = $comp->nilai; // Use definition value
+                DetailKomponen::create([
+                    'detail_id'        => $detail->detail_id,
+                    'nip'              => $request->karyawan_id,
+                    'kode'             => $kode,
+                    'tipe'             => 'pendapatan',
+                    'nilai'            => $nilai_komponen
+                ]);
+                $newPendapatan += $nilai_komponen;
+            } else {
+                $pendapatanIndices[] = $index; // Save for second pass
             }
-        } catch (\Exception $e) {
-            // Abaikan jika sudah terhapus atau tidak ada
         }
 
-        DetailKomponen::create([
-            'detail_id'        => $detail->detail_id,
-            'nip'              => $request->nip,
-            'kode'             => $request->kode,
-            'tipe'             => $request->tipe,
-            'nilai'            => $request->nilai
-        ]);
+        // Update total_pendapatan in header so it can be used for percentage calculations
+        $detail->total_pendapatan += $newPendapatan;
+        $currentTotalPendapatan = $detail->total_pendapatan;
 
-        // Opsional: Boleh dibuat auto-calculating juga untuk Total Pendapatan dll disini.
-        return redirect()->route('detail.index', $penggajian_id);
+        // 3. Second Pass: Process all Potongan (Deductions)
+        $newPotongan = 0;
+        foreach ($request->kode as $index => $kode) {
+            $comp = $allComponents->get($kode);
+            if ($comp && $comp->tipe == 'potongan') {
+                $nilai_komponen = $comp->nilai;
+
+                // Handle percentage calculation
+                if ($comp->tipe_penghitungan == 'presentase') {
+                    $nilai_komponen = ($nilai_komponen / 100) * $currentTotalPendapatan;
+                }
+
+                DetailKomponen::create([
+                    'detail_id'        => $detail->detail_id,
+                    'nip'              => $request->karyawan_id,
+                    'kode'             => $kode,
+                    'tipe'             => 'potongan',
+                    'nilai'            => $nilai_komponen
+                ]);
+                
+                $newPotongan += $nilai_komponen;
+            }
+        }
+
+        // 4. Update Header Finals
+        $detail->total_potongan += $newPotongan;
+        $detail->gaji_bersih = $detail->total_pendapatan - $detail->total_potongan;
+        $detail->save();
+
+        return redirect()->route('detail.index', $penggajian_id)->with('success', 'Detail penggajian berhasil ditambahkan.');
     }
 
     /**
@@ -106,8 +186,9 @@ class DetailController extends Controller
     public function show($detail_id)
     {
         $detail = Detail::with(['karyawan.jabatan', 'detailKomponen.komponen', 'penggajian'])->findOrFail($detail_id);
+        $terbilang = $this->terbilang($detail->gaji_bersih);
         
-        return view('detail.slip_gaji', compact('detail'));
+        return view('detail.slip_gaji', compact('detail', 'terbilang'));
     }
 
     /**
@@ -141,8 +222,21 @@ class DetailController extends Controller
      */
     public function destroy($id)
     {
-        Detail::where('detail_id', $id)->delete();
-        return redirect()->route('detail.index');
+        $detail = Detail::find($id);
+
+        if ($detail) {
+            $penggajian_id = $detail->penggajian_id;
+            
+            // Hapus rincian komponen terlebih dahulu dikarenakan constraint foreign key
+            DetailKomponen::where('detail_id', $id)->delete();
+            
+            // Hapus data utama detail
+            $detail->delete();
+
+            return redirect()->route('detail.index', $penggajian_id)->with('success', 'Rincian gaji karyawan berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 
     public function tambahkomponen()

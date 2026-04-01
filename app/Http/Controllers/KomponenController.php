@@ -48,7 +48,7 @@ class KomponenController extends Controller
 
         Komponen::create([
             'kode'              => $request->kode,
-            'komponen'              => $request->komponen,
+            'komponen'          => $request->komponen,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
             'nilai'             => $request->nilai
@@ -76,7 +76,7 @@ class KomponenController extends Controller
      */
     public function edit($kode)
     {
-        $komponen = Komponen::find($kode);
+        $komponen = Komponen::where('kode', $kode)->firstOrFail();
         return view('komponen.edit', compact('komponen'));
     }
 
@@ -89,7 +89,25 @@ class KomponenController extends Controller
      */
     public function update(Request $request, $kode)
     {
+        $request->validate([
+            'kode'                  => 'required|string',
+            'komponen'              => 'required|string|max:255|unique:komponen,komponen,' . $kode . ',kode',
+            'tipe'                  => 'required',
+            'tipe_penghitungan'     => 'required',
+            'nilai'                 => 'required|numeric',
+        ]);
         
+        $komponen = Komponen::where('kode', $kode)->firstOrFail();
+
+        $komponen->update([
+            'kode'              => $request->kode,
+            'komponen'          => $request->komponen,
+            'tipe'              => $request->tipe,
+            'tipe_penghitungan' => $request->tipe_penghitungan,
+            'nilai'             => $request->nilai
+        ]);
+
+        return redirect()->route('komponen.index')->with('success', 'Komponen berhasil diperbarui');   
     }
 
     /**
