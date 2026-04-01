@@ -15,6 +15,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('jadwal.update') }}" method="POST">
             @csrf
 
@@ -77,11 +83,7 @@
 
             @endforeach
 
-            <div class="text-right">
-                <button class="btn btn-primary px-4">
-                    Simpan Perubahan
-                </button>
-            </div>
+            <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
 
         </form>
 

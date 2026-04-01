@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
- @include('template.sidebar')
+ @include('template.admin.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

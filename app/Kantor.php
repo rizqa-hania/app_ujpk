@@ -26,9 +26,4 @@ class Kantor extends Model
         return $this->hasMany(Absensi::class, 'kantor_id', 'kantor_id');
     }
 
-    public function kantor()
-{
-    return $this->belongsTo(Kantor::class, 'kantor_id', 'kantor_id');
-}
-
 }

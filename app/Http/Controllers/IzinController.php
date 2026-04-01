@@ -27,8 +27,8 @@ class IzinController extends Controller
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('jenis', 'like', '%' . $request->search . '%')
-                  ->orWhere('status', 'like', '%' . $request->search . '%')
-                  ->orWhere('tanggal_mulai', 'like', '%' . $request->search . '%');
+                    ->orWhere('status', 'like', '%' . $request->search . '%')
+                    ->orWhere('tanggal_mulai', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -84,8 +84,8 @@ class IzinController extends Controller
             foreach ($admins as $email) {
                 Mail::send('mail', $dataMail, function ($message) use ($email) {
                     $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-                            ->to($email)
-                            ->subject('Pengajuan Izin Baru');
+                        ->to($email)
+                        ->subject('Pengajuan Izin Baru');
                 });
             }
         } catch (Exception $e) {
@@ -98,15 +98,17 @@ class IzinController extends Controller
     public function edit($id)
     {
         $izin = Izin::findOrFail($id);
-        if ($izin->user_id != Auth::id()) abort(403);
-        
+        if ($izin->user_id != Auth::id())
+            abort(403);
+
         return view('izin.edit', compact('izin'));
     }
 
     public function update(Request $request, $id)
     {
         $izin = Izin::findOrFail($id);
-        if ($izin->user_id != Auth::id()) abort(403);
+        if ($izin->user_id != Auth::id())
+            abort(403);
 
         $request->validate([
             'tanggal_mulai' => 'required|date',
@@ -126,15 +128,17 @@ class IzinController extends Controller
     public function destroy($id)
     {
         $izin = Izin::findOrFail($id);
-        if ($izin->user_id != Auth::id()) abort(403);
-        
+        if ($izin->user_id != Auth::id())
+            abort(403);
+
         $izin->delete();
         return back()->with('success', 'Izin berhasil dihapus');
     }
 
     public function approve($id)
     {
-        if (Auth::user()->role != 'admin') abort(403);
+        if (Auth::user()->role != 'admin')
+            abort(403);
 
         $izin = Izin::with('user')->findOrFail($id);
         $izin->update(['status' => 'disetujui']);
@@ -152,24 +156,25 @@ class IzinController extends Controller
                     'status' => 'disetujui'
                 ], function ($message) use ($izin) {
                     $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-                            ->to($izin->user->email)
-                            ->subject('Izin Disetujui');
+                        ->to($izin->user->email)
+                        ->subject('Izin Disetujui');
                 });
-            } catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
         }
 
         // Generate absensi otomatis
         $start = Carbon::parse($izin->tanggal_mulai);
-        $end   = Carbon::parse($izin->tanggal_selesai);
-        
+        $end = Carbon::parse($izin->tanggal_selesai);
+
         while ($start->lte($end)) {
             Absensi::updateOrCreate(
                 ['user_id' => $izin->user_id, 'tanggal' => $start->toDateString()],
                 [
-                    'jam_masuk' => null, 
-                    'jam_pulang' => null, 
-                    'status_masuk' => null, 
-                    'status_pulang' => null, 
+                    'jam_masuk' => null,
+                    'jam_pulang' => null,
+                    'status_masuk' => null,
+                    'status_pulang' => null,
                     'status_final' => $izin->jenis
                 ]
             );
@@ -181,7 +186,8 @@ class IzinController extends Controller
 
     public function reject($id)
     {
-        if (Auth::user()->role != 'admin') abort(403);
+        if (Auth::user()->role != 'admin')
+            abort(403);
 
         $izin = Izin::with('user')->findOrFail($id);
         $izin->update(['status' => 'ditolak']);
@@ -198,10 +204,11 @@ class IzinController extends Controller
                     'status' => 'ditolak'
                 ], function ($message) use ($izin) {
                     $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-                            ->to($izin->user->email)
-                            ->subject('Izin Ditolak');
+                        ->to($izin->user->email)
+                        ->subject('Izin Ditolak');
                 });
-            } catch (Exception $e) {}
+            } catch (Exception $e) {
+            }
         }
 
         return back()->with('success', 'Izin ditolak.');

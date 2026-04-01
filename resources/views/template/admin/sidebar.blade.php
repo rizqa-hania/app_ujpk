@@ -99,24 +99,21 @@ ADMIN
     </a>
 </li>
 
+
+
 {{-- tambah data user --}}
 
-<li class="nav-item has-treeview 
-{{ request()->is('*') || request()->is('pendidikan*') ? 'menu-open' : '' }}">
-
-<a href="#"
-class="nav-link 
-{{ request()->is('jabatan*') || request()->is('pendidikan*') ? 'active' : '' }}">
-
-<i class="nav-icon fas fa-user-plus"></i>
-
-
-<p>
-Tambah User
-<i class="right fas fa-angle-left"></i>
-</p>
-
-</a>
+<li class="nav-item has-treeview
+{{ request()->routeIs('admin.index') || request()->routeIs('karyawan.tambah.index') ? 'menu-open' : '' }}">
+    <a href="#"
+       class="nav-link 
+       {{ request()->routeIs('admin.index') || request()->routeIs('karyawan.tambah.index') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            Tambah User
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
 
 <ul class="nav nav-treeview">
 
@@ -167,8 +164,8 @@ Tambah Data Master
 <ul class="nav nav-treeview">
 
 <li class="nav-item">
-<a href="{{ route('master_jabatan.create') }}"
-class="nav-link {{ request()->routeIs('master_jabatan.create') ? 'active' : '' }}">
+<a href="{{ route('master_jabatan.index') }}"
+class="nav-link {{ request()->routeIs('master_jabatan.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-briefcase"></i>
 <p>Jabatan</p>
@@ -177,8 +174,8 @@ class="nav-link {{ request()->routeIs('master_jabatan.create') ? 'active' : '' }
 </li>
 
 <li class="nav-item">
-<a href="{{ route('master_pendidikan.create') }}"
-class="nav-link {{ request()->routeIs('master_pendidikan.create') ? 'active' : '' }}">
+<a href="{{ route('master_pendidikan.index') }}"
+class="nav-link {{ request()->routeIs('master_pendidikan.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-graduation-cap"></i>
 <p>Pendidikan</p>
@@ -187,8 +184,8 @@ class="nav-link {{ request()->routeIs('master_pendidikan.create') ? 'active' : '
 </li>
 
 <li class="nav-item">
-<a href="{{ route('master_project.create') }}"
-class="nav-link {{ request()->routeIs('master_project.create') ? 'active' : '' }}">
+<a href="{{ route('master_project.index') }}"
+class="nav-link {{ request()->routeIs('master_project.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-folder-open"></i>
 <p>Project</p>
@@ -197,8 +194,8 @@ class="nav-link {{ request()->routeIs('master_project.create') ? 'active' : '' }
 </li>
 
 <li class="nav-item">
-<a href="{{ route('master_unit_pln.create') }}"
-class="nav-link {{ request()->routeIs('master_unit_pln.create') ? 'active' : '' }}">
+<a href="{{ route('master_unit_pln.index') }}"
+class="nav-link {{ request()->routeIs('master_unit_pln.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-building"></i>
 <p>Master Unit</p>
@@ -207,8 +204,8 @@ class="nav-link {{ request()->routeIs('master_unit_pln.create') ? 'active' : '' 
 </li>
 
 <li class="nav-item">
-<a href="{{ route('master-sub-unit.create') }}"
-class="nav-link {{ request()->routeIs('master-sub-unit.create') ? 'active' : '' }}">
+<a href="{{ route('master-sub-unit.index') }}"
+class="nav-link {{ request()->routeIs('master-sub-unit.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-layer-group"></i>
 <p>Master Sub Unit</p>
@@ -217,8 +214,8 @@ class="nav-link {{ request()->routeIs('master-sub-unit.create') ? 'active' : '' 
 </li>
 
 <li class="nav-item">
-<a href="{{ route('master_tad.create') }}"
-class="nav-link {{ request()->routeIs('master_tad.create') ? 'active' : '' }}">
+<a href="{{ route('master_tad.index') }}"
+class="nav-link {{ request()->routeIs('master_tad.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-user-friends"></i>
 <p>TAD</p>
@@ -249,14 +246,12 @@ Absensi
 <ul class="nav nav-treeview">
 
 <li class="nav-item">
-<a href="{{ route('absensi.index') }}"
-class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
-
-<i class="nav-icon fas fa-clock"></i></i>
-<p>Absensi Karyawan</p>
-
-</a>
-</li>
+                                    <a href="{{ route('admin.absensi.monitoring') }}"
+                                       class="nav-link {{ request()->routeIs('admin.absensi.monitoring') ? 'active' : '' }}">
+                                        <i class="fas fa-laptop nav-icon"></i> {{-- text-primary dihapus agar jadi abu --}}
+                                        <p>Monitoring Absensi</p>
+                                    </a>
+                                </li>
 
 <li class="nav-item">
 <a href="{{ route('jadwal.index') }}"
@@ -264,6 +259,16 @@ class="nav-link {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
 
 <i class="far fa-calendar-alt nav-icon"></i>
 <p>Jadwal Absensi</p>
+
+</a>
+</li>
+
+<li class="nav-item">
+<a href="{{ route('kantor.index') }}"
+class="nav-link {{ request()->routeIs('kantor.index') ? 'active' : '' }}">
+
+<i class="far fa-building nav-icon"></i>
+<p>Tambah Kantor</p>
 
 </a>
 </li>
@@ -312,6 +317,41 @@ class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
 
 </ul>
 </li>
+
+{{-- Laporan --}}
+<li class="nav-item has-treeview {{ request()->routeIs('admin.absensi.monitoring') || request()->is('absensi/rekap*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link {{ request()->routeIs('admin.absensi.monitoring') || request()->is('absensi/rekap*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-chart-bar"></i>
+        <p>
+            Laporan
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+
+    <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+            <a href="{{ route('absensi.rekap') }}"
+               class="nav-link {{ request()->routeIs('absensi.rekap') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-clipboard-check"></i>
+                <p>Rekap Absensi</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('penggajian.index') }}"
+               class="nav-link">
+                <i class="nav-icon fas fa-wallet"></i>
+                <p>Slip Gaji</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
+
+</ul>
+</li>
+
 
 @endif
 @endauth

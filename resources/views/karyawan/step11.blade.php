@@ -134,7 +134,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
         <div class="form-header">
             <h5>
                 @if($showDriverSatpam)
-                    Step 11 - Driver/Satpam
+                    Step 11 - Khusus
                 @else
                     Step 11 - Final
                 @endif
@@ -150,7 +150,8 @@ $showDriverSatpam = $isDriver || $isSatpam;
                         <ul class="mb-0">
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
-                            @endforeach
+                            @endfore
+                            ach
                         </ul>
                     </div>
                 @endif
