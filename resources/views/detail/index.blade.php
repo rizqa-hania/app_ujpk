@@ -61,9 +61,7 @@
                                         <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm" title="Lihat Slip">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('laporan.generateid', $v->detail_id) }}" class="btn btn-danger btn-sm" target="_blank" title="Cetak PDF">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </a>
+                                        
                                         <form action="{{ route('detail.destroy', $v->detail_id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')

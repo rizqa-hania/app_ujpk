@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IzinController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;

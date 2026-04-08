@@ -75,6 +75,9 @@
                 
             </div>
             <div class="card-footer no-print text-right p-3">
+                <a href="{{ route('laporan.generateid', $detail->detail_id) }}" class="btn btn-danger btn-sm" target="_blank" title="Cetak PDF">
+                    <i class="fas fa-file-pdf"></i> Cetak PDF
+                </a>
                 {{-- Tombol cetak dihapus agar user bisa membuat custom button sendiri --}}
                 <a href="{{ route('detail.index', $detail->penggajian_id) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-arrow-left mr-1"></i> Kembali</a>
             </div>
