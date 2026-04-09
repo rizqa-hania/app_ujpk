@@ -4,7 +4,7 @@
 
 {{-- Notifikasi Ulang Tahun --}}
 <div class="birthday-card">
-<button type="button" class="close text-white" data-dismiss="alert">&times;</button>
+<button class="close text-white" onclick="tutupCard(this)">&times;</button>
 
 <strong>🎉 Ulang Tahun Hari Ini</strong>
 
@@ -39,40 +39,12 @@
 <section class="content pt-3">
     <div class="container-fluid">
         
-        {{-- PANEL REKAP LAPORAN (TAMBAHAN BARU) --}}
-        <div class="row">
-            <div class="col-12 mb-4">
-                <div class="card card-outline card-primary shadow-sm">
-                    <div class="card-header">
-                        <h3 class="card-title font-weight-bold">
-                            <i class="fas fa-file-export mr-2 text-primary"></i> Pusat Unduh Laporan Absensi
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted">Silakan pilih periode laporan yang ingin diunduh dalam format PDF:</p>
-                        <div class="d-flex flex-wrap" style="gap: 15px;">
-                            <a href="{{ route('absensi.rekap', ['type' => 'harian', 'tanggal' => now()->toDateString()]) }}" 
-                               class="btn btn-primary elevation-2">
-                                <i class="fas fa-calendar-day mr-1"></i> Rekap Hari Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'mingguan', 'tanggal' => now()->toDateString()]) }}" 
-                               class="btn btn-info elevation-2">
-                                <i class="fas fa-calendar-week mr-1"></i> Rekap Minggu Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'bulanan', 'bulan' => now()->format('Y-m')]) }}" 
-                               class="btn btn-warning text-white elevation-2">
-                                <i class="fas fa-calendar-alt mr-1"></i> Rekap Bulan Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'tahunan', 'tahun' => now()->year]) }}" 
-                               class="btn btn-dark elevation-2">
-                                <i class="fas fa-archive mr-1"></i> Rekap Tahun Ini
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <!-- HEADER ADMIN -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <h3 class="font-weight-bold text-dark border-bottom pb-2">
+                  Halaman Admin
+                </h3>
             </div>
         </div>
 
@@ -182,7 +154,7 @@
                         <i class="fas fa-project-diagram text-white"></i>
                     </div>
                         <h3>{{ $totalProject }}</h3>
-                        <p>Project</p>
+                        <p>Proyek</p>
                     </div>
                     <a href="{{ route('master_project.index') }}" class="small-box-footer">Detail <i class="fas fa-arrow"></i></a>
                 </div>
@@ -434,6 +406,17 @@
   cursor: pointer;
 }
 
+.birthday-card {
+  position: relative;
+}
+
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+}
+
 @keyframes fadeIn {
   from {opacity: 0; transform: translateY(-20px);}
   to {opacity: 1; transform: translateY(0);}
@@ -468,6 +451,11 @@ function kirimUcapan() {
     // reset
     document.getElementById("pesanUcapan").value = "";
     tutupModal();
+}
+</script>
+<script>
+function tutupCard(btn) {
+    btn.parentElement.style.display = "none";
 }
 </script>
 @endsection

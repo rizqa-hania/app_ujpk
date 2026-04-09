@@ -13,7 +13,8 @@
 
                 {{-- ERROR VALIDATION --}}
                 @if ($errors->any())
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger" >
+                        
                         {{ $errors->first() }}
                     </div>
                 @endif
@@ -228,6 +229,19 @@ function submitAbsen() {
 @push('js')
 <script>
     new DataTable('#table');
+
+    // Menghilangkan notifikasi setelah 5 detik (5000ms)
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+            setTimeout(function() {
+                alert.style.display = "none";
+            }, 500);
+        });
+    }, 5000);
 </script>
+
 @endpush
 @endsection

@@ -62,6 +62,14 @@ KARYAWAN
     </a>
 </li>
 
+<li class="nav-item">
+    <a href="{{ route('absensi.rekap') }}"
+       class="nav-link {{ request()->routeIs('absensi.rekap') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-clipboard-check"></i>
+        <p>Rekap Absensi</p>
+    </a>
+</li>
+
 <li class="nav-item has-treeview {{ request()->is('penggajian*') ? 'menu-open' : '' }}">
     <a href="#"
        class="nav-link {{ request()->is('penggajian*') ? 'active' : '' }}">
@@ -95,7 +103,7 @@ ADMIN
     <a href="{{ route('admin.dashboard') }}"
        class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
-        <p>Dashboard Admin</p>
+        <p>Halaman Admin</p>
     </a>
 </li>
 
@@ -110,7 +118,7 @@ ADMIN
        {{ request()->routeIs('admin.index') || request()->routeIs('karyawan.tambah.index') ? 'active' : '' }}">
         <i class="nav-icon fas fa-user-plus"></i>
         <p>
-            Tambah User
+            Tambah Pengguna
             <i class="right fas fa-angle-left"></i>
         </p>
     </a>
@@ -155,7 +163,7 @@ class="nav-link
 
 
 <p>
-Tambah Data Master
+ Data Master
 <i class="right fas fa-angle-left"></i>
 </p>
 
@@ -246,13 +254,13 @@ Absensi
 <ul class="nav nav-treeview">
 
 <li class="nav-item">
-                                    <a href="{{ route('admin.absensi.monitoring') }}"
-                                       class="nav-link {{ request()->routeIs('admin.absensi.monitoring') ? 'active' : '' }}">
-                                        <i class="fas fa-laptop nav-icon"></i> {{-- text-primary dihapus agar jadi abu --}}
-                                        <p>Monitoring Absensi</p>
-                                    </a>
-                                </li>
-
+   <a href="{{ route('admin.absensi.monitoring') }}"
+ class="nav-link {{ request()->routeIs('admin.absensi.monitoring') ? 'active' : '' }}">
+<i class="fas fa-laptop nav-icon"></i> {{-- text-primary dihapus agar jadi abu --}}
+<p>Monitoring Absensi</p>
+ </a>
+ </li>
+                           
 <li class="nav-item">
 <a href="{{ route('jadwal.index') }}"
 class="nav-link {{ request()->routeIs('jadwal.index') ? 'active' : '' }}">
@@ -353,6 +361,7 @@ class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
 </li>
 
 
+
 @endif
 @endauth
 
@@ -361,3 +370,5 @@ class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
 
 </div>
 </aside>
+
+

@@ -32,8 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], functi
     // URL unik agar tidak disangka ID oleh route DELETE
     Route::get('/monitoring-presensi', [AbsensiController::class, 'monitoring'])->name('admin.absensi.monitoring');
     
-    // Route rekap (Pastikan methodnya GET/POST sesuai form kamu)
-    Route::get('/rekap-absensi', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
+    // dihapus duplicated route
 
     // Resource lainnya di bawah
     Route::resource('absensi', 'AbsensiController');
@@ -249,6 +248,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/absensi','AbsensiController@index')->name('absensi.index');
     Route::post('/absensi','AbsensiController@store')->name('absensi.store');
     Route::get('/absensi/rekap', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
+    Route::get('/absensi/rekap/cetak', [AbsensiController::class, 'cetakRekap'])->name('absensi.rekap.cetak');
 });
 
 //kantor

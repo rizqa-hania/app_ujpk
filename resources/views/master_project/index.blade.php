@@ -1,14 +1,6 @@
 @extends('template.admin.layout')
 @section('content')
 
-<!-- Tombol Kembali -->
-<div class="row mb-3">
-    <div class="col-12">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-12">
@@ -16,7 +8,7 @@
         <div class="card shadow-sm">
 
             <!-- Header -->
-            <div class="card-header">
+             <div class="card-header pr-3 pl-3 m-2">
 
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h3 class="card-title font-weight-bold mb-0">
@@ -25,7 +17,7 @@
 
         <a href="{{ route('master_project.create') }}" 
            class="btn btn-primary btn-sm">
-            <i class="fas fa-plus"></i> Tambah Project
+            <i class="fas fa-plus"></i> Tambah Proyek
         </a>
     </div>
 
@@ -59,8 +51,8 @@
                 <table  id="table" class="table table-hover table-striped mb-0">
                     <thead class="bg-light">
                         <tr>
-                            <th width="20%">Kode Project</th>
-                            <th>Nama Project</th>
+                            <th width="20%">Kode Proyek</th>
+                            <th>Nama Proyek</th>
                             <th width="15%" class="text-center">Aksi</th>
                         </tr>
                     </thead>

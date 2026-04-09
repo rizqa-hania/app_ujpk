@@ -9,7 +9,7 @@
             <!-- Header -->
             <div class="card-header">
                 <h3 class="card-title font-weight-bold mb-0">
-                    Tambah Project
+                    Tambah Proyek
                 </h3>
             </div>
 
@@ -22,7 +22,7 @@
                     <!-- Nama Project -->
                     <div class="form-group">
                         <label class="font-weight-semibold">
-                            Nama Project
+                            Nama Proyek
                         </label>
                         <input type="text"
                                name="nama_project"
@@ -40,7 +40,7 @@
                     <!-- Kode Project -->
                     <div class="form-group">
                         <label class="font-weight-semibold">
-                            Kode Project
+                            Kode Proyek
                         </label>
                         <input type="text"
                                name="kode_project"

@@ -5,9 +5,9 @@
 <section class="content">
 <div class="container-fluid">
 
-{{-- NOTIF ULANG TAHUN --}}
+{{-- Notifikasi Ulang Tahun --}}
 <div class="birthday-card">
-<button type="button" class="close text-white" data-dismiss="alert">&times;</button>
+<button class="close text-white" onclick="tutupCard(this)">&times;</button>
 
 <strong>🎉 Ulang Tahun Hari Ini</strong>
 
@@ -216,7 +216,126 @@ style="background:#2f4bb2;color:white;">
 
 </div>
 </section>
-<script>
+
+<style>
+
+  .alert.alert-warning li {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.alert.alert-warning li:hover {
+  transform: translateX(5px);
+  opacity: 0.9;
+}
+
+ .birthday-card {
+  position: relative;
+  padding: 20px 25px;
+  border-radius: 15px;
+
+  /* warna elegan */
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: #fff;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+/* efek glow halus */
+.birthday-card::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
+  transform: rotate(25deg);
+}
+
+/* judul */
+.birthday-card strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* list */
+.birthday-card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.birthday-card li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+/* umur */
+.birthday-card .age {
+  opacity: 0.85;
+  font-size: 13px;
+}
+
+/* tombol close */
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  opacity: 0.8;
+}
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  margin: 15% auto;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content h5 {
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  border: none;
+  background: #4facfe;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.birthday-card {
+  position: relative;
+}
+
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+  </style>
+  <script>
 let namaTerpilih = "";
 
 function ucapin(nama) {
@@ -245,6 +364,11 @@ function kirimUcapan() {
     // reset
     document.getElementById("pesanUcapan").value = "";
     tutupModal();
+}
+</script>
+<script>
+function tutupCard(btn) {
+    btn.parentElement.style.display = "none";
 }
 </script>
 @endsection

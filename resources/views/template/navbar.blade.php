@@ -34,15 +34,7 @@ navbar -->
             {{ auth()->user()->name }}
           @endif
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">Menu</span>
-          <div class="dropdown-divider"></div>
-          <a href="{{ route('login') }}" class="dropdown-item">
-            <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
-              <i class="fas fa-sign-out-alt mr-2"></i> keluar
-            </button>
-</a>
-        </div>
+    
       </li>
       @endauth
 <!--
