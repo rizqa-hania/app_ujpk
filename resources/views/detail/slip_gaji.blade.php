@@ -77,9 +77,9 @@
                 <a href="{{ route('detail.index', $detail->penggajian_id) }}" class="btn btn-outline-secondary btn-sm mr-2">
                     <i class="fas fa-arrow-left mr-1"></i> Kembali
                 </a>
-                <button onclick="cetakSlipGaji()" class="btn btn-primary btn-sm">
-                    <i class="fas fa-print mr-1"></i> Cetak PDF
-                </button>
+                <a href="{{ route('slip.pdf', $detail->detail_id) }}"  class="btn btn-danger btn-sm">
+                    <i class="fas fa-download mr-1"></i> Download PDF
+                </a>
             </div>
         </div>
     </div>
@@ -269,10 +269,4 @@
         }
     }
 </style>
-
-<script>
-    function cetakSlipGaji() {
-        window.print();
-    }
-</script>
 @endsection
