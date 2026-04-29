@@ -30,6 +30,6 @@ class CreatePenggajianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penggajian');
+        
     }
 }

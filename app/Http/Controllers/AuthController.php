@@ -71,6 +71,7 @@ class AuthController extends Controller
     return redirect()->route('login');
 }
 
+}
     /*
   public function showRegister()
 {
@@ -131,4 +132,5 @@ public function completeRegister(Request $request)
     return redirect()->route('login')->with('success', 'Registrasi berhasil!');
 }*/
 
-}
+
+

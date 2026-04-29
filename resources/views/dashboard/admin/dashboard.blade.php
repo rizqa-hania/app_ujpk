@@ -18,6 +18,7 @@
     </ul>
 </div>
 @endif
+
 @if(count($ulangTahunHariIni) > 0)
 <div class="birthday-card">
     <button class="close text-white" onclick="tutupCard(this)">&times;</button>
@@ -26,7 +27,7 @@
 
     <ul class="mb-0 mt-2">
     @foreach($ulangTahunHariIni as $k)
-        <li onclick="ucapin('{{ $k->id }}','{{ $k->nama_lengkap }}')" style="cursor:pointer;">
+        <li onclick="ucapin('{{ $k->id }}','{{ addslashes($k->nama_lengkap) }}')" style="cursor:pointer;">
             {{ $k->nama_lengkap }}
             ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
         </li>
@@ -44,11 +45,12 @@
     <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu..."></textarea>
 
     <div style="margin-top:15px;">
-      <button onclick="console.log('klik masuk'); kirimUcapan()">Kirim</button>
+      <button onclick="kirimUcapan()">Kirim</button>
       <button onclick="tutupModal()">Tutup</button>
     </div>
   </div>
 </div>
+
 <section class="content pt-3">
     <div class="container-fluid">
         
@@ -97,7 +99,7 @@
 
             {{-- Izin --}}
             <div class="col-lg-3 col-6 mb-4">
-              <div class="small-box bg-gradient-izin">
+                <div class="small-box bg-gradient-izin">
                     <div class="inner">
                         <h3 class="text-white">{{ $totalIzin }}</h3>
                         <p class="text-white">Total Izin</p>
@@ -119,7 +121,7 @@
                         <p>Total Lembur</p>
                     </div>
                     <div class="icon">
-                        <i class=" fas fa-business-time  icon-white"></i>
+                        <i class="fas fa-business-time icon-white"></i>
                     </div>
                     <a href="{{ route('lembur.index') }}" class="small-box-footer text-white">
                         Lihat Detail <i class="fas fa-arrow-circle-right"></i>
@@ -137,7 +139,7 @@
                     <div class="inner">
                         <div class="icon">
                             <i class="fas fa-users-cog text-white"></i>
-                    </div>
+                        </div>
                         <h3>{{ $totalTad }}</h3>
                         <p>TAD</p>
                     </div>
@@ -147,11 +149,11 @@
 
             {{-- Unit PLN --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-              <div class="small-box bg-gradient-unit">
+                <div class="small-box bg-gradient-unit">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-building text-white"></i>
-                    </div>
+                            <i class="fas fa-building text-white"></i>
+                        </div>
                         <h3>{{ $totalUnitPln }}</h3>
                         <p>Unit PLN</p>
                     </div>
@@ -161,11 +163,11 @@
 
             {{-- Project --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-               <div class="small-box bg-gradient-project">
+                <div class="small-box bg-gradient-project">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-project-diagram text-white"></i>
-                    </div>
+                            <i class="fas fa-project-diagram text-white"></i>
+                        </div>
                         <h3>{{ $totalProject }}</h3>
                         <p>Proyek</p>
                     </div>
@@ -173,13 +175,13 @@
                 </div>
             </div>
 
-             {{-- Jabatan --}}
-             <div class="col-lg-2 col-md-4 col-6 mb-4">
+            {{-- Jabatan --}}
+            <div class="col-lg-2 col-md-4 col-6 mb-4">
                 <div class="small-box bg-gradient-jabatan">
                     <div class="inner text-white">
-                          <div class="icon">
-                        <i class="fas fa-user-tie text-white"></i>
-                    </div>
+                        <div class="icon">
+                            <i class="fas fa-user-tie text-white"></i>
+                        </div>
                         <h3>{{ $totalJabatan }}</h3>
                         <p>Jabatan</p>
                     </div>
@@ -189,11 +191,11 @@
 
             {{-- Sub Unit --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-              <div class="small-box bg-gradient-subunit">
+                <div class="small-box bg-gradient-subunit">
                     <div class="inner text-white">
-                         <div class="icon">
-                        <i class="fas fa-sitemap text-white"></i>
-                    </div>
+                        <div class="icon">
+                            <i class="fas fa-sitemap text-white"></i>
+                        </div>
                         <h3>{{ $totalSubUnit }}</h3>
                         <p>Sub Unit</p>
                     </div>
@@ -206,8 +208,8 @@
                 <div class="small-box bg-gradient-pendidikan">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-graduation-cap text-white"></i>
-                    </div>
+                            <i class="fas fa-graduation-cap text-white"></i>
+                        </div>
                         <h3>{{ $totalPendidikan }}</h3>
                         <p>Pendidikan</p>
                     </div>
@@ -217,6 +219,7 @@
         </div>
     </div>
 </section>
+
 
 <style>
 .icon-white {

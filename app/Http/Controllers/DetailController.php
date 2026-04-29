@@ -10,6 +10,7 @@ use App\Komponen;
 use App\DetailKomponen;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DetailController extends Controller
 {
@@ -239,8 +240,12 @@ class DetailController extends Controller
         return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 
-    public function tambahkomponen()
-    {
-        //
+    public function downloadPdf($detail_id){
+        $detail = Detail::with(['karyawan.jabatan', 'detailKomponen.komponen', 'penggajian'])->findOrFail($detail_id);
+        $terbilang = $this->terbilang($detail->gaji_bersih);
+        
+        $pdf = PDF::loadView('laporan.slippdf', compact('detail', 'terbilang'));
+        return $pdf->download('slip_gaji.pdf');
     }
+   
 }

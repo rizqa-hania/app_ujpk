@@ -81,11 +81,7 @@
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
                                         </form>
                                     @endif
-                                    <form action="{{ route('komponen.destroy', $v->kode) }}" method="POST">
-                                        @csrf @method('DELETE')
                                         <a href="{{ route('komponen.edit', $v->kode) }}" class="btn btn-success btn-sm">Edit</a>
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus komponen ini?')">Hapus</button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>

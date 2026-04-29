@@ -20,8 +20,8 @@
                                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                             @endphp
                             @for($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" {{ $dataeditpenggajian->periode_bulan == $i ? 'selected' : '' }}>
-                                    {{ $bulan[$i] }}
+                                <option value="{{ $bulan[$i] }}" {{ $dataeditpenggajian->periode_bulan == $bulan[$i] ? 'selected' : '' }}>
+                                             {{ $bulan[$i] }}
                                 </option>
                             @endfor
                         </select>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="card-footer text-right">
-                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary">Batal</a>
+                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary">Kembali</a>
                     <button type="submit" class="btn btn-warning text-white">Update Data</button>
                 </div>
             </form>

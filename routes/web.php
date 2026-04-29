@@ -21,6 +21,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IzinController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PeriodeKaryawanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
@@ -154,6 +156,7 @@ Route::prefix('karyawan')->name('karyawan.')->middleware(['auth'])->group(functi
 
     // Optional finish route, biasanya nggak dipakai langsung
     Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
+
 });
 
 
@@ -219,8 +222,13 @@ Route::middleware(['auth'])->group(function() {
 // PENGGAJIAN
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
 Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
+Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
+Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
 Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
+
+// PERIODE KARYAWAN
+    Route::get('/periode', [PeriodeKaryawanController::class, 'index'])->name('periode_karyawan.index');
 
 // KOMPONEN GAJI
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
@@ -238,7 +246,9 @@ Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name(
 Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
+Route::get('/detail/{id}/pdf', [DetailController::class, 'downloadPdf'])->name('slip.pdf');
 Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');
+
 
 // LAPORAN
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');

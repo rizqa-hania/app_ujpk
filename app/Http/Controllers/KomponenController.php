@@ -118,8 +118,7 @@ class KomponenController extends Controller
      */
     public function destroy($kode)
     {
-        Komponen::where('kode', $kode)->delete();
-        return redirect()->route('komponen.index');
+       
     }
 
     public function aktifkan($kode)
