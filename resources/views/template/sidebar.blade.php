@@ -89,8 +89,7 @@
               
                 {{-- ABSENSI --}}
                 <li class="nav-item has-treeview {{ request()->is('absensi*') ? 'menu-open' : '' }}">
-                    <a href="#"
-                       class="nav-link {{ request()->is('absensi*') ? 'active' : '' }}">
+                    <a href="#"class="nav-link {{ request()->is('absensi*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-camera"></i>
                         <p>
                             Absensi

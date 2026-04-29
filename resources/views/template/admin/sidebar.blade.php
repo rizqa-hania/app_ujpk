@@ -116,7 +116,6 @@
                     <a href="#"
                        class="nav-link 
                        {{ request()->is('penggajian*') || request()->is('komponen*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>
                             Penggajian
                             <i class="right fas fa-angle-left"></i>
@@ -127,14 +126,13 @@
                         <li class="nav-item">
                             <a href="{{ route('penggajian.index') }}"
                                class="nav-link {{ request()->routeIs('penggajian.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
                                 <p>Penggajian</p>
                             </a>
                         </li>
                          <li class="nav-item">
                             <a href="{{ route('komponen.index') }}"
                                class="nav-link {{ request()->routeIs('komponen.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
+                                
                                 <p>Komponen</p>
                             </a>
                         </li>

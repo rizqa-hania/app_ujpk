@@ -153,11 +153,8 @@
             </div>
 
                <div class="col-lg-3 col-6">
-<<<<<<< HEAD
                 <div class="small-box bg-indigo elevation-3 dashboard-box">
-=======
                 <div class="small-box bg-indigo dashboard-box">
->>>>>>> 6a44499e5d30edd432739d668405ec4e17fd506b
                     <div class="inner">
                         <h3>{{ $totalKaryawan }}</h3>
                         <p>Total Karyawan</p>
