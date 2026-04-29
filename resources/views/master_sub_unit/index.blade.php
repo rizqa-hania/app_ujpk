@@ -1,9 +1,13 @@
-@extends('template.layout')
-
+<!-- -->
+@extends('template.admin.layout')
 @section('content')
-@extends('template.layout')
-@section('content')
+ <div class="col-12">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
 <div class="row"> 
+    
     <div class="col-12">
         <div class="card"> 
             <div class="card-header">
@@ -15,7 +19,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive"> 
-                <table class="table table-stripped table-hover"> 
+                <table id="table" class="table table-stripped table-hover"> 
                      <thead>
                                     <tr>
                                         <th>Kode</th>

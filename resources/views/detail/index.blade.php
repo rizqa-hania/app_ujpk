@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 <div class="row"> 
     <div class="col-12">
@@ -13,11 +13,28 @@
                 </div>
             </div>
             <div class="card-body table-responsive"> 
-                <table class="table table-stripped table-hover"> 
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+                <table id="table" class="table table-stripped table-hover"> 
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>NIP</th>
+                            <th>Nama Karyawan</th>
                             <th>Total Pendapatan</th>
                             <th>Total Potongan</th>
                             <th>Gaji Bersih</th>
@@ -29,25 +46,30 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $v->karyawan->nip ?? '-' }}</td>
-                                <td>{{ $v->total_pendapatan }}</td>
-                                <td>{{ $v->total_potongan }}</td>
-                                <td>{{ $v->gaji_bersih }}</td>
+                                <td>{{ $v->karyawan->nama_lengkap ?? '-' }}</td>
+                                <td>Rp {{ number_format($v->total_pendapatan, 0, ',', '.') }}</td>
                                 <td>
-                                    <span class="badge {{ $v->status == 'Aktif' ? 'badge-success' : 'badge-secondary' }}">
-                                        {{ $v->status }}
-                                    </span>
+                                    @if($v->total_pendapatan > 0)
+                                        {{ number_format(($v->total_potongan / $v->total_pendapatan) * 100, 1) }}%
+                                    @else
+                                        0%
+                                    @endif
                                 </td>
+                                <td>Rp {{ number_format($v->gaji_bersih, 0, ',', '.') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm" title="Slip Gaji">
-                                            <i class="fas fa-file-invoice"></i> Slip Gaji
+                                        <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm" title="Lihat Slip">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <form action="{{ route('detail.destroy', $v->detail_id) }}" method="POST" class="d-inline">
-                                            {{ csrf_field() }}
+                                            @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')" title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                            <a href="{{ route('slip.pdf', $v->detail_id) }}"  class="btn btn-danger btn-sm">
+                                            <i class="fas fa-download mr-1"></i>
+                                        </a>
                                         </form>
                                     </div>
                                 </td>
@@ -60,3 +82,8 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush

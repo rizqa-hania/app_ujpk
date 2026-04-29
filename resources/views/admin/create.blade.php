@@ -1,61 +1,105 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">Tambah Admin</div>
+        <div class="card shadow-sm">
 
-<form action="{{ route ('admin.store') }}" method="POST">
-    {{ csrf_field( ) }}
-            <div class="card-body">
-
- <div class="mb-3">
-<label name="name" class="form-table">Nama: </label>
-    <input type="text" class = "form-control" name="name" value="{{old('name')}}">
-@if($errors->has('name'))
-<span class="text-danger">{{ $errors->first('name')}}</span>   
-@endif
- </div>
-
-<div class="mb-3">
-<label name="email" class="form-table">Email</label>
-  <input type="text" class = "form-control" name="email"
-   value="{{old('email
-   ')}}">
-</div>
-
-<div class="mb-3">
-<label name="password" class="form-table">Password</label>
-<input type="text" class = "form-control" name="password"
-   value="{{old('password
-   ')}}">
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Role</label><br>
-
-<input type="radio" class="btn-check" name="role" id="admin" value="admin" checked>
-<label class="btn btn-outline-secondary btn-sm" for="admin">Admin</label>
-</div>                     
-
-
-
-  
-
+            <!-- Header -->
+            <div class="card-header">
+                <h5 class="mb-0 font-weight-bold">Tambah Admin</h5>
             </div>
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-        <a href="{{route('admin.index')}}" class="btn btn-success btn-sm">Kembali</a>
+
+            <!-- Form -->
+            <form action="{{ route('admin.store') }}" method="POST">
+                @csrf
+
+                <div class="card-body">
+
+                    <!-- Nama -->
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" 
+                               class="form-control @error('name') is-invalid @enderror" 
+                               name="name" 
+                               value="{{ old('name') }}" 
+                               required>
+
+                        @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" 
+                               class="form-control @error('email') is-invalid @enderror" 
+                               name="email" 
+                               value="{{ old('email') }}" 
+                               required>
+
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" 
+                               class="form-control @error('password') is-invalid @enderror" 
+                               name="password" 
+                               required>
+
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <label class="form-label">Role</label><br>
+
+                        <input type="radio" 
+                               class="btn-check" 
+                               name="role" 
+                               id="admin" 
+                               value="admin" 
+                               checked>
+
+                        <label class="btn btn-outline-danger btn-sm" for="admin">
+                            Admin
+                        </label>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{{ route('admin.index') }}" 
+                       class="btn btn-secondary btn-sm">
+                        Kembali
+                    </a>
+
+                    <button type="submit" 
+                            class="btn btn-primary btn-sm">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+
         </div>
-</form>
-        </div>
+
     </div>
 </div>
 
 @endsection
-
-
-
-
- 

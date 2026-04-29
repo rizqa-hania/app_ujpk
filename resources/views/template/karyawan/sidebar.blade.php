@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary elevation-4">
 
     <!-- Brand Logo -->
     <a href="{{ route('karyawan.dashboard') }}" class="brand-link text-center">
@@ -37,7 +37,7 @@
                     <a href="{{ route('karyawan.dashboard') }}"
                        class="nav-link {{ request()->routeIs('karyawan.dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
+                        <p>Dashboard Karyawan</p>
                     </a>
                 </li>
 
@@ -61,10 +61,27 @@
 
                 <!-- Lembur -->
                 <li class="nav-item">
-                    <a href="{{ route('lembur.index') }}"
-                       class="nav-link {{ request()->routeIs('lembur.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-overtime"></i>
+                    <a href="{{ route('lembur.create') }}"
+                       class="nav-link {{ request()->routeIs('lembur.create') ? 'active' : '' }}">
+                      <i class="nav-icon fas fa-business-time"></i>
                         <p>Lembur</p>
+                    </a>
+                </li>
+
+                  <li class="nav-item">
+                    <a href="{{ route('izin.create') }}"
+                       class="nav-link {{ request()->routeIs('izin.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-signature"></i>
+                        <p>Izin</p>
+                    </a>
+                </li>
+
+
+                 <li class="nav-item">
+                    <a href="{{ route('periode_karyawan.index') }}"
+                       class="nav-link {{ request()->routeIs('periode_karyawan.index') ? 'active' : '' }}">
+                       <i class="nav-icon fas fa-wallet"></i>
+                        <p>Slip Gaji</p>
                     </a>
                 </li>
 

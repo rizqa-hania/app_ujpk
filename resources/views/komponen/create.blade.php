@@ -1,14 +1,14 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">Tambah Komponen</div>
+            <div class="card-header">Tambah Komponen
                 <form action="{{ route('komponen.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="kode" class="form-label">Kode Komponen</label>
+                        <label for="kode" class="form-label" id="kode">Kode Komponen</label>
                         <input type="text" name="kode" class="form-control" placeholder="Contoh: 02" value="{{old('kode')}}" required>
                         @if ($errors->has('kode'))
                         <span class="text-danger">{{ $errors->first('kode') }}</span>
@@ -37,7 +37,7 @@
                         <select name="tipe_penghitungan" class="form-control">
                             <option value="">-- Pilih Tipe Penghitungan --</option>
                             <option value="nominal">Nominal (Tetap)</option>
-                            <option value="presentase">Persentase (%)</option>
+                            <option value="presentase">Presentase (%)</option>
                         </select>
                         @if ($errors->has('tipe_penghitungan'))
                         <span class="text-danger">{{ $errors->first('tipe_penghitungan') }}</span>
@@ -50,8 +50,8 @@
                         <small class="text-muted">Gunakan titik untuk desimal jika perlu.</small>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                        <a href="{{route('komponen.index')}}" class="btn btn-success btn-sm">Kembali</a>
+                        <a href="{{route('komponen.index')}}" class="btn btn-secondary btn-sm px-3"><i class="fas fa-arrow-left"></i> Kembali</a>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"> Simpan</i></button>
                     </div>
                 </div>
                 </form>

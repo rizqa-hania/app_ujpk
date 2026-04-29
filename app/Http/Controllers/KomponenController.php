@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\KomponenImport;
 use App\Komponen;
 
 class KomponenController extends Controller
@@ -46,7 +48,7 @@ class KomponenController extends Controller
 
         Komponen::create([
             'kode'              => $request->kode,
-            'komponen'              => $request->komponen,
+            'komponen'          => $request->komponen,
             'tipe'              => $request->tipe,
             'tipe_penghitungan' => $request->tipe_penghitungan,
             'nilai'             => $request->nilai
@@ -74,7 +76,7 @@ class KomponenController extends Controller
      */
     public function edit($kode)
     {
-        $komponen = Komponen::find($kode);
+        $komponen = Komponen::where('kode', $kode)->firstOrFail();
         return view('komponen.edit', compact('komponen'));
     }
 
@@ -87,7 +89,25 @@ class KomponenController extends Controller
      */
     public function update(Request $request, $kode)
     {
+        $request->validate([
+            'kode'                  => 'required|string',
+            'komponen'              => 'required|string|max:255|unique:komponen,komponen,' . $kode . ',kode',
+            'tipe'                  => 'required',
+            'tipe_penghitungan'     => 'required',
+            'nilai'                 => 'required|numeric',
+        ]);
         
+        $komponen = Komponen::where('kode', $kode)->firstOrFail();
+
+        $komponen->update([
+            'kode'              => $request->kode,
+            'komponen'          => $request->komponen,
+            'tipe'              => $request->tipe,
+            'tipe_penghitungan' => $request->tipe_penghitungan,
+            'nilai'             => $request->nilai
+        ]);
+
+        return redirect()->route('komponen.index')->with('success', 'Komponen berhasil diperbarui');   
     }
 
     /**
@@ -98,8 +118,7 @@ class KomponenController extends Controller
      */
     public function destroy($kode)
     {
-        Komponen::where('kode', $kode)->delete();
-        return redirect()->route('komponen.index');
+       
     }
 
     public function aktifkan($kode)
@@ -112,5 +131,21 @@ class KomponenController extends Controller
     {
         Komponen::where('kode', $kode)->update(['status' => 2]);
         return redirect()->route('komponen.index');
+    }
+
+    public function import(Request $request) 
+    {
+        $request->validate([ 
+            'file' => 'required|mimes:xls,xlsx', ],
+            [ 
+            'file.required' => 'file wajib di isi', 
+            ]); 
+
+            $file = $request->file('file'); 
+            $filename = $file->getClientOriginalName(); 
+
+            Excel::import(new KomponenImport, $file);
+
+            return redirect('/komponen')->with('success', 'Import file berhasil');
     }
 }

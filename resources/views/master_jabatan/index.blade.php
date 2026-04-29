@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 
 <!-- Tombol Kembali -->
@@ -31,7 +31,7 @@
 
             <!-- Body -->
             <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0">
+                <table id="table" class="table table-hover table-striped mb-0">
                     <thead class="bg-light">
                         <tr>
                             <th width="15%">Kode</th>
@@ -76,5 +76,10 @@
 
     </div>
 </div>
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush
 
 @endsection

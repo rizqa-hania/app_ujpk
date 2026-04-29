@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('role', ['admin','karyawan'])->default('karyawan');
             $table->string('nip')->unique()->nullable();
+            
             $table->boolean('is_active')->default(1);
             $table->boolean('is_profile_complete')->default(false);
             $table->rememberToken();

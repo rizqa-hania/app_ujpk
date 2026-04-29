@@ -20,7 +20,6 @@ class CreateDetailKomponenTable extends Migration
             $table->string('kode');
             $table->foreign('kode')->references('kode')->on('komponen')->onDelete('cascade');
             $table->string('tipe');
-            $table->foreign('tipe')->references('kode')->on('komponen')->onDelete('cascade');
             $table->decimal('nilai', 15, 2);
             $table->timestamps();
         });

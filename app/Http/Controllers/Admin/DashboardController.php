@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\User;
 use App\Karyawan;
 use App\MasterSubUnit;
@@ -35,6 +36,10 @@ class DashboardController extends Controller {
         $totalPendidikan = MasterPendidikan::count();
         $totalJabatan = Jabatan::count();
         $totalLembur = Lembur::count();
+        $today = Carbon::today();
+        $ulangTahunHariIni = Karyawan::whereMonth('tanggal_lahir', $today->month)
+            ->whereDay('tanggal_lahir', $today->day)
+            ->get();
         
         // Statistik terbaru
         $absensiHariIni = Absensi::whereDate('created_at', today())->count();
@@ -54,8 +59,9 @@ class DashboardController extends Controller {
             'totalLembur',
         'absensiHariIni',
             'totalIzin',
-            'totalAbsensi'));
+            'totalAbsensi',
+            'ulangTahunHariIni'));
     }
-
+    
     
 }

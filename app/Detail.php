@@ -25,7 +25,7 @@ class Detail extends Model
 
     public function detailKomponen()
     {
-        return $this->hasMany(DetailKomponen::class);
+        return $this->hasMany(DetailKomponen::class, 'detail_id', 'detail_id');
     }
 
 }

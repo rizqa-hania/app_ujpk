@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use App\Karyawan;
 use App\Jabatan;
 use App\MasterUnitPln;
@@ -20,6 +21,7 @@ class KaryawanController extends Controller
 
     public function index()
     {
+      
         $karyawans = User::where('role', 'karyawan')->get();
         return view('karyawan.tambah.index', compact('karyawans'));
     }
@@ -34,12 +36,14 @@ class KaryawanController extends Controller
         $request->validate([
             'name' => 'required',
            'nip' => 'required|numeric|unique:users,nip',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6'
         ]);
 
         User::create([
         'name' => $request->name,
         'nip' => $request->nip,
+        'email' => $request->email,
         'password' => Hash::make($request->password),
         'role' => 'karyawan'
 ]);
@@ -132,16 +136,24 @@ class KaryawanController extends Controller
 
     /* ================= DASHBOARD ================= */
 
-    public function dashboard()
-    {
-        $karyawan = $this->getKaryawan();
-        
-        if (!$karyawan || !$karyawan->is_complete) {
-            return redirect()->route('karyawan.step1');
-        }
-
-        return view('dashboard.karyawan.dashboard', compact('karyawan'));
+   public function dashboard()
+{
+    $karyawan = $this->getKaryawan();
+    
+    if (!$karyawan || !$karyawan->is_complete) {
+        return redirect()->route('karyawan.step1');
     }
+
+    $today = Carbon::today();
+
+    $ulangTahunHariIni = Karyawan::whereMonth('tanggal_lahir', $today->month)
+        ->whereDay('tanggal_lahir', $today->day)
+        ->get();
+
+    return view('dashboard.karyawan.dashboard', 
+        compact('karyawan', 'ulangTahunHariIni')
+    );
+}
 
     /* ================= STEP 1: DATA KERJA ================= */
 
@@ -169,9 +181,9 @@ class KaryawanController extends Controller
             'tad_id' => 'required',
             'project_id' => 'required',
             'pendidikan_id' => 'required',
-            'tanggal_mulai_aktif' => 'required',
+              'tanggal_mulai_aktif' => 'required',
             'unit_penempatan' => 'required',
-            'status_karyawan' => 'required',
+                    'status_karyawan' => 'required',
             'keterangan' => 'nullable',
         ]);
 

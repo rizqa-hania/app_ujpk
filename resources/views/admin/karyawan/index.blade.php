@@ -29,7 +29,7 @@ function getStatusBadge($isComplete) {
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="table" id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -114,5 +114,9 @@ function getStatusBadge($isComplete) {
         <!-- /.row -->
     </div>
 </section>
-
+@push('js')
+<script>
+    new DataTable('#table');
+</script>
+@endpush
 @endsection

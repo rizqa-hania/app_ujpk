@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Penggajian;
 
 class PenggajianController extends Controller
@@ -12,11 +13,59 @@ class PenggajianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $penggajian = Penggajian::all();
-        return view('penggajian.index', compact('penggajian'));
+public function index(Request $request)
+{
+    
+    $query = Penggajian::query();
+
+    if ($request->filled('dari_tanggal') && $request->filled('sampai_tanggal')) {
+        $dari   = Carbon::parse($request->dari_tanggal);
+        $sampai = Carbon::parse($request->sampai_tanggal);
+
+        // Ambil bulan & tahun dari input tanggal
+        $dariBulan   = (int) $dari->format('n');   // 1-12 (tanpa leading zero)
+        $dariTahun   = (int) $dari->format('Y');
+        $sampaiBluan = (int) $sampai->format('n');
+        $sampaiTahun = (int) $sampai->format('Y');
+
+        // Mapping nama bulan Indonesia ke angka
+        $namaBulan = [
+            1  => 'Januari',  2  => 'Februari', 3  => 'Maret',
+            4  => 'April',    5  => 'Mei',       6  => 'Juni',
+            7  => 'Juli',     8  => 'Agustus',   9  => 'September',
+            10 => 'Oktober',  11 => 'November',  12 => 'Desember',
+        ];
+
+        // Kumpulkan semua bulan-tahun dalam rentang filter
+        $rentang = [];
+        $current = Carbon::create($dariTahun, $dariBulan, 1);
+        $end     = Carbon::create($sampaiTahun, $sampaiBluan, 1);
+
+        while ($current->lte($end)) {
+            $rentang[] = [
+                'bulan' => $namaBulan[$current->month],
+                'tahun' => $current->year,
+            ];
+            $current->addMonth();
+        }
+
+        // Filter: periode_bulan & periode_tahun masuk dalam rentang
+        $query->where(function ($q) use ($rentang) {
+            foreach ($rentang as $r) {
+                $q->orWhere(function ($q2) use ($r) {
+                    $q2->where('periode_bulan', $r['bulan'])
+                       ->where('periode_tahun', $r['tahun']);
+                });
+            }
+        });
     }
+
+    $penggajian = $query->orderBy('periode_tahun', 'desc')
+                        ->orderBy('periode_bulan', 'desc')
+                        ->get();
+
+    return view('penggajian.index', compact('penggajian'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -70,7 +119,9 @@ class PenggajianController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dataeditpenggajian = Penggajian::where('penggajian_id', $id)->firstOrFail();
+
+        return view('penggajian.edit', compact('dataeditpenggajian'));
     }
 
     /**
@@ -82,8 +133,22 @@ class PenggajianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+        'periode_bulan' => 'required|string',
+        'periode_tahun' => 'required|integer',
+        'status' => 'required|string',
+    ]);
+
+    $dataeditpenggajian = Penggajian::findOrFail($id);
+
+    $dataeditpenggajian->update([
+        'periode_bulan' => $request->periode_bulan,
+        'periode_tahun' => $request->periode_tahun,
+        'status' => $request->status
+    ]);
+
+    return redirect()->route('penggajian.index');
+}
 
     /**
      * Remove the specified resource from storage.

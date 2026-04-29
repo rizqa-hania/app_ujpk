@@ -1,61 +1,137 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 
+<div class="row justify-content-center">
+    <div class="col-md-6">
 
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">Tambah Karyawan</div>
+        <div class="card shadow-sm">
 
-<form action="{{ route ('karyawan.tambah.store') }}" method="POST">
-    {{ csrf_field( ) }}
-            <div class="card-body">
-
- <div class="mb-3">
-<label name="name" class="form-table">Nama: </label>
-    <input type="text" class = "form-control" name="name" value="{{old('name')}}">
-@if($errors->has('name'))
-<span class="text-danger">{{ $errors->first('name')}}</span>   
-@endif
- </div>
-
-<div class="mb-3">
-<label name="nip" class="form-table">NIP</label>
-  <input type="text" class = "form-control" name="nip"
-   value="{{old('nip
-   ')}}">
-</div>
-
-<div class="mb-3">
-<label name="password" class="form-table">Password</label>
-<input type="text" class = "form-control" name="password"
-   value="{{old('password
-   ')}}">
-</div>
-
-<div class="mb-3">
-  <label class="form-label">Role</label><br>
-
-<input type="radio" class="btn-check" name="role" id="karyawan" value="karyawan" checked>
-<label class="btn btn-outline-secondary btn-sm" for="karyawan">Karyawan</label>
-</div>                     
-
-
-
-  
-
+            <!-- Header -->
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold mb-0">
+                    Tambah Karyawan
+                </h3>
             </div>
-     <div class="card-footer"><button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-        <a href="{{route('karyawan.tambah.index')}}" class="btn btn-success btn-sm">Kembali</a>
+
+            <!-- Form -->
+            <form action="{{ route('karyawan.tambah.store') }}" method="POST">
+                @csrf
+
+                <div class="card-body">
+
+                    <!-- Nama -->
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Nama
+                        </label>
+                        <input type="text"
+                               name="name"
+                               class="form-control @error('name') is-invalid @enderror"
+                               value="{{ old('name') }}"
+                               placeholder="Masukkan nama karyawan">
+
+                        @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <!-- NIP -->
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            NIP
+                        </label>
+                        <input type="text"
+                               name="nip"
+                               class="form-control @error('nip') is-invalid @enderror"
+                               value="{{ old('nip') }}"
+                               placeholder="Masukkan NIP">
+
+                        @error('nip')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+
+                     <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Email
+                        </label>
+                        <input type="email"
+                               name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               value="{{ old('email') }}"
+                               placeholder="Masukkan Email">
+
+                        @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Password
+                        </label>
+                        <input type="password"
+                               name="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               placeholder="Masukkan password">
+
+                        @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+
+                    <!-- Role -->
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Role
+                        </label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" 
+                                       id="role_karyawan"
+                                       name="role" 
+                                       value="karyawan"
+                                       class="custom-control-input"
+                                       checked>
+                                <label class="custom-control-label" for="role_karyawan">
+                                    Karyawan
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer d-flex justify-content-end">
+                    <a href="{{ route('karyawan.tambah.index') }}" 
+                       class="btn btn-secondary btn-sm mr-2">
+                        Kembali
+                    </a>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+
         </div>
-</form>
-        </div>
+
     </div>
 </div>
 
 @endsection
-
-
-
-
- 

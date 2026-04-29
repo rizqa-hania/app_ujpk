@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 
 @section('content')
 
@@ -12,6 +12,12 @@
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
 
@@ -77,11 +83,7 @@
 
             @endforeach
 
-            <div class="text-right">
-                <button class="btn btn-primary px-4">
-                    Simpan Perubahan
-                </button>
-            </div>
+            <button type="submit" class="btn btn-primary px-4">Simpan Perubahan</button>
 
         </form>
 

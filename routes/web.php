@@ -14,15 +14,45 @@ use App\Http\Controllers\MasterSubUnitController;
 use App\Http\Controllers\MasterKerjaSamaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\KantorController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\Admin\JadwalAbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\IzinController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PeriodeKaryawanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Mail;
+
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {
+    
+    // URL unik agar tidak disangka ID oleh route DELETE
+    Route::get('/monitoring-presensi', [AbsensiController::class, 'monitoring'])->name('admin.absensi.monitoring');
+    
+    // Route rekap (Pastikan methodnya GET/POST sesuai form kamu)
+    Route::get('/rekap-absensi', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
+
+    // Resource lainnya di bawah
+    Route::resource('absensi', 'AbsensiController');
+});
+
+//COBA EMAIL
+Route::get('/test-mail', function () {
+
+    Mail::raw('Ini email test dari Laravel', function ($message) {
+        $message->to('muhammadikhwan@gmail.com')->subject('Test Email Laravel');
+    });
+
+    return "Email berhasil dikirim!";
+});
+
+
+
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
@@ -32,7 +62,7 @@ Route::get('/auth/google/callback', function () {
 
     $googleUser = Socialite::driver('google')->user();
 
-    $user = \App\Models\User::updateOrCreate(
+    $user = User::updateOrCreate(
         ['email' => $googleUser->email],
         [
             'name' => $googleUser->name,
@@ -61,7 +91,7 @@ Route::get('/register', [AuthController::class,'showRegister'])->name('register'
 Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send-otp');
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify-otp');
 Route::post('/complete-register', [AuthController::class, 'completeRegister'])->name('complete-register');
-Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+Route::delete('/logout', [AuthController::class,'logout'])->name('logout');
 // Admin Dashboard
 Route::prefix('admin')->middleware(['auth','is_admin'])->group(function(){
     Route::get('/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');
@@ -123,6 +153,7 @@ Route::prefix('karyawan')->name('karyawan.')->middleware(['auth'])->group(functi
 
     // Optional finish route, biasanya nggak dipakai langsung
     Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
+
 });
 
 
@@ -173,24 +204,38 @@ Route::get('/masterjabatan/create', [MasterJabatanController::class, 'create'])-
 Route::post('/masterjabatan', [MasterJabatanController::class, 'store'])->name('master_jabatan.store');
 Route::delete('/masterjabatan/{id}',[MasterJabatanController::class,'destroy'])->name('master_jabatan.destroy');
 
-//LEMBUR
-Route::get('/lembur', [LemburController::class, 'index'])->name('lembur.index');
-Route::get('/lembur/create', [LemburController::class, 'create'])->name('lembur.create');
-Route::post('/lembur', [LemburController::class, 'store'])->name('lembur.store');
-Route::put('/lembur/{lembur}/status', [LemburController::class, 'updateStatus'])->name('lembur.status');
+// LEMBUR
+Route::middleware(['auth'])->group(function() {
+
+    Route::get('lembur', [LemburController::class, 'index'])->name('lembur.index');
+
+    Route::get('lembur/create', [LemburController::class, 'create'])->name('lembur.create');
+    Route::post('lembur/store', [LemburController::class, 'store'])->name('lembur.store');
+
+    Route::post('/lembur/{id}/approve', [LemburController::class, 'approve'])->name('lembur.approve');
+    Route::post('/lembur/{id}/reject', [LemburController::class, 'reject'])->name('lembur.reject');
+});
 
 // PENGGAJIAN
 Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
 Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
+Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
+Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
 Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
 Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
+
+// PERIODE KARYAWAN
+    Route::get('/periode', [PeriodeKaryawanController::class, 'index'])->name('periode_karyawan.index');
 
 // KOMPONEN GAJI
 Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
 Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
 Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
+Route::get('/komponen/{kode}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
+Route::put('/komponen/{kode}', [KomponenController::class, 'update'])->name('komponen.update');
 Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
 Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+Route::post('/komponen/import', [KomponenController::class, 'import'])->name('komponen.import');
 Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
 
 // DETAIL GAJI
@@ -198,11 +243,22 @@ Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name(
 Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
 Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
 Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
+Route::get('/detail/{id}/pdf', [DetailController::class, 'downloadPdf'])->name('slip.pdf');
+Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');
+
+
+// LAPORAN
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/laporan/filter', [LaporanController::class, 'filter'])->name('report.filter');
+Route::post('/laporan/generate', [LaporanController::class, 'generatePDF'])->name('report.generate');
+Route::get('/laporan/transaksi/{id}', [LaporanController::class, 'generatePDFByTransaksi'])->name('laporan.generateid');
+
 
 //ABSENSI
 Route::middleware(['auth'])->group(function(){
     Route::get('/absensi','AbsensiController@index')->name('absensi.index');
     Route::post('/absensi','AbsensiController@store')->name('absensi.store');
+    Route::get('/absensi/rekap', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
 });
 
 //kantor
@@ -216,14 +272,21 @@ Route::post('/face/scan', [AbsensiController::class, 'scanFace'])->name('face.sc
 IZIN
 =========================
 */
-Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');
-Route::get('/izin/create', [IzinController::class, 'create'])->name('izin.create');
-Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store');
-Route::delete('/izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
-Route::get('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
-Route::get('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+
 
 //JADWAL ABSENSI
 Route::get('/jadwal-absensi', [JadwalAbsensiController::class, 'index'])->name('jadwal.index');
 Route::post('/jadwal-absensi/update', [JadwalAbsensiController::class, 'update'])->name('jadwal.update');
+Route::middleware(['auth'])->group(function(){
+
+    // CRUD Izin
+    Route::get('izin', [IzinController::class, 'index'])->name('izin.index');
+    Route::get('izin/create', [IzinController::class, 'create'])->name('izin.create');
+    Route::post('izin', [IzinController::class, 'store'])->name('izin.store');
+    Route::get('izin/{id}/edit', [IzinController::class, 'edit'])->name('izin.edit');
+    Route::put('izin/{id}', [IzinController::class, 'update'])->name('izin.update');
+    Route::delete('izin/{id}', [IzinController::class, 'destroy'])->name('izin.destroy');
+    Route::post('/izin/{id}/approve', [IzinController::class, 'approve'])->name('izin.approve');
+    Route::post('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
+});
 

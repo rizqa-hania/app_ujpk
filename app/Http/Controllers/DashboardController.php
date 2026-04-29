@@ -12,6 +12,8 @@ use App\MasterSubUnit;
 use App\MasterUnitPln;
 use App\Lembur;
 use App\Izin;
+use App\Karyawan;
+use App\Absensi;
 
 class DashboardController extends Controller
 {
@@ -37,7 +39,7 @@ class DashboardController extends Controller
             'totalLembur',
             'totalKaryawan',
             'totalIzin',
-            'totalabsensi'));
+            'totalAbsensi'));
 
     }
 

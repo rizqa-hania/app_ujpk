@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('template.admin.layout')
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -36,8 +36,8 @@
                 </div>
 
                 <div class="card-footer text-right">
-                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary px-4">Kembali</a>
-                    <button type="submit" class="btn btn-primary px-4">Simpan Data</button>
+                    <a href="{{ route('penggajian.index') }}" class="btn btn-secondary btn-sm px-3"><i class="fas fa-arrow-left"></i> Kembali</a>
+                    <button type="submit" class="btn btn-primary btn-sm "><i class="fas fa-save"> Simpan</i></button>
                 </div>
             </form>
             </div>
