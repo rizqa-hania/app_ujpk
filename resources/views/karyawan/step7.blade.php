@@ -1,3 +1,4 @@
+<title>Step Data Karyawan</title>
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
@@ -180,7 +181,7 @@
                         <label>No. BPJS</label>
                         <input type="text" name="no_bpjs" value="{{ old('no_bpjs', optional($karyawan)->no_bpjs) }}">
                     </div>
-                    <div class="form-group form-full">
+                    <div class="form-group">
                         <label>File BPJS (PDF/Foto)</label>
                         <input type="file" name="file_bpjs" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_bpjs)
@@ -194,7 +195,7 @@
                         <label>No. BPJSTK</label>
                         <input type="text" name="no_bpjstk" value="{{ old('no_bpjstk', optional($karyawan)->no_bpjstk) }}">
                     </div>
-                    <div class="form-group form-full">
+                    <div class="form-group">
                         <label>File BPJSTK (PDF/Foto)</label>
                         <input type="file" name="file_bpjstk" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_bpjstk)
@@ -208,7 +209,7 @@
                         <label>No. Rekening BPLK</label>
                         <input type="text" name="no_rek_bplk" value="{{ old('no_rek_bplk', optional($karyawan)->no_rek_bplk) }}">
                     </div>
-                    <div class="form-group form-full">
+                   <div class="form-group">
                         <label>File Buku BPLK (PDF/Foto)</label>
                         <input type="file" name="file_buku_bplk" accept="image/*,.pdf">
                         @if(optional($karyawan)->file_buku_bplk)

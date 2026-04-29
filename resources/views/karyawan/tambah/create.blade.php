@@ -93,25 +93,7 @@
                     </div>
 
 
-                    <!-- Role -->
-                    <div class="form-group">
-                        <label class="form-label font-weight-semibold">
-                            Role
-                        </label>
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" 
-                                       id="role_karyawan"
-                                       name="role" 
-                                       value="karyawan"
-                                       class="custom-control-input"
-                                       checked>
-                                <label class="custom-control-label" for="role_karyawan">
-                                    Karyawan
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                 </div>
 
@@ -132,6 +114,7 @@
         </div>
 
     </div>
+    
 </div>
 
 @endsection

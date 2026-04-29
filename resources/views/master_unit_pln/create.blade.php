@@ -19,24 +19,6 @@
 
                 <div class="card-body">
 
-                    <!-- Nama Unit -->
-                    <div class="form-group">
-                        <label class="font-weight-semibold">
-                            Nama Unit
-                        </label>
-                        <input type="text"
-                               name="nama_unit"
-                               class="form-control @error('nama_unit') is-invalid @enderror"
-                               value="{{ old('nama_unit') }}"
-                               placeholder="Masukkan nama unit">
-
-                        @error('nama_unit')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
                     <!-- Kode Unit -->
                     <div class="form-group">
                         <label class="font-weight-semibold">
@@ -49,6 +31,24 @@
                                placeholder="Masukkan kode unit">
 
                         @error('kode_unit')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Nama Unit -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Unit
+                        </label>
+                        <input type="text"
+                               name="nama_unit"
+                               class="form-control @error('nama_unit') is-invalid @enderror"
+                               value="{{ old('nama_unit') }}"
+                               placeholder="Masukkan nama unit">
+
+                        @error('nama_unit')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

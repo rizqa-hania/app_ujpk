@@ -94,10 +94,10 @@ class LemburController extends Controller
             }
         } catch (Exception $e) {
             // Jika email gagal, tetap lanjut tapi beri notifikasi
-            return redirect()->route('lembur.index')->with('success', 'Pengajuan berhasil, namun gagal mengirim notifikasi email admin.');
+            return redirect()->route('lembur.index')->with('success', 'Pengajuan berhasil, namun gagal mengirim notifikasi email admin. Error: ' . $e->getMessage());
         }
 
-        return redirect()->route('lembur.index')->with('success', 'Pengajuan lembur berhasil dikirim!');
+        return redirect()->route('lembur.index')->with('success', 'Pengajuan lembur berhasil dikirim dan dinotifikasi via email ke Admin!');
     }
 
     public function approve($id)
@@ -127,10 +127,10 @@ class LemburController extends Controller
                 });
             }
         } catch (Exception $e) {
-            return back()->with('success', 'Lembur disetujui (Email gagal terkirim).');
+            return back()->with('success', 'Lembur disetujui (Catatan: Email gagal terkirim ke karyawan. Error: ' . $e->getMessage() . ')');
         }
 
-        return back()->with('success', 'Lembur berhasil disetujui.');
+        return back()->with('success', 'Lembur berhasil disetujui dan karyawan telah dinotifikasi via email.');
     }
 
     public function reject($id)
@@ -160,9 +160,9 @@ class LemburController extends Controller
                 });
             }
         } catch (Exception $e) {
-            return back()->with('success', 'Lembur ditolak (Email gagal terkirim).');
+            return back()->with('success', 'Lembur ditolak (Catatan: Email gagal terkirim ke karyawan. Error: ' . $e->getMessage() . ')');
         }
 
-        return back()->with('success', 'Lembur telah ditolak.');
+        return back()->with('success', 'Lembur telah ditolak dan karyawan diinformasikan via email.');
     }
 }

@@ -2,21 +2,39 @@
 
 @section('content')
 
-{{-- Notifikasi Ulang Tahun --}}
-<div class="birthday-card">
-<button type="button" class="close text-white" data-dismiss="alert">&times;</button>
+@if(count($pensiun) > 0)
+<div class="birthday-card" style="background: linear-gradient(135deg, #ce1d1d, #fcff4a);">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
 
-<strong>🎉 Ulang Tahun Hari Ini</strong>
+    <strong>🚨 Karyawan Pensiun</strong>
 
-<ul class="mb-0 mt-2">
-@foreach($ulangTahunHariIni as $k)
-<li onclick="ucapin('{{ $k->nama_lengkap }}')" style="cursor:pointer;">
-{{ $k->nama_lengkap }}
-({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
-</li>
-@endforeach
-</ul>
+    <ul class="mb-0 mt-2">
+    @foreach($pensiun as $k)
+        <li>
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
 </div>
+@endif
+
+@if(count($ulangTahunHariIni) > 0)
+<div class="birthday-card">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
+
+    <strong>🎉 Ulang Tahun Hari Ini</strong>
+
+    <ul class="mb-0 mt-2">
+    @foreach($ulangTahunHariIni as $k)
+        <li onclick="ucapin('{{ $k->id }}','{{ addslashes($k->nama_lengkap) }}')" style="cursor:pointer;">
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
+</div>
+@endif
 
 <div id="birthdayModal" class="custom-modal">
   <div class="modal-content">
@@ -24,14 +42,11 @@
 
     <p id="namaUcapan"></p>
 
-    <!-- INPUT UCAPAN -->
-    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu di sini..."
-      style="width:100%; height:80px; border-radius:8px; padding:10px; border:1px solid #ccc;"></textarea>
+    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu..."></textarea>
 
-    <!-- BUTTON -->
     <div style="margin-top:15px;">
       <button onclick="kirimUcapan()">Kirim</button>
-      <button onclick="tutupModal()" style="background:#ccc; color:#000;">Tutup</button>
+      <button onclick="tutupModal()">Tutup</button>
     </div>
   </div>
 </div>
@@ -39,40 +54,12 @@
 <section class="content pt-3">
     <div class="container-fluid">
         
-        {{-- PANEL REKAP LAPORAN (TAMBAHAN BARU) --}}
-        <div class="row">
-            <div class="col-12 mb-4">
-                <div class="card card-outline card-primary shadow-sm">
-                    <div class="card-header">
-                        <h3 class="card-title font-weight-bold">
-                            <i class="fas fa-file-export mr-2 text-primary"></i> Pusat Unduh Laporan Absensi
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted">Silakan pilih periode laporan yang ingin diunduh dalam format PDF:</p>
-                        <div class="d-flex flex-wrap" style="gap: 15px;">
-                            <a href="{{ route('absensi.rekap', ['type' => 'harian', 'tanggal' => now()->toDateString()]) }}" 
-                               class="btn btn-primary elevation-2">
-                                <i class="fas fa-calendar-day mr-1"></i> Rekap Hari Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'mingguan', 'tanggal' => now()->toDateString()]) }}" 
-                               class="btn btn-info elevation-2">
-                                <i class="fas fa-calendar-week mr-1"></i> Rekap Minggu Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'bulanan', 'bulan' => now()->format('Y-m')]) }}" 
-                               class="btn btn-warning text-white elevation-2">
-                                <i class="fas fa-calendar-alt mr-1"></i> Rekap Bulan Ini
-                            </a>
-
-                            <a href="{{ route('absensi.rekap', ['type' => 'tahunan', 'tahun' => now()->year]) }}" 
-                               class="btn btn-dark elevation-2">
-                                <i class="fas fa-archive mr-1"></i> Rekap Tahun Ini
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <!-- HEADER ADMIN -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <h3 class="font-weight-bold text-dark border-bottom pb-2">
+                  Halaman Admin
+                </h3>
             </div>
         </div>
 
@@ -112,7 +99,7 @@
 
             {{-- Izin --}}
             <div class="col-lg-3 col-6 mb-4">
-              <div class="small-box bg-gradient-izin">
+                <div class="small-box bg-gradient-izin">
                     <div class="inner">
                         <h3 class="text-white">{{ $totalIzin }}</h3>
                         <p class="text-white">Total Izin</p>
@@ -134,7 +121,7 @@
                         <p>Total Lembur</p>
                     </div>
                     <div class="icon">
-                        <i class=" fas fa-business-time  icon-white"></i>
+                        <i class="fas fa-business-time icon-white"></i>
                     </div>
                     <a href="{{ route('lembur.index') }}" class="small-box-footer text-white">
                         Lihat Detail <i class="fas fa-arrow-circle-right"></i>
@@ -152,7 +139,7 @@
                     <div class="inner">
                         <div class="icon">
                             <i class="fas fa-users-cog text-white"></i>
-                    </div>
+                        </div>
                         <h3>{{ $totalTad }}</h3>
                         <p>TAD</p>
                     </div>
@@ -160,19 +147,13 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-               <div class="col-lg-3 col-6">
-                <div class="small-box bg-indigo elevation-3 dashboard-box">
-                <div class="small-box bg-indigo dashboard-box">
-=======
             {{-- Unit PLN --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-              <div class="small-box bg-gradient-unit">
->>>>>>> 1d77f844fed00ef16c6702469cdf2c1ba33f6e34
+                <div class="small-box bg-gradient-unit">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-building text-white"></i>
-                    </div>
+                            <i class="fas fa-building text-white"></i>
+                        </div>
                         <h3>{{ $totalUnitPln }}</h3>
                         <p>Unit PLN</p>
                     </div>
@@ -182,25 +163,25 @@
 
             {{-- Project --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-               <div class="small-box bg-gradient-project">
+                <div class="small-box bg-gradient-project">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-project-diagram text-white"></i>
-                    </div>
+                            <i class="fas fa-project-diagram text-white"></i>
+                        </div>
                         <h3>{{ $totalProject }}</h3>
-                        <p>Project</p>
+                        <p>Proyek</p>
                     </div>
                     <a href="{{ route('master_project.index') }}" class="small-box-footer">Detail <i class="fas fa-arrow"></i></a>
                 </div>
             </div>
 
-             {{-- Jabatan --}}
-             <div class="col-lg-2 col-md-4 col-6 mb-4">
+            {{-- Jabatan --}}
+            <div class="col-lg-2 col-md-4 col-6 mb-4">
                 <div class="small-box bg-gradient-jabatan">
                     <div class="inner text-white">
-                          <div class="icon">
-                        <i class="fas fa-user-tie text-white"></i>
-                    </div>
+                        <div class="icon">
+                            <i class="fas fa-user-tie text-white"></i>
+                        </div>
                         <h3>{{ $totalJabatan }}</h3>
                         <p>Jabatan</p>
                     </div>
@@ -210,11 +191,11 @@
 
             {{-- Sub Unit --}}
             <div class="col-lg-2 col-md-4 col-6 mb-4">
-              <div class="small-box bg-gradient-subunit">
+                <div class="small-box bg-gradient-subunit">
                     <div class="inner text-white">
-                         <div class="icon">
-                        <i class="fas fa-sitemap text-white"></i>
-                    </div>
+                        <div class="icon">
+                            <i class="fas fa-sitemap text-white"></i>
+                        </div>
                         <h3>{{ $totalSubUnit }}</h3>
                         <p>Sub Unit</p>
                     </div>
@@ -227,8 +208,8 @@
                 <div class="small-box bg-gradient-pendidikan">
                     <div class="inner">
                         <div class="icon">
-                        <i class="fas fa-graduation-cap text-white"></i>
-                    </div>
+                            <i class="fas fa-graduation-cap text-white"></i>
+                        </div>
                         <h3>{{ $totalPendidikan }}</h3>
                         <p>Pendidikan</p>
                     </div>
@@ -238,6 +219,7 @@
         </div>
     </div>
 </section>
+
 
 <style>
 .icon-white {
@@ -373,6 +355,7 @@
   left: -50%;
   background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
   transform: rotate(25deg);
+    pointer-events: none
 }
 
 /* judul */
@@ -424,6 +407,11 @@
   margin: 15% auto;
   text-align: center;
   animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 10000;
+
+
+
 }
 
 .modal-content h5 {
@@ -438,6 +426,20 @@
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  position: relative;
+  z-index: 10001;
+
+}
+
+.birthday-card {
+  position: relative;
+}
+
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
 }
 
 @keyframes fadeIn {
@@ -445,10 +447,12 @@
   to {opacity: 1; transform: translateY(0);}
 }
   </style>
-  <script>
+<script>
+let idKaryawan = "";
 let namaTerpilih = "";
 
-function ucapin(nama) {
+function ucapin(id, nama) {
+    idKaryawan = id;
     namaTerpilih = nama;
 
     document.getElementById("namaUcapan").innerText =
@@ -465,15 +469,32 @@ function kirimUcapan() {
     let pesan = document.getElementById("pesanUcapan").value;
 
     if (pesan.trim() === "") {
-        alert("Isi ucapan dulu ya!");
+        alert("Isi ucapan dulu!");
         return;
     }
 
-    alert("Ucapan untuk " + namaTerpilih + ":\n\n" + pesan);
-
-    // reset
-    document.getElementById("pesanUcapan").value = "";
-    tutupModal();
+    fetch('/kirimucapan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            karyawan_id: idKaryawan,
+            pesan: pesan
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Ucapan berhasil dikirim!");
+        document.getElementById("pesanUcapan").value = "";
+        tutupModal();
+    });
+}
+</script>
+<script>
+function tutupCard(btn) {
+    btn.parentElement.style.display = "none";
 }
 </script>
 @endsection

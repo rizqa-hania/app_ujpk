@@ -1,14 +1,7 @@
 @extends('template.admin.layout')
 @section('content')
 
-<!-- Tombol Kembali -->
-<div class="row mb-3">
-    <div class="col-12">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-</div>
+
 
 <div class="row">
     <div class="col-12">
@@ -16,7 +9,7 @@
         <div class="card shadow-sm">
             
             <!-- Header -->
-            <div class="card-header pr-3 pl-3">
+            <div class="card-header pr-3 pl-3 m-2">
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <h3 class="card-title font-weight-bold mb-0">
                         Master Jabatan
@@ -31,7 +24,7 @@
 
             <!-- Body -->
             <div class="card-body p-0">
-                <table id="table" class="table table-hover table-striped mb-0">
+                <table id="table" class="table table-hover table-striped mb-0 ">
                     <thead class="bg-light">
                         <tr>
                             <th width="15%">Kode</th>

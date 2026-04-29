@@ -9,7 +9,7 @@
             <!-- Header -->
             <div class="card-header">
                 <h3 class="card-title font-weight-bold mb-0">
-                    Tambah Project
+                    Tambah Proyek
                 </h3>
             </div>
 
@@ -19,28 +19,10 @@
 
                 <div class="card-body">
 
-                    <!-- Nama Project -->
-                    <div class="form-group">
-                        <label class="font-weight-semibold">
-                            Nama Project
-                        </label>
-                        <input type="text"
-                               name="nama_project"
-                               class="form-control @error('nama_project') is-invalid @enderror"
-                               value="{{ old('nama_project') }}"
-                               placeholder="Masukkan nama project">
-
-                        @error('nama_project')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
                     <!-- Kode Project -->
                     <div class="form-group">
                         <label class="font-weight-semibold">
-                            Kode Project
+                            Kode Proyek
                         </label>
                         <input type="text"
                                name="kode_project"
@@ -49,6 +31,25 @@
                                placeholder="Masukkan kode project">
 
                         @error('kode_project')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    
+                    <!-- Nama Project -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Proyek
+                        </label>
+                        <input type="text"
+                               name="nama_project"
+                               class="form-control @error('nama_project') is-invalid @enderror"
+                               value="{{ old('nama_project') }}"
+                               placeholder="Masukkan nama project">
+
+                        @error('nama_project')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

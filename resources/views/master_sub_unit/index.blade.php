@@ -1,16 +1,12 @@
 <!-- -->
 @extends('template.admin.layout')
 @section('content')
- <div class="col-12">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
+
 <div class="row"> 
     
     <div class="col-12">
         <div class="card"> 
-            <div class="card-header">
+            <div class="card-header pr-3 pl-3 m-2">
                 <h3 class="card-title">Master Sub Unit</h3> 
                 <div class="card-tools">
                     <a href="{{ route('master-sub-unit.create') }}" class="btn btn-primary btn-sm">

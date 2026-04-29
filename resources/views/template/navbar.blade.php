@@ -1,24 +1,54 @@
-<!--ASTI RIANTI, 1 min
-navbar -->
-
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <!--
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('dashboard') }}" class="nav-link">Home</a>
-      </li>
--->
     </ul>
 
-    <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       
-      <!-- User Dropdown Menu -->
       @auth
+      @php
+          // LOGIKA NOTIFIKASI KARYAWAN
+          $userId = auth()->user()->id;
+          
+          // Hitung izin yang sudah direspon admin (disetujui/ditolak)
+          $countIzin = \App\Izin::where('user_id', $userId)
+                        ->whereIn('status', ['disetujui', 'ditolak'])
+                        ->count();
+          
+          // Hitung lembur yang sudah direspon admin
+          $countLembur = 0;
+          $karyawanData = \App\Karyawan::where('user_id', $userId)->first();
+          if($karyawanData){
+              $countLembur = \App\Lembur::where('karyawan_id', $karyawanData->id)
+                            ->whereIn('status', ['disetujui', 'ditolak'])
+                            ->count();
+          }
+          
+          $totalNotif = $countIzin + $countLembur;
+      @endphp
+
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-bell"></i>
+          @if($totalNotif > 0)
+            <span class="badge badge-warning navbar-badge">{{ $totalNotif }}</span>
+          @endif
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-header">{{ $totalNotif }} Pemberitahuan Status</span>
+          <div class="dropdown-divider"></div>
+          <a href="{{ route('absensi.index') }}" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> {{ $countIzin }} Izin direspon
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="{{ route('absensi.index') }}" class="dropdown-item">
+            <i class="fas fa-clock mr-2"></i> {{ $countLembur }} Lembur direspon
+          </a>
+        </div>
+      </li>
+
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-user mr-1"></i> 
@@ -34,23 +64,19 @@ navbar -->
             {{ auth()->user()->name }}
           @endif
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">Menu</span>
-          <div class="dropdown-divider"></div>
-          <a href="{{ route('login') }}" class="dropdown-item">
-            <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
-              <i class="fas fa-sign-out-alt mr-2"></i> keluar
-            </button>
-</a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+            <a href="{{ route('logout') }}" class="dropdown-item"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
         </div>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
       </li>
       @endauth
-<!--
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
--->
     </ul>
-  </nav>
+</nav>

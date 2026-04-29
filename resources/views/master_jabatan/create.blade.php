@@ -18,24 +18,6 @@
                 @csrf
 
                 <div class="card-body">
-
-                    <!-- Nama Jabatan -->
-                    <div class="form-group">
-                        <label class="form-label font-weight-semibold">
-                            Nama Jabatan
-                        </label>
-                        <input type="text"
-                               name="nama_jabatan"
-                               class="form-control @error('nama_jabatan') is-invalid @enderror"
-                               value="{{ old('nama_jabatan') }}"
-                               placeholder="Masukkan nama jabatan">
-                        @error('nama_jabatan')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
                     <!-- Kode Jabatan -->
                     <div class="form-group">
                         <label class="form-label font-weight-semibold">
@@ -48,6 +30,23 @@
                                placeholder="Contoh: 03 untuk Satpam, 06 untuk Driver">
                         <small class="text-muted">Masukkan kode jabatan (03=Satpam, 06=Driver)</small>
                         @error('kode_jabatan')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Nama Jabatan -->
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Nama Jabatan
+                        </label>
+                        <input type="text"
+                               name="nama_jabatan"
+                               class="form-control @error('nama_jabatan') is-invalid @enderror"
+                               value="{{ old('nama_jabatan') }}"
+                               placeholder="Masukkan nama jabatan">
+                        @error('nama_jabatan')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

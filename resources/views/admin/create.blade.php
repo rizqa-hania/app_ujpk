@@ -8,7 +8,9 @@
 
             <!-- Header -->
             <div class="card-header">
-                <h5 class="mb-0 font-weight-bold">Tambah Admin</h5>
+                <h3 class="card-title font-weight-bold mb-0">
+                    Tambah Admin
+                </h3>
             </div>
 
             <!-- Form -->
@@ -18,79 +20,72 @@
                 <div class="card-body">
 
                     <!-- Nama -->
-                    <div class="mb-3">
-                        <label class="form-label">Nama</label>
-                        <input type="text" 
-                               class="form-control @error('name') is-invalid @enderror" 
-                               name="name" 
-                               value="{{ old('name') }}" 
-                               required>
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Nama
+                        </label>
+                        <input type="text"
+                               name="name"
+                               class="form-control @error('name') is-invalid @enderror"
+                               value="{{ old('name') }}"
+                               placeholder="Masukkan nama Admin">
 
                         @error('name')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                         @enderror
                     </div>
 
-                    <!-- Email -->
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" 
-                               class="form-control @error('email') is-invalid @enderror" 
-                               name="email" 
-                               value="{{ old('email') }}" 
-                               required>
+
+                     <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Email
+                        </label>
+                        <input type="email"
+                               name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               value="{{ old('email') }}"
+                               placeholder="Masukkan Email">
 
                         @error('email')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                         @enderror
                     </div>
+
 
                     <!-- Password -->
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" 
-                               class="form-control @error('password') is-invalid @enderror" 
-                               name="password" 
-                               required>
+                    <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Password
+                        </label>
+                        <input type="password"
+                               name="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               placeholder="Masukkan password">
 
                         @error('password')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                         @enderror
                     </div>
 
-                    <!-- Role -->
-                    <div class="mb-3">
-                        <label class="form-label">Role</label><br>
 
-                        <input type="radio" 
-                               class="btn-check" 
-                               name="role" 
-                               id="admin" 
-                               value="admin" 
-                               checked>
-
-                        <label class="btn btn-outline-danger btn-sm" for="admin">
-                            Admin
-                        </label>
-                    </div>
+                    
 
                 </div>
 
                 <!-- Footer -->
-                <div class="card-footer d-flex justify-content-between">
+                <div class="card-footer d-flex justify-content-end">
                     <a href="{{ route('admin.index') }}" 
-                       class="btn btn-secondary btn-sm">
+                       class="btn btn-secondary btn-sm mr-2">
                         Kembali
                     </a>
 
-                    <button type="submit" 
-                            class="btn btn-primary btn-sm">
+                    <button type="submit" class="btn btn-primary btn-sm">
                         Simpan
                     </button>
                 </div>

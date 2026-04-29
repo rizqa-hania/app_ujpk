@@ -49,7 +49,7 @@
   }
 
   .login-logo b {
-    font-size: 34px;
+    font-size: 50px;
     font-weight: 700;
     color: #fff;
     letter-spacing: 2px;
@@ -122,6 +122,16 @@
     margin-top: 25px;
     border-color: rgba(255,255,255,0.2);
   }
+
+  .sidebar .user-panel .info a{
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.main-sidebar{
+    width:250px;
+}
+
 </style>
 </head>
 
@@ -130,7 +140,21 @@
 <div class="login-box">
   
   <div class="login-logo">
-    <b>APP UJPK</b>
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+        <img src="{{ asset('images/logojya-removebg-preview.png') }}"
+             
+             style="width:120px; height:120px; object-fit:contain;"
+             alt="Logo User">
+    </div>
+<!-- -->
+     <b>APP UJPK</b>
+</div>
+
+
+
+   
+   
   </div>
 
   <div class="card">
@@ -160,7 +184,7 @@
           <input type="text" 
           name="login" 
           class="form-control" 
-          placeholder="Email, NIP, Username" 
+          placeholder="Masukkan Email/NIP anda" 
           required>
           <div class="input-group-append">
             <div class="input-group-text">
@@ -173,7 +197,7 @@
           <input type="password" 
                  name="password" 
                  class="form-control" 
-                 placeholder="Password" 
+                 placeholder="Masukkan Password" 
                  required>
           <div class="input-group-append">
             <div class="input-group-text">

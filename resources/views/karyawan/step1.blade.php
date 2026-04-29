@@ -1,3 +1,4 @@
+<title>Step Data Karyawan</title>
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
@@ -201,9 +202,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Project</label>
+                        <label>Proyek</label>
                         <select name="project_id" required>
-                            <option value="">Pilih Project</option>
+                            <option value="">Pilih Proyek</option>
                             @foreach($project as $p)
                                 <option value="{{ $p->project_id }}" {{ old('project_id', optional($karyawan)->project_id) == $p->project_id ? 'selected' : '' }}>
                                     {{ $p->nama_project }}

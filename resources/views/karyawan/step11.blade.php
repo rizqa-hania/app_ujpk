@@ -1,3 +1,4 @@
+<title>Step Data Karyawan</title>
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
@@ -146,15 +147,14 @@ $showDriverSatpam = $isDriver || $isSatpam;
             <div class="form-body">
 
                 @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endfore
-                            ach
-                        </ul>
-                    </div>
-                @endif
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
                 @if($showDriverSatpam)
                     <div class="alert alert-info">

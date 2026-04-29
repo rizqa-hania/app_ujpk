@@ -40,7 +40,13 @@ class DashboardController extends Controller {
         $ulangTahunHariIni = Karyawan::whereMonth('tanggal_lahir', $today->month)
             ->whereDay('tanggal_lahir', $today->day)
             ->get();
-        
+        $karyawanList = Karyawan::all();
+        $pensiun = [];
+        foreach ($karyawanList as $k) {
+            $umur = Carbon::parse($k->tanggal_lahir)->age;
+            if ($umur >= 55) {
+                $pensiun[] = $k; }}
+                
         // Statistik terbaru
         $absensiHariIni = Absensi::whereDate('created_at', today())->count();
 
@@ -60,7 +66,8 @@ class DashboardController extends Controller {
         'absensiHariIni',
             'totalIzin',
             'totalAbsensi',
-            'ulangTahunHariIni'));
+            'ulangTahunHariIni',
+            'pensiun'));
     }
     
     

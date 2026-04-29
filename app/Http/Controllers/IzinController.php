@@ -89,10 +89,10 @@ class IzinController extends Controller
                 });
             }
         } catch (Exception $e) {
-            // Email gagal tidak membatalkan simpan data
+            return redirect()->route('izin.index')->with('success', 'Pengajuan izin berhasil dikirim. (Catatan: Email notifikasi admin gagal dikirim, error: ' . $e->getMessage() . ')');
         }
 
-        return redirect()->route('izin.index')->with('success', 'Pengajuan izin berhasil dikirim.');
+        return redirect()->route('izin.index')->with('success', 'Pengajuan izin berhasil dikirim, dan admin telah diberitahu via notif ke Email.');
     }
 
     public function edit($id)
@@ -160,6 +160,7 @@ class IzinController extends Controller
                         ->subject('Izin Disetujui');
                 });
             } catch (Exception $e) {
+                return back()->with('success', 'Izin disetujui (Catatan: Notif email gagal dikirim ke karyawan, error: ' . $e->getMessage() . ')');
             }
         }
 
@@ -181,7 +182,7 @@ class IzinController extends Controller
             $start->addDay();
         }
 
-        return back()->with('success', 'Izin disetujui dan otomatis masuk absensi.');
+        return back()->with('success', 'Izin disetujui dan otomatis masuk absensi, serta email notif telah dikirim.');
     }
 
     public function reject($id)
@@ -208,9 +209,10 @@ class IzinController extends Controller
                         ->subject('Izin Ditolak');
                 });
             } catch (Exception $e) {
+                return back()->with('success', 'Izin ditolak (Catatan: Notif email gagal dikirim, error: ' . $e->getMessage() . ')');
             }
         }
 
-        return back()->with('success', 'Izin ditolak.');
+        return back()->with('success', 'Izin ditolak dan email notif telah dikirim.');
     }
 }

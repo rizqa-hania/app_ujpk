@@ -4,22 +4,31 @@
 
 <section class="content">
 <div class="container-fluid">
-
-{{-- NOTIF ULANG TAHUN --}}
-<div class="birthday-card">
-<button type="button" class="close text-white" data-dismiss="alert">&times;</button>
-
-<strong>🎉 Ulang Tahun Hari Ini</strong>
-
-<ul class="mb-0 mt-2">
-@foreach($ulangTahunHariIni as $k)
-<li onclick="ucapin('{{ $k->nama_lengkap }}')" style="cursor:pointer;">
-{{ $k->nama_lengkap }}
-({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
-</li>
-@endforeach
-</ul>
+@if(isset($isPensiun) && $isPensiun)
+<div class="birthday-card" style="background: linear-gradient(135deg, #ce1d1d, #fcff4a);">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
+    🚨 Anda sudah memasuki usia pensiun ({{ $umur }} tahun)
 </div>
+@endif
+
+{{-- Notifikasi Ulang Tahun --}}
+@if(count($ulangTahunHariIni) > 0)
+<div class="birthday-card">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
+
+    <strong>🎉 Ulang Tahun Hari Ini</strong>
+
+    <ul class="mb-0 mt-2">
+    @foreach($ulangTahunHariIni as $k)
+        <li onclick="ucapin('{{ $k->id }}','{{ $k->nama_lengkap }}')" style="cursor:pointer;">
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
+</div>
+@endif
+
 
 <div id="birthdayModal" class="custom-modal">
   <div class="modal-content">
@@ -27,18 +36,14 @@
 
     <p id="namaUcapan"></p>
 
-    <!-- INPUT UCAPAN -->
-    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu di sini..."
-      style="width:100%; height:80px; border-radius:8px; padding:10px; border:1px solid #ccc;"></textarea>
+    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu..."></textarea>
 
-    <!-- BUTTON -->
     <div style="margin-top:15px;">
-      <button onclick="kirimUcapan()">Kirim</button>
-      <button onclick="tutupModal()" style="background:#ccc; color:#000;">Tutup</button>
+      <button onclick="console.log('klik masuk'); kirimUcapan()">Kirim</button>
+      <button onclick="tutupModal()">Tutup</button>
     </div>
   </div>
 </div>
-
 <!-- PROFILE CARD -->
 <div class="row mb-4">
 <div class="col-md-12">
@@ -84,33 +89,13 @@ NIP: {{ $karyawan->nip ?? '-' }}
 
 <div>
 <h3 class="font-weight-bold mb-0">
-{{ $totalAbsensi ?? 0 }}
+{{  $totalAbsensi ?? 0 }}
 </h3>
 <small class="text-muted">Total Absensi</small>
 </div>
 
 <div class="bg-light p-3 rounded">
 <i class="fas fa-clock text-primary"></i>
-</div>
-
-</div>
-</div>
-</div>
-
-
-<div class="col-md-4 col-6">
-<div class="card shadow-sm">
-<div class="card-body d-flex justify-content-between align-items-center">
-
-<div>
-<h3 class="font-weight-bold mb-0">
-{{ $totalIzin ?? 0 }}
-</h3>
-<small class="text-muted">Total Izin</small>
-</div>
-
-<div class="bg-light p-3 rounded">
-<i class="fas fa-envelope text-danger"></i>
 </div>
 
 </div>
@@ -131,6 +116,25 @@ NIP: {{ $karyawan->nip ?? '-' }}
 
 <div class="bg-light p-3 rounded">
 <i class="fas fa-business-time text-warning"></i>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-4 col-6">
+<div class="card shadow-sm">
+<div class="card-body d-flex justify-content-between align-items-center">
+
+<div>
+<h3 class="font-weight-bold mb-0">
+{{ $totalIzin ?? 0 }}
+</h3>
+<small class="text-muted">Total Izin</small>
+</div>
+
+<div class="bg-light p-3 rounded">
+<i class="fas fa-envelope text-danger"></i>
 </div>
 
 </div>
@@ -216,10 +220,139 @@ style="background:#2f4bb2;color:white;">
 
 </div>
 </section>
+<style>
+
+  .alert.alert-warning li {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.alert.alert-warning li:hover {
+  transform: translateX(5px);
+  opacity: 0.9;
+}
+
+ .birthday-card {
+  position: relative;
+  padding: 20px 25px;
+  border-radius: 15px;
+
+  /* warna elegan */
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: #fff;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+/* efek glow halus */
+.birthday-card::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
+  transform: rotate(25deg);
+    pointer-events: none
+}
+
+/* judul */
+.birthday-card strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* list */
+.birthday-card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.birthday-card li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+/* umur */
+.birthday-card .age {
+  opacity: 0.85;
+  font-size: 13px;
+}
+
+/* tombol close */
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  opacity: 0.8;
+}
+.custom-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  margin: 15% auto;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 10000;
+
+
+
+}
+
+.modal-content h5 {
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  border: none;
+  background: #4facfe;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10001;
+
+}
+
+.birthday-card {
+  position: relative;
+}
+
+.birthday-card .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+  </style>
 <script>
+let idKaryawan = "";
 let namaTerpilih = "";
 
-function ucapin(nama) {
+function ucapin(id, nama) {
+    idKaryawan = id;
     namaTerpilih = nama;
 
     document.getElementById("namaUcapan").innerText =
@@ -236,15 +369,32 @@ function kirimUcapan() {
     let pesan = document.getElementById("pesanUcapan").value;
 
     if (pesan.trim() === "") {
-        alert("Isi ucapan dulu ya!");
+        alert("Isi ucapan dulu!");
         return;
     }
 
-    alert("Ucapan untuk " + namaTerpilih + ":\n\n" + pesan);
-
-    // reset
-    document.getElementById("pesanUcapan").value = "";
-    tutupModal();
+    fetch('/kirimucapan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            karyawan_id: idKaryawan,
+            pesan: pesan
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Ucapan berhasil dikirim!");
+        document.getElementById("pesanUcapan").value = "";
+        tutupModal();
+    });
+}
+</script>
+<script>
+function tutupCard(btn) {
+    btn.parentElement.style.display = "none";
 }
 </script>
 @endsection

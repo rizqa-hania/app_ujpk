@@ -19,24 +19,6 @@
 
                 <div class="card-body">
 
-                    <!-- Nama Pendidikan -->
-                    <div class="form-group">
-                        <label class="font-weight-semibold">
-                            Nama Pendidikan
-                        </label>
-                        <input type="text"
-                               name="nama_pendidikan"
-                               class="form-control @error('nama_pendidikan') is-invalid @enderror"
-                               value="{{ old('nama_pendidikan') }}"
-                               placeholder="Masukkan nama pendidikan">
-
-                        @error('nama_pendidikan')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
                     <!-- Kode Pendidikan -->
                     <div class="form-group">
                         <label class="font-weight-semibold">
@@ -49,6 +31,24 @@
                                placeholder="Masukkan kode pendidikan">
 
                         @error('kode_pendidikan')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                     <!-- Nama Pendidikan -->
+                    <div class="form-group">
+                        <label class="font-weight-semibold">
+                            Nama Pendidikan
+                        </label>
+                        <input type="text"
+                               name="nama_pendidikan"
+                               class="form-control @error('nama_pendidikan') is-invalid @enderror"
+                               value="{{ old('nama_pendidikan') }}"
+                               placeholder="Masukkan nama pendidikan">
+
+                        @error('nama_pendidikan')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
