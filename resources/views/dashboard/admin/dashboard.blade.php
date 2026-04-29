@@ -2,21 +2,38 @@
 
 @section('content')
 
-{{-- Notifikasi Ulang Tahun --}}
-<div class="birthday-card">
-<button class="close text-white" onclick="tutupCard(this)">&times;</button>
+@if(count($pensiun) > 0)
+<div class="birthday-card" style="background: linear-gradient(135deg, #ce1d1d, #fcff4a);">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
 
-<strong>🎉 Ulang Tahun Hari Ini</strong>
+    <strong>🚨 Karyawan Pensiun</strong>
 
-<ul class="mb-0 mt-2">
-@foreach($ulangTahunHariIni as $k)
-<li onclick="ucapin('{{ $k->nama_lengkap }}')" style="cursor:pointer;">
-{{ $k->nama_lengkap }}
-({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
-</li>
-@endforeach
-</ul>
+    <ul class="mb-0 mt-2">
+    @foreach($pensiun as $k)
+        <li>
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
 </div>
+@endif
+@if(count($ulangTahunHariIni) > 0)
+<div class="birthday-card">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
+
+    <strong>🎉 Ulang Tahun Hari Ini</strong>
+
+    <ul class="mb-0 mt-2">
+    @foreach($ulangTahunHariIni as $k)
+        <li onclick="ucapin('{{ $k->id }}','{{ $k->nama_lengkap }}')" style="cursor:pointer;">
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
+</div>
+@endif
 
 <div id="birthdayModal" class="custom-modal">
   <div class="modal-content">
@@ -24,18 +41,14 @@
 
     <p id="namaUcapan"></p>
 
-    <!-- INPUT UCAPAN -->
-    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu di sini..."
-      style="width:100%; height:80px; border-radius:8px; padding:10px; border:1px solid #ccc;"></textarea>
+    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu..."></textarea>
 
-    <!-- BUTTON -->
     <div style="margin-top:15px;">
-      <button onclick="kirimUcapan()">Kirim</button>
-      <button onclick="tutupModal()" style="background:#ccc; color:#000;">Tutup</button>
+      <button onclick="console.log('klik masuk'); kirimUcapan()">Kirim</button>
+      <button onclick="tutupModal()">Tutup</button>
     </div>
   </div>
 </div>
-
 <section class="content pt-3">
     <div class="container-fluid">
         
@@ -339,6 +352,7 @@
   left: -50%;
   background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
   transform: rotate(25deg);
+    pointer-events: none
 }
 
 /* judul */
@@ -390,6 +404,11 @@
   margin: 15% auto;
   text-align: center;
   animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 10000;
+
+
+
 }
 
 .modal-content h5 {
@@ -404,6 +423,9 @@
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  position: relative;
+  z-index: 10001;
+
 }
 
 .birthday-card {
@@ -422,10 +444,12 @@
   to {opacity: 1; transform: translateY(0);}
 }
   </style>
-  <script>
+<script>
+let idKaryawan = "";
 let namaTerpilih = "";
 
-function ucapin(nama) {
+function ucapin(id, nama) {
+    idKaryawan = id;
     namaTerpilih = nama;
 
     document.getElementById("namaUcapan").innerText =
@@ -442,15 +466,27 @@ function kirimUcapan() {
     let pesan = document.getElementById("pesanUcapan").value;
 
     if (pesan.trim() === "") {
-        alert("Isi ucapan dulu ya!");
+        alert("Isi ucapan dulu!");
         return;
     }
 
-    alert("Ucapan untuk " + namaTerpilih + ":\n\n" + pesan);
-
-    // reset
-    document.getElementById("pesanUcapan").value = "";
-    tutupModal();
+    fetch('/kirimucapan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            karyawan_id: idKaryawan,
+            pesan: pesan
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Ucapan berhasil dikirim!");
+        document.getElementById("pesanUcapan").value = "";
+        tutupModal();
+    });
 }
 </script>
 <script>

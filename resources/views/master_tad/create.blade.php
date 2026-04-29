@@ -19,23 +19,6 @@
 
                     <div class="form-group">
                         <label class="form-label font-weight-semibold">
-                            Nama TAD
-                        </label>
-                        <input type="text"
-                               name="nama_tad"
-                               class="form-control @error('nama_tad') is-invalid @enderror"
-                               value="{{ old('nama_tad') }}"
-                               placeholder="Masukkan nama TAD">
-
-                        @error('nama_tad')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label font-weight-semibold">
                             Kode TAD
                         </label>
                         <input type="text"
@@ -45,6 +28,23 @@
                                placeholder="Masukkan kode TAD">
 
                         @error('kode_tad')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label font-weight-semibold">
+                            Nama TAD
+                        </label>
+                        <input type="text"
+                               name="nama_tad"
+                               class="form-control @error('nama_tad') is-invalid @enderror"
+                               value="{{ old('nama_tad') }}"
+                               placeholder="Masukkan nama TAD">
+
+                        @error('nama_tad')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

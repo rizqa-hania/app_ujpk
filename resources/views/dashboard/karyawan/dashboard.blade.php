@@ -4,22 +4,31 @@
 
 <section class="content">
 <div class="container-fluid">
+@if(isset($isPensiun) && $isPensiun)
+<div class="birthday-card" style="background: linear-gradient(135deg, #ce1d1d, #fcff4a);">
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
+    🚨 Anda sudah memasuki usia pensiun ({{ $umur }} tahun)
+</div>
+@endif
 
 {{-- Notifikasi Ulang Tahun --}}
+@if(count($ulangTahunHariIni) > 0)
 <div class="birthday-card">
-<button class="close text-white" onclick="tutupCard(this)">&times;</button>
+    <button class="close text-white" onclick="tutupCard(this)">&times;</button>
 
-<strong>🎉 Ulang Tahun Hari Ini</strong>
+    <strong>🎉 Ulang Tahun Hari Ini</strong>
 
-<ul class="mb-0 mt-2">
-@foreach($ulangTahunHariIni as $k)
-<li onclick="ucapin('{{ $k->nama_lengkap }}')" style="cursor:pointer;">
-{{ $k->nama_lengkap }}
-({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
-</li>
-@endforeach
-</ul>
+    <ul class="mb-0 mt-2">
+    @foreach($ulangTahunHariIni as $k)
+        <li onclick="ucapin('{{ $k->id }}','{{ $k->nama_lengkap }}')" style="cursor:pointer;">
+            {{ $k->nama_lengkap }}
+            ({{ \Carbon\Carbon::parse($k->tanggal_lahir)->age }} tahun)
+        </li>
+    @endforeach
+    </ul>
 </div>
+@endif
+
 
 <div id="birthdayModal" class="custom-modal">
   <div class="modal-content">
@@ -27,18 +36,14 @@
 
     <p id="namaUcapan"></p>
 
-    <!-- INPUT UCAPAN -->
-    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu di sini..."
-      style="width:100%; height:80px; border-radius:8px; padding:10px; border:1px solid #ccc;"></textarea>
+    <textarea id="pesanUcapan" placeholder="Tulis ucapan kamu..."></textarea>
 
-    <!-- BUTTON -->
     <div style="margin-top:15px;">
-      <button onclick="kirimUcapan()">Kirim</button>
-      <button onclick="tutupModal()" style="background:#ccc; color:#000;">Tutup</button>
+      <button onclick="console.log('klik masuk'); kirimUcapan()">Kirim</button>
+      <button onclick="tutupModal()">Tutup</button>
     </div>
   </div>
 </div>
-
 <!-- PROFILE CARD -->
 <div class="row mb-4">
 <div class="col-md-12">
@@ -84,33 +89,13 @@ NIP: {{ $karyawan->nip ?? '-' }}
 
 <div>
 <h3 class="font-weight-bold mb-0">
-{{ $totalAbsensi ?? 0 }}
+{{  $totalAbsensi ?? 0 }}
 </h3>
 <small class="text-muted">Total Absensi</small>
 </div>
 
 <div class="bg-light p-3 rounded">
 <i class="fas fa-clock text-primary"></i>
-</div>
-
-</div>
-</div>
-</div>
-
-
-<div class="col-md-4 col-6">
-<div class="card shadow-sm">
-<div class="card-body d-flex justify-content-between align-items-center">
-
-<div>
-<h3 class="font-weight-bold mb-0">
-{{ $totalIzin ?? 0 }}
-</h3>
-<small class="text-muted">Total Izin</small>
-</div>
-
-<div class="bg-light p-3 rounded">
-<i class="fas fa-envelope text-danger"></i>
 </div>
 
 </div>
@@ -131,6 +116,25 @@ NIP: {{ $karyawan->nip ?? '-' }}
 
 <div class="bg-light p-3 rounded">
 <i class="fas fa-business-time text-warning"></i>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-4 col-6">
+<div class="card shadow-sm">
+<div class="card-body d-flex justify-content-between align-items-center">
+
+<div>
+<h3 class="font-weight-bold mb-0">
+{{ $totalIzin ?? 0 }}
+</h3>
+<small class="text-muted">Total Izin</small>
+</div>
+
+<div class="bg-light p-3 rounded">
+<i class="fas fa-envelope text-danger"></i>
 </div>
 
 </div>
@@ -216,7 +220,6 @@ style="background:#2f4bb2;color:white;">
 
 </div>
 </section>
-
 <style>
 
   .alert.alert-warning li {
@@ -252,6 +255,7 @@ style="background:#2f4bb2;color:white;">
   left: -50%;
   background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
   transform: rotate(25deg);
+    pointer-events: none
 }
 
 /* judul */
@@ -303,6 +307,11 @@ style="background:#2f4bb2;color:white;">
   margin: 15% auto;
   text-align: center;
   animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 10000;
+
+
+
 }
 
 .modal-content h5 {
@@ -317,6 +326,9 @@ style="background:#2f4bb2;color:white;">
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+  position: relative;
+  z-index: 10001;
+
 }
 
 .birthday-card {
@@ -335,10 +347,12 @@ style="background:#2f4bb2;color:white;">
   to {opacity: 1; transform: translateY(0);}
 }
   </style>
-  <script>
+<script>
+let idKaryawan = "";
 let namaTerpilih = "";
 
-function ucapin(nama) {
+function ucapin(id, nama) {
+    idKaryawan = id;
     namaTerpilih = nama;
 
     document.getElementById("namaUcapan").innerText =
@@ -355,15 +369,27 @@ function kirimUcapan() {
     let pesan = document.getElementById("pesanUcapan").value;
 
     if (pesan.trim() === "") {
-        alert("Isi ucapan dulu ya!");
+        alert("Isi ucapan dulu!");
         return;
     }
 
-    alert("Ucapan untuk " + namaTerpilih + ":\n\n" + pesan);
-
-    // reset
-    document.getElementById("pesanUcapan").value = "";
-    tutupModal();
+    fetch('/kirimucapan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            karyawan_id: idKaryawan,
+            pesan: pesan
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Ucapan berhasil dikirim!");
+        document.getElementById("pesanUcapan").value = "";
+        tutupModal();
+    });
 }
 </script>
 <script>

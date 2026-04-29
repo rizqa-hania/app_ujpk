@@ -582,8 +582,10 @@ class KaryawanController extends Controller
         $project = MasterProject::all();
         $pendidikan = MasterPendidikan::all();
 
-        return view('karyawan.profile', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan'));
+        return view('karyawan.profile.profile', compact('karyawan', 'unitpln', 'jabatan', 'subunit', 'tad', 'project', 'pendidikan'));
     }
+
+    
 
     public function updateProfile(Request $request)
     {
@@ -668,6 +670,8 @@ class KaryawanController extends Controller
             'no_sertifikat_garda' => 'nullable|string|max:50',
             'file_sertifikat_garda' => 'nullable|file|mimes:pdf,jpg,jpeg,png,gif|max:2048',
         ]);
+
+            
 
         $karyawan->update($validated);
 

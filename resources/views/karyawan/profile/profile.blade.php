@@ -45,11 +45,13 @@ $showDriverSatpam = $isDriver || $isSatpam;
                             <h3 class="card-title">
                                 <i class="fas fa-user-edit mr-1"></i> Edit Profil Karyawan
                             </h3>
+                            <!--
                             <div class="card-tools">
                                 <button type="submit" class="btn btn-success btn-sm">
                                     <i class="fas fa-save mr-1"></i> Simpan Perubahan
                                 </button>
                             </div>
+                            -->
                         </div>
                     </div>
                 </div>
@@ -191,9 +193,9 @@ $showDriverSatpam = $isDriver || $isSatpam;
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Project</label>
+                                                <label>Proyek</label>
                                                 <select name="project_id" class="form-control" required>
-                                                    <option value="">Pilih Project </option>
+                                                    <option value="">Pilih Proyek </option>
                                                     @foreach($project as $p)
                                                         <option value="{{ $p->project_id }}" {{ old('project_id', optional($karyawan)->project_id) == $p->project_id ? 'selected' : '' }}>
                                                             {{ $p->nama_project }}
@@ -1065,9 +1067,11 @@ $showDriverSatpam = $isDriver || $isSatpam;
                             <button type="submit" class="btn btn-success float-right">
                                 <i class="fas fa-save mr-1"></i> Simpan Perubahan
                             </button>
+                            <!--
                             <a href="{{ route('karyawan.dashboard') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left mr-1"></i> Kembali
                             </a>
+-->
                         </div>
                     </div>
                 </div>

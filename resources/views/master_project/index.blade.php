@@ -12,7 +12,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h3 class="card-title font-weight-bold mb-0">
-            Data Master Project
+            Data Master Proyek
         </h3>
 
         <a href="{{ route('master_project.create') }}" 

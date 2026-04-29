@@ -196,7 +196,7 @@ class="nav-link {{ request()->routeIs('master_pendidikan.index') ? 'active' : ''
 class="nav-link {{ request()->routeIs('master_project.index') ? 'active' : '' }}">
 
 <i class="nav-icon fas fa-folder-open"></i>
-<p>Project</p>
+<p>Proyek</p>
 
 </a>
 </li>

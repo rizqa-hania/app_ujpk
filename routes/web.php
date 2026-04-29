@@ -25,7 +25,10 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\UcapanController;
 
+//kirim ucapan
+Route::post('/kirimucapan', [UcapanController::class, 'kirim']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {
     
@@ -145,8 +148,9 @@ Route::prefix('karyawan')->name('karyawan.')->middleware(['auth'])->group(functi
     Route::post('/step11', [KaryawanController::class, 'storestep11'])->name('storestep11');
 
     // Profile
-    Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
+   Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [KaryawanController::class, 'updateProfile'])->name('profile.update');
+    
 
     // Optional finish route, biasanya nggak dipakai langsung
     Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');

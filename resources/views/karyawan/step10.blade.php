@@ -1,4 +1,4 @@
-<style>
+<title>Step Data Karyawan</title><style>
     body {
         font-family: 'Segoe UI', sans-serif;
         background-color: #f4f6f9;
@@ -189,7 +189,7 @@ $showDriverSatpam = $isDriver || $isSatpam;
                         @if($showDriverSatpam)
                             Lanjut →
                         @else
-                            Selesai →
+                            Selesai 
                         @endif
                     </button>
                 </div>
