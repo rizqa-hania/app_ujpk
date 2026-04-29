@@ -15,6 +15,7 @@ class PenggajianController extends Controller
      */
 public function index(Request $request)
 {
+    
     $query = Penggajian::query();
 
     if ($request->filled('dari_tanggal') && $request->filled('sampai_tanggal')) {
@@ -118,7 +119,9 @@ public function index(Request $request)
      */
     public function edit($id)
     {
-        //
+        $dataeditpenggajian = Penggajian::where('penggajian_id', $id)->firstOrFail();
+
+        return view('penggajian.edit', compact('dataeditpenggajian'));
     }
 
     /**
@@ -130,8 +133,22 @@ public function index(Request $request)
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+        'periode_bulan' => 'required|string',
+        'periode_tahun' => 'required|integer',
+        'status' => 'required|string',
+    ]);
+
+    $dataeditpenggajian = Penggajian::findOrFail($id);
+
+    $dataeditpenggajian->update([
+        'periode_bulan' => $request->periode_bulan,
+        'periode_tahun' => $request->periode_tahun,
+        'status' => $request->status
+    ]);
+
+    return redirect()->route('penggajian.index');
+}
 
     /**
      * Remove the specified resource from storage.

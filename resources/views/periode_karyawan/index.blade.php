@@ -1,16 +1,10 @@
-@extends('template.admin.layout')
-
+@extends('template.karyawan.layout')
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Data Periode Penggajian</h3>
-                <div class="card-tools">
-                    <a href="{{ route('penggajian.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Periode Gaji
-                    </a>
-                </div>
             </div>
 
             <div class="card-body">
@@ -53,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($penggajian as $v)
+                            @forelse ($periodeKaryawan as $v)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $v->periode_bulan }}</td>
@@ -74,20 +68,17 @@
                                         @endswitch
                                     </td>
                                     <td class="d-flex gap-1">
-                                        <a href="{{ route('detail.index', $v->penggajian_id) }}"
-                                           class="btn btn-primary btn-sm">
-                                            <i class="fas fa-eye"></i> Detail
-                                        </a>
-                                        <form action="{{ route('penggajian.destroy', $v->penggajian_id) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                            <a href="{{ route('penggajian.edit', $v->penggajian_id) }}" class="btn btn-success btn-sm">Edit</a>
-                                        </form>
+                                        @php
+                                            $detail = $v->detail->first();
+                                        @endphp
+                                        @if($detail)
+                                            <a href="{{ route('detail.show', $detail->detail_id) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i> Detail
+                                            </a>
+                                        @else
+                                            <button class="btn btn-secondary btn-sm" disabled>Belum ada slip</button>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

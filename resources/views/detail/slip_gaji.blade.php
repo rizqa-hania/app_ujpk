@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="card-footer text-right p-3">
-                <a href="{{ route('detail.index', $detail->penggajian_id) }}" class="btn btn-outline-secondary btn-sm mr-2">
+                <a href="{{ route('periode_karyawan.index') }}" class="btn btn-outline-secondary btn-sm mr-2">
                     <i class="fas fa-arrow-left mr-1"></i> Kembali
                 </a>
                 <a href="{{ route('slip.pdf', $detail->detail_id) }}"  class="btn btn-danger btn-sm">

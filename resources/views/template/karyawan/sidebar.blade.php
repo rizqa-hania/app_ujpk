@@ -78,8 +78,8 @@
 
 
                  <li class="nav-item">
-                    <a href="{{ route('penggajian.index') }}"
-                       class="nav-link {{ request()->routeIs('izin.index') ? 'active' : '' }}">
+                    <a href="{{ route('periode_karyawan.index') }}"
+                       class="nav-link {{ request()->routeIs('periode_karyawan.index') ? 'active' : '' }}">
                        <i class="nav-icon fas fa-wallet"></i>
                         <p>Slip Gaji</p>
                     </a>
