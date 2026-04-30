@@ -14,12 +14,8 @@ class Jabatan extends Model
         'kode_jabatan',
         'nama_jabatan',
         'status',
-        'is_satpam',
-        'is_driver',
+        
     ];
     
-    protected $casts = [
-        'is_satpam' => 'boolean',
-        'is_driver' => 'boolean',
-    ];
+    
 }

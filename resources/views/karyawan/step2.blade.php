@@ -137,9 +137,10 @@
                 <div class="form-grid">
 
                     <div class="form-group">
-                        <label>Foto Diri (3x4)</label>
-                        <input type="file" name="file_foto_diri" accept="image/*,.pdf">
-                    </div>
+                    <label>Foto Diri (3x4)</label>
+                    <input type="file" name="foto_3x4" accept="image/*">
+                </div>
+
 
                     <div class="form-group">
                         <label>Nama Lengkap</label>

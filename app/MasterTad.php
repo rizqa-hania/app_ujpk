@@ -13,5 +13,13 @@ class MasterTad extends Model
     protected $fillable = [
         'kode_tad',
         'nama_tad',
+         'status',
+        'is_satpam',
+        'is_driver',
+    ];
+
+    protected $casts = [
+        'is_satpam' => 'boolean',
+        'is_driver' => 'boolean',
     ];
 }

@@ -123,9 +123,9 @@
 </style>
 
 @php
-$kodeJabatan = optional($karyawan->jabatan)->kode_jabatan ?? '';
-$isDriver = (strpos($kodeJabatan, '06') !== false);
-$isSatpam = (strpos($kodeJabatan, '03') !== false);
+$kodetad = optional($karyawan->tad)->kode_tad ?? '';
+$isDriver = (strpos($kodetad, '06') !== false);
+$isSatpam = (strpos($kodetad, '03') !== false);
 $showDriverSatpam = $isDriver || $isSatpam;
 @endphp
 

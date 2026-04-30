@@ -2,7 +2,6 @@
 @section('content')
 
 
-
 <div class="row">
     <div class="col-12">
 
@@ -10,21 +9,42 @@
             
             <!-- Header -->
             <div class="card-header pr-3 pl-3 m-2">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <h3 class="card-title font-weight-bold mb-0">
-                        Master Jabatan
-                    </h3>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="card-title font-weight-bold mb-0">
+            Data Jabatan
+        </h3>
 
-                    <a href="{{ route('master_jabatan.create') }}" 
-                       class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Tambah Jabatan
-                    </a>
-                </div>
+        <a href="{{ route('master_jabatan.create') }}" 
+           class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Tambah Jabatan
+        </a>
+    </div>
+
+    <form method="GET" action="{{ route('master_jabatan.index') }}">
+        <div class="input-group input-group-sm" style="max-width: 300px;">
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Cari kode / nama jabatan..."
+                   value="{{ request('search') }}">
+
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">
+                    Cari
+                </button>
+
+                <a href="{{ route('master_jabatan.index') }}"
+                   class="btn btn-outline-secondary">
+                    Reset
+                </a>
             </div>
+        </div>
+    </form>
+</div>
 
             <!-- Body -->
-            <div class="card-body p-0">
-                <table id="table" class="table table-hover table-striped mb-0 ">
+            <div class= "card-body p-0">
+                <table id="table" class="table table-hover table-striped mb-0">
                     <thead class="bg-light">
                         <tr>
                             <th width="15%">Kode</th>
@@ -46,7 +66,7 @@
                                     @method('DELETE')
 
                                     <button type="submit"
-                                        onclick="return confirm('Yakin menghapus jabatan ini permanen?')"
+                                        onclick="return confirm('Yakin menghapus Jabatan ini permanen?')"
                                         class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i> Hapus
                                     </button>
@@ -63,6 +83,7 @@
                     </tbody>
 
                 </table>
+                
             </div>
 
         </div>
@@ -74,5 +95,5 @@
     new DataTable('#table');
 </script>
 @endpush
-
 @endsection
+<!-- -->

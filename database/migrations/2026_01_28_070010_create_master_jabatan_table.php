@@ -18,9 +18,6 @@ class CreateMasterJabatanTable extends Migration
             $table->string('kode_jabatan')->unique();
             $table->string('nama_jabatan');
             $table->enum('status',['aktif','nonaktif'])->default('aktif');
-            $table->boolean('is_satpam')->default(false);
-            $table->boolean('is_driver')->default(false);
-
             $table->timestamps();
             
         });

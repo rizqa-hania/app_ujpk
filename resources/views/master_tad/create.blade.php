@@ -2,21 +2,23 @@
 @section('content')
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-8">
 
         <div class="card shadow-sm">
             
+            <!-- Header -->
             <div class="card-header">
                 <h3 class="card-title font-weight-bold mb-0">
                     Tambah TAD
                 </h3>
             </div>
 
+            <!-- Form -->
             <form action="{{ route('master_tad.store') }}" method="POST">
                 @csrf
 
                 <div class="card-body">
-
+                    <!-- Kode tad -->
                     <div class="form-group">
                         <label class="form-label font-weight-semibold">
                             Kode TAD
@@ -25,8 +27,8 @@
                                name="kode_tad"
                                class="form-control @error('kode_tad') is-invalid @enderror"
                                value="{{ old('kode_tad') }}"
-                               placeholder="Masukkan kode TAD">
-
+                               placeholder="Contoh: 03 untuk Satpam, 06 untuk Driver">
+                        <small class="text-muted">Masukkan kode TAD (03=Satpam, 06=Driver)</small>
                         @error('kode_tad')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -34,7 +36,8 @@
                         @enderror
                     </div>
 
-                     <div class="form-group">
+                    <!-- Nama tad -->
+                    <div class="form-group">
                         <label class="form-label font-weight-semibold">
                             Nama TAD
                         </label>
@@ -42,9 +45,8 @@
                                name="nama_tad"
                                class="form-control @error('nama_tad') is-invalid @enderror"
                                value="{{ old('nama_tad') }}"
-                               placeholder="Masukkan nama TAD">
-
-                        @error('nama_tad')
+                               placeholder="Masukkan nama tad">
+                        @error('nama_jabatan')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -53,8 +55,8 @@
 
                 </div>
 
+                <!-- Footer -->
                 <div class="card-footer d-flex justify-content-end">
-                    
                     <a href="{{ route('master_tad.index') }}" 
                        class="btn btn-secondary btn-sm mr-2">
                         <i class="fas fa-arrow-left"></i> Kembali
@@ -63,7 +65,6 @@
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="fas fa-save"></i> Simpan
                     </button>
-
                 </div>
 
             </form>

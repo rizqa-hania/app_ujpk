@@ -53,7 +53,7 @@
                     <a href="{{ route('karyawan.dashboard') }}"
                        class="nav-link {{ request()->routeIs('karyawan.dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard Karyawan</p>
+                        <p>Halaman Karyawan</p>
                     </a>
                 </li>
 

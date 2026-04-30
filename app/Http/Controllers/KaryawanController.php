@@ -498,9 +498,9 @@ class KaryawanController extends Controller
 
         // Check if karyawan is driver or satpam based on kode_jabatan
         // 03 = Satpam, 06 = Driver
-        if ($karyawan->jabatan) {
-            $kodeJabatan = $karyawan->jabatan->kode_jabatan ?? '';
-            if (strpos($kodeJabatan, '03') !== false || strpos($kodeJabatan, '06') !== false) {
+        if ($karyawan->tad) {
+            $kodetad = $karyawan->tad->kode_tad ?? '';
+            if (strpos($kodetad, '03') !== false || strpos($kodetad, '06') !== false) {
                 return redirect()->route('karyawan.step11');
             }
         }

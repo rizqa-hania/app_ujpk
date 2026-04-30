@@ -59,9 +59,6 @@ width="80" height="80">
 {{ $karyawan->nama_lengkap ?? auth()->user()->name }}
 </h4>
 
-<p class="mb-1 text-muted">
-{{ $karyawan->jabatan->nama_jabatan ?? 'Belum ada jabatan' }}
-</p>
 
 <small class="text-muted">
 NIP: {{ $karyawan->nip ?? '-' }}

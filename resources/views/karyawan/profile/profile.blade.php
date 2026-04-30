@@ -15,11 +15,11 @@ function getFileUrl($filename, $folder = 'dokumen') {
     return asset('storage/' . $folder . '/' . $filename);
 }
 
-// Check if karyawan is driver or satpam based on kode_jabatan
+// Check if karyawan is driver or satpam based on kode_tad
 // 03 = Satpam, 06 = Driver
-$kodeJabatan = optional($karyawan->jabatan)->kode_jabatan ?? '';
-$isDriver = (strpos($kodeJabatan, '06') !== false);
-$isSatpam = (strpos($kodeJabatan, '03') !== false);
+$kodetad = optional($karyawan->tad)->kode_tad ?? '';
+$isDriver = (strpos($kodetad, '06') !== false);
+$isSatpam = (strpos($kodetad, '03') !== false);
 $showDriverSatpam = $isDriver || $isSatpam;
 @endphp
 
@@ -76,9 +76,11 @@ $showDriverSatpam = $isDriver || $isSatpam;
                             <h3 class="profile-username text-center">
                                 {{ $karyawan->nama_lengkap ?? auth()->user()->name }}
                             </h3>
+                            <!--
                             <p class="text-muted text-center">
                                 {{ $karyawan->jabatan->nama_jabatan ?? 'Belum ada jabatan' }}
                             </p>
+-->
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
                                     <b>NIP</b> <a class="float-right">{{ $karyawan->nip ?? '-' }}</a>
