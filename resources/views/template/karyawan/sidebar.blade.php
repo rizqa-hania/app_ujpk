@@ -61,8 +61,8 @@
 
                 <!-- Absensi -->
                 <li class="nav-item">
-                    <a href="{{ route('absensi.index') }}"
-                       class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
+                    <a href="{{ route('absensi.create') }}"
+                       class="nav-link {{ request()->routeIs('absensi.create') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-clock"></i>
                         <p>Absensi</p>
                     </a>
