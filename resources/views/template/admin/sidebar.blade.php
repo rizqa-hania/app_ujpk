@@ -203,13 +203,28 @@
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('absensi.index') }}" class="nav-link {{ request()->routeIs('absensi.index') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-clipboard-check"></i>
-                            <p>Rekap Absensi</p>
+ {{-- Laporan --}}
+                    <li class="nav-item has-treeview {{ request()->routeIs('admin.absensi.monitoring') || request()->is('absensi/rekap*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admin.absensi.monitoring') || request()->is('absensi/rekap*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            <p>Laporan <i class="right fas fa-angle-left"></i></p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('absensi.rekap') }}" class="nav-link {{ request()->routeIs('absensi.rekap') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-clipboard-check"></i>
+                                    <p>Rekap Absensi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('penggajian.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-wallet"></i>
+                                    <p>Slip Gaji</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
                 @endif
                 @endauth
 
@@ -218,3 +233,4 @@
 
     </div>
 </aside>
+
