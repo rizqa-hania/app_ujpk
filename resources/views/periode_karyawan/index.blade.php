@@ -72,9 +72,8 @@
                                             $detail = $v->detail->first();
                                         @endphp
                                         @if($detail)
-                                            <a href="{{ route('detail.show', $detail->detail_id) }}"
-                                               class="btn btn-primary btn-sm">
-                                                <i class="fas fa-eye"></i> Detail
+                                            <a href="{{ route('slip_karyawan.show', $v->penggajian_id) }}" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i> Lihat Slip
                                             </a>
                                         @else
                                             <button class="btn btn-secondary btn-sm" disabled>Belum ada slip</button>

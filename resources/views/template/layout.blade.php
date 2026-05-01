@@ -18,6 +18,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ asset('AdminLTE/dist/css/adminlte.min.css')}}">
   <!-- Datatables -->
    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap4.css">
+   <style>
+        .dataTables_wrapper .row:first-child {
+            margin-bottom: 1.25rem;
+        }
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 1rem !important;
+        }
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_filter label {
+            margin-bottom: .25rem;
+            display: inline-block;
+        }
+        .card-header .btn,
+        .card-tools .btn,
+        .d-flex .btn {
+            margin-right: .35rem;
+            margin-bottom: .35rem;
+        }
+        .d-flex .btn:last-child {
+            margin-right: 0;
+        }
+    </style>
    @stack('css')
 </head>
 <body class="hold-transition sidebar-mini">

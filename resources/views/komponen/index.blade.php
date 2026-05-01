@@ -81,7 +81,9 @@
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Nonaktifkan komponen ini?')">Nonaktifkan</button>
                                         </form>
                                     @endif
-                                        <a href="{{ route('komponen.edit', $v->kode) }}" class="btn btn-success btn-sm">Edit</a>
+                                        <a href="{{ route('komponen.edit', $v->kode) }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
                                 </div>
                             </td>
                         </tr>

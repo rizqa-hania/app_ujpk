@@ -158,7 +158,15 @@ public function index(Request $request)
      */
     public function destroy($id)
     {
-        Penggajian::where('penggajian_id', $id)->delete();
+        $penggajian = Penggajian::with(['detail.detailKomponen'])->where('penggajian_id', $id)->firstOrFail();
+
+        foreach ($penggajian->detail as $detail) {
+            $detail->detailKomponen()->delete();
+        }
+
+        $penggajian->detail()->delete();
+        $penggajian->delete();
+
         return redirect()->route('penggajian.index');
     }
 }
