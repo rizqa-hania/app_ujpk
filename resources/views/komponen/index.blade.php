@@ -14,7 +14,7 @@
                             <input type="file" name="file" class="form-control form-control-sm d-inline-block" style="width:180px;">
                             <button class="btn btn-info btn-sm" type="submit">
                                <i class="fas fa-file-excel"></i> Import File Excel
-                            </button>
+                            </button> 
                         </form>
                         <a href="{{ route('komponen.create') }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Komponen 
