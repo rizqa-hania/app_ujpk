@@ -81,21 +81,22 @@
                 </div>
             </div>
 
-            {{-- Absensi --}}
-            <div class="col-lg-3 col-6 mb-4">
-                <div class="small-box bg-gradient-absensi">
-                    <div class="inner">
-                        <h3>{{ $totalAbsensi ?? 0 }}</h3>
-                        <p>Total Absensi (Hari Ini)</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-clock icon-white"></i>
-                    </div>
-                    <a href="{{ route('absensi.index') }}" class="small-box-footer">
-                        Detail Absensi <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
+            {{-- GANTI BAGIAN CARD ABSENSI LAMA DENGAN INI --}}
+<div class="col-lg-3 col-6 mb-4">
+    <div class="small-box bg-gradient-absensi">
+        <div class="inner">
+            <h3>{{ $totalAbsensi ?? 0 }}</h3>
+            <p>Absensi (Hari Ini)</p>
+        </div>
+        <div class="icon">
+            <i class="fas fa-clock icon-white"></i>
+        </div>
+        {{-- Link ke Rekap (Halaman yang kita buat tadi) --}}
+        <a href="{{ route('absensi.index') }}" class="small-box-footer" style="border-top: 1px solid rgba(255,255,255,0.1)">
+            Lihat Semua <i class="fas fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
 
             {{-- Izin --}}
             <div class="col-lg-3 col-6 mb-4">

@@ -16,37 +16,43 @@ use Illuminate\Support\Facades\File;
 
 class AbsensiController extends Controller
 {
-   public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function index()
     {
-        // 1. Pastikan User Login
         $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login');
-        }
-        
-        $userId = $user->id;
         $today = Carbon::now()->toDateString();
+        $userId = $user->id;
 
-        // 2. Otomatisasi status 'tidak lengkap' (Pindahan dari Construct)
+        // --- LOGIC ROLE: ADMIN ---
+        if ($user->role == 'admin' || $user->role == 'superadmin') {
+            // PERBAIKAN: Gunakan paginate() bukan get() agar method firstItem() di view bisa jalan
+            $dataAbsensi = Absensi::with('user')
+                ->orderBy('tanggal', 'desc')
+                ->paginate(10); // Lo bisa ganti 10 jadi 20 atau sesuai kebutuhan
+
+            return view('absensi.admin.index', compact('dataAbsensi'));
+        }
+
+        // --- LOGIC ROLE: KARYAWAN ---
+        
+        // 1. Otomatisasi status 'tidak lengkap' untuk hari-hari sebelumnya
         Absensi::where('user_id', $userId)
             ->where('tanggal', '<', $today)
             ->where('status_final', 'belum lengkap')
             ->update(['status_final' => 'tidak lengkap']);
 
-        // 3. Logic Generate Alpha (Riwayat 30 hari)
+        // 2. Logic Generate Alpha (Riwayat 30 hari)
         $jadwal = JadwalAbsensi::first();
         if ($jadwal) {
             $startDate = Carbon::now()->subDays(30)->startOfDay();
-            $endDate = Carbon::now()->subDay()->endOfDay();
+            $endDate = Carbon::now()->subDay()->endOfDay(); // Sampai kemarin
             $userCreatedAt = $user->created_at ? $user->created_at->startOfDay() : $startDate;
 
             for ($d = $startDate->copy(); $d <= $endDate; $d->addDay()) {
-                // Jangan buatkan absen jika user belum terdaftar di tanggal tersebut
                 if ($d->lt($userCreatedAt)) continue;
 
                 $hariEnglish = strtolower($d->format('l'));
@@ -56,15 +62,11 @@ class AbsensiController extends Controller
                 ];
                 $h = $hariIndo[$hariEnglish];
 
-                // Cek apakah hari kerja dan variabel userId TIDAK NULL
-                if (isset($jadwal->$h) && $jadwal->$h && !is_null($userId)) { 
+                if (isset($jadwal->$h) && $jadwal->$h) { 
                     $tgl = $d->toDateString();
-                    
-                    // Gunakan updateOrInsert atau check manual untuk keamanan ekstra
                     $exists = Absensi::where('user_id', $userId)->where('tanggal', $tgl)->exists();
                     
                     if (!$exists) {
-                        // Cek Izin juga biar gak double
                         $adaIzin = Izin::where('user_id', $userId)
                             ->whereDate('tanggal_mulai', '<=', $tgl)
                             ->whereDate('tanggal_selesai', '>=', $tgl)
@@ -85,16 +87,15 @@ class AbsensiController extends Controller
             }
         }
 
-        // 4. Ambil data untuk ditampilkan
+        // 3. Ambil data riwayat untuk ditampilkan di view karyawan
         $dataAbsensi = Absensi::where('user_id', $userId)
             ->orderBy('tanggal', 'desc')
             ->take(30)
             ->get();
 
-        return view('absensi.index', compact('dataAbsensi'));
+        return view('absensi.karyawan.create', compact('dataAbsensi'));
     }
 
-    // --- SIMPAN ABSEN (SCAN WAJAH) ---
     public function store(Request $request)
     {
         $request->validate([
@@ -111,13 +112,21 @@ class AbsensiController extends Controller
         $kantor = Kantor::first();
         if (!$kantor) return back()->with('error', 'Data lokasi kantor belum diatur!');
 
-        // Upload Foto
+        // Cek Jarak Radius
+        $distance = $this->hitungJarak($request->latitude, $request->longitude, $kantor->latitude, $kantor->longitude);
+        if ($distance > $kantor->radius_meter) {
+            return back()->with('error', 'Gagal! Anda berada di luar radius kantor (' . round($distance) . 'm).');
+        }
+
+        // Upload & Process Foto
         $img = $request->photo;
+        $img = str_replace('data:image/jpeg;base64,', '', $img); // Sesuaikan base64 header
         $img = str_replace('data:image/png;base64,', '', $img);
         $img = str_replace(' ', '+', $img);
         $imageData = base64_decode($img);
         $fileName = 'absensi_' . $request->type . '_' . $userId . '_' . time() . '.png';
         $folderPath = public_path('uploads/absensi/');
+        
         if (!File::isDirectory($folderPath)) File::makeDirectory($folderPath, 0777, true, true);
         File::put($folderPath . $fileName, $imageData);
 
@@ -125,10 +134,6 @@ class AbsensiController extends Controller
         $jadwal = JadwalAbsensi::first();
         $hariIndo = ['monday'=>'senin','tuesday'=>'selasa','wednesday'=>'rabu','thursday'=>'kamis','friday'=>'jumat','saturday'=>'sabtu','sunday'=>'minggu'];
         $hariIni = $hariIndo[strtolower($now->format('l'))];
-
-        // Cek Jarak Radius
-        $distance = $this->hitungJarak($request->latitude, $request->longitude, $kantor->latitude, $kantor->longitude);
-        if ($distance > $kantor->radius_meter) return back()->with('error', 'Di luar radius kantor!');
 
         if ($request->type === 'masuk') {
             if ($absen && $absen->jam_masuk && $absen->status_masuk !== 'alpha') {
@@ -138,27 +143,34 @@ class AbsensiController extends Controller
             $jamMasukJadwal = $jadwal->{'jam_masuk_' . $hariIni};
             $terlambat = $now->gt(Carbon::parse($today . ' ' . $jamMasukJadwal));
 
-            Absensi::updateOrCreate(
-                ['user_id' => $userId, 'tanggal' => $today],
-                [
-                    'jam_masuk' => $now->format('H:i:s'),
-                    'status_masuk' => $terlambat ? 'terlambat' : 'tepat waktu',
-                    'status_final' => 'belum lengkap',
-                    'latitude' => $request->latitude,
-                    'longitude' => $request->longitude,
-                    'foto_masuk' => $fileName,
-                ]
-            );
-            return back()->with('success', 'Berhasil Absen Masuk.');
+           Absensi::updateOrCreate(
+    [
+        'user_id' => Auth::id(), // Pastikan ini pakai Auth::id()
+        'tanggal' => $today
+    ],
+    [
+        'jam_masuk' => $now->format('H:i:s'),
+        'status_masuk' => $terlambat ? 'terlambat' : 'tepat waktu',
+        'status_final' => 'belum lengkap',
+        'latitude' => $request->latitude,
+        'longitude' => $request->longitude,
+        'foto_masuk' => $fileName,
+    ]
+);
+            return back()->with('success', 'Berhasil Absen Masuk. Status: ' . ($terlambat ? 'Terlambat' : 'Tepat Waktu'));
 
         } else {
-            if (!$absen || $absen->status_masuk === 'alpha') return back()->with('error', 'Anda belum absen masuk!');
-            if ($absen->jam_pulang) return back()->with('error', 'Anda sudah absen pulang!');
+            // Logika Pulang
+            if (!$absen || $absen->status_masuk === 'alpha' || !$absen->jam_masuk) {
+                return back()->with('error', 'Anda belum absen masuk!');
+            }
+            if ($absen->jam_pulang) {
+                return back()->with('error', 'Anda sudah absen pulang!');
+            }
             
             $jamPulangJadwal = $jadwal->{'jam_pulang_' . $hariIni};
-            
             if ($now->lt(Carbon::parse($today . ' ' . $jamPulangJadwal))) {
-                return back()->with('error', 'Belum waktunya pulang! (Jam Pulang: ' . $jamPulangJadwal . ')');
+                return back()->with('error', 'Belum waktunya pulang! Jam pulang hari ini: ' . $jamPulangJadwal);
             }
 
             $statusFinal = ($absen->status_masuk == 'tepat waktu') ? 'lengkap' : 'tidak lengkap';
@@ -170,32 +182,36 @@ class AbsensiController extends Controller
                 'foto_pulang' => $fileName,
             ]);
             
-            return back()->with('success', 'Berhasil Absen Pulang.');
+            return back()->with('success', 'Berhasil Absen Pulang. Kerja Bagus!');
         }
     }
 
-   public function monitoring()
-{
-    $today = Carbon::now()->toDateString();
-    $kantor = Kantor::first();
+    public function monitoring()
+    {
+        $today = Carbon::now()->toDateString();
+        $kantor = Kantor::first();
+        $jadwal = JadwalAbsensi::first();
+        
+        $hariIndo = ['monday'=>'senin','tuesday'=>'selasa','wednesday'=>'rabu','thursday'=>'kamis','friday'=>'jumat','saturday'=>'sabtu','sunday'=>'minggu'];
+        $hariIni = $hariIndo[strtolower(Carbon::now()->format('l'))];
+        
+        $isHariKerja = $jadwal ? $jadwal->$hariIni : false;
 
-    // Pastikan variabel ini ada
-    $jadwal = JadwalAbsensi::first();
-    $hariIndo = ['monday'=>'senin','tuesday'=>'selasa','wednesday'=>'rabu','thursday'=>'kamis','friday'=>'jumat','saturday'=>'sabtu','sunday'=>'minggu'];
-    $hariIni = $hariIndo[strtolower(Carbon::now()->format('l'))];
-    
-    // Variabel ini yang dicari oleh View
-    $isHariKerja = $jadwal ? $jadwal->$hariIni : false;
+        $karyawan = User::where('role', 'karyawan')->get()->map(function ($user) use ($today) {
+            $user->absen_today = Absensi::where('user_id', $user->id)->where('tanggal', $today)->first();
+            $user->izin_today = Izin::where('user_id', $user->id)
+                ->whereDate('tanggal_mulai', '<=', $today)
+                ->whereDate('tanggal_selesai', '>=', $today)
+                ->where('status', 'disetujui')
+                ->first();
+            return $user;
+        });
 
-    $karyawan = User::where('role', 'karyawan')->get()->map(function ($user) use ($today) {
-        // ... (logic query absen/izin lo yang sebelumnya) ...
-        return $user;
-    });
+        return view('dashboard.admin.absensi.monitoring', compact('karyawan', 'today', 'kantor', 'isHariKerja'));
+    }
 
-    // TAMBAHKAN 'isHariKerja' di dalam compact bawah ini
-    return view('dashboard.admin.absensi.monitoring', compact('karyawan', 'today', 'kantor', 'isHariKerja'));
-}
-    private function hitungJarak($lat1, $lon1, $lat2, $lon2) {
+    private function hitungJarak($lat1, $lon1, $lat2, $lon2) 
+    {
         $earthRadius = 6371000;
         $dLat = deg2rad($lat2 - $lat1);
         $dLon = deg2rad($lon2 - $lon1);
@@ -264,4 +280,20 @@ class AbsensiController extends Controller
 
         return $pdf->download("Rekap_Absensi_" . time() . ".pdf");
     }
+
+    // Tambahkan function ini di dalam class AbsensiController
+public function rekapKaryawan()
+{
+    $user = Auth::user();
+    $userId = $user->id;
+
+    // Ambil data riwayat 
+    // Gunakan paginate supaya method firstItem() di view tidak error
+    $dataAbsensi = Absensi::where('user_id', $userId)
+        ->orderBy('tanggal', 'desc')
+        ->paginate(10); 
+
+    // Pastikan view ini ada di resources/views/absensi/karyawan/index.blade.php
+    return view('absensi.karyawan.index', compact('dataAbsensi'));
+}
 }

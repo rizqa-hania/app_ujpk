@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
+
 use App\Http\Controllers\UcapanController;
 
 //kirim ucapan
@@ -257,12 +258,26 @@ Route::post('/laporan/generate', [LaporanController::class, 'generatePDF'])->nam
 Route::get('/laporan/transaksi/{id}', [LaporanController::class, 'generatePDFByTransaksi'])->name('laporan.generateid');
 
 
-//ABSENSI
-Route::middleware(['auth'])->group(function(){
-    Route::get('/absensi','AbsensiController@index')->name('absensi.index');
-    Route::post('/absensi','AbsensiController@store')->name('absensi.store');
-    Route::get('/absensi/rekap', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
-    Route::get('/absensi/rekap/cetak', [AbsensiController::class, 'cetakRekap'])->name('absensi.rekap.cetak');
+// Group Route untuk user yang sudah login
+Route::middleware(['auth'])->group(function () {
+
+    // --- ROUTE UTAMA (Dynamic Index) ---
+    // Route ini otomatis nampilin view beda lewat logic if/else di Controller index()
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+
+    // --- ROUTE KHUSUS KARYAWAN (Proses Absen) ---
+    Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
+
+    // --- ROUTE KHUSUS ADMIN (Monitoring & Management) ---
+    // Kita bungkus lagi pakai middleware role (opsional, tapi disarankan)
+    Route::get('/absensi/monitoring', [AbsensiController::class, 'monitoring'])->name('absensi.monitoring');
+    Route::get('/absensi/cetak-rekap', [AbsensiController::class, 'cetakRekap'])->name('absensi.rekap.cetak');
+    // Route untuk halaman Scan Wajah (Index)
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.create');
+
+// Route untuk halaman Rekap/Riwayat Karyawan (Tabel)
+Route::get('/absensi/rekap', [AbsensiController::class, 'rekapKaryawan'])->name('absensi.rekap');
+    
 });
 
 //kantor
