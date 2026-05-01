@@ -57,9 +57,12 @@
                                 </td>
                                 <td>Rp {{ number_format($v->gaji_bersih, 0, ',', '.') }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm" title="Lihat Slip">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('detail.show', $v->detail_id) }}" class="btn btn-info btn-sm mr-1" title="Lihat Slip">
                                             <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('slip.pdf', $v->detail_id) }}" class="btn btn-success btn-sm mr-1" title="Download Slip">
+                                            <i class="fas fa-download"></i>
                                         </a>
                                         <form action="{{ route('detail.destroy', $v->detail_id) }}" method="POST" class="d-inline">
                                             @csrf
@@ -67,9 +70,6 @@
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')" title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                            <a href="{{ route('slip.pdf', $v->detail_id) }}"  class="btn btn-danger btn-sm">
-                                            <i class="fas fa-download mr-1"></i>
-                                        </a>
                                         </form>
                                     </div>
                                 </td>

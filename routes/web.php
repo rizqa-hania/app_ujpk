@@ -25,14 +25,13 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PeriodeKaryawanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboard;
+use App\Http\Controllers\SlipKaryawanController;
+use App\Http\Controllers\UcapanController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Mail;
 
-use App\Http\Controllers\UcapanController;
-
 //kirim ucapan
 Route::post('/kirimucapan', [UcapanController::class, 'kirim']);
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'is_admin']], function() {
     
     // URL unik agar tidak disangka ID oleh route DELETE
@@ -151,10 +150,9 @@ Route::prefix('karyawan')->name('karyawan.')->middleware(['auth'])->group(functi
     Route::post('/step11', [KaryawanController::class, 'storestep11'])->name('storestep11');
 
     // Profile
-   Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
+    Route::get('/profile', [KaryawanController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [KaryawanController::class, 'updateProfile'])->name('profile.update');
     
-
     // Optional finish route, biasanya nggak dipakai langsung
     Route::get('/finish', [KaryawanController::class, 'finish'])->name('finish');
 
@@ -172,10 +170,10 @@ Route::delete('/sub/{id}', [MasterSubUnitController::class, 'destroy'])->name('m
 
 //master kerjasama
 Route::prefix('master-kerja-sama')->group(function () {
-    Route::get('/', [MasterKerjaSamaController::class, 'index'])->name('master-kerja-sama.index');
-    Route::get('/create', [MasterKerjaSamaController::class, 'create'])->name('master-kerja-sama.create');
-    Route::post('/', [MasterKerjaSamaController::class, 'store'])->name('master-kerja-sama.store');
-    Route::delete('/{id}', [MasterKerjaSamaController::class, 'destroy'])->name('master-kerja-sama.destroy');
+Route::get('/', [MasterKerjaSamaController::class, 'index'])->name('master-kerja-sama.index');
+Route::get('/create', [MasterKerjaSamaController::class, 'create'])->name('master-kerja-sama.create');
+Route::post('/', [MasterKerjaSamaController::class, 'store'])->name('master-kerja-sama.store');
+Route::delete('/{id}', [MasterKerjaSamaController::class, 'destroy'])->name('master-kerja-sama.destroy');
 });
 
 // master unit pln
@@ -212,44 +210,11 @@ Route::delete('/masterjabatan/{id}',[MasterJabatanController::class,'destroy'])-
 Route::middleware(['auth'])->group(function() {
 
     Route::get('lembur', [LemburController::class, 'index'])->name('lembur.index');
-
     Route::get('lembur/create', [LemburController::class, 'create'])->name('lembur.create');
     Route::post('lembur/store', [LemburController::class, 'store'])->name('lembur.store');
-
     Route::post('/lembur/{id}/approve', [LemburController::class, 'approve'])->name('lembur.approve');
     Route::post('/lembur/{id}/reject', [LemburController::class, 'reject'])->name('lembur.reject');
 });
-
-// PENGGAJIAN
-Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
-Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
-Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
-Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
-Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
-Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
-
-// PERIODE KARYAWAN
-    Route::get('/periode', [PeriodeKaryawanController::class, 'index'])->name('periode_karyawan.index');
-
-// KOMPONEN GAJI
-Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
-Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
-Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
-Route::get('/komponen/{kode}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
-Route::put('/komponen/{kode}', [KomponenController::class, 'update'])->name('komponen.update');
-Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
-Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
-Route::post('/komponen/import', [KomponenController::class, 'import'])->name('komponen.import');
-Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
-
-// DETAIL GAJI
-Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name('detail.index');
-Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
-Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
-Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
-Route::get('/detail/{id}/pdf', [DetailController::class, 'downloadPdf'])->name('slip.pdf');
-Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');
-
 
 // LAPORAN
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
@@ -309,3 +274,39 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/izin/{id}/reject', [IzinController::class, 'reject'])->name('izin.reject');
 });
 
+
+
+
+// ROUTE BAGIAN PENGGAJIAN 
+// PERIODE PENGGAJIAN ADMIN
+Route::get('/penggajian', [PenggajianController::class, 'index'])->name('penggajian.index');
+Route::get('/penggajian/create', [PenggajianController::class, 'create'])->name('penggajian.create');
+Route::get('/penggajian/{id}/edit', [PenggajianController::class, 'edit'])->name('penggajian.edit');
+Route::put('/penggajian/{id}', [PenggajianController::class, 'update'])->name('penggajian.update');
+Route::post('/penggajian', [PenggajianController::class, 'store'])->name('penggajian.store');
+Route::delete('/penggajian/{id}', [PenggajianController::class, 'destroy'])->name('penggajian.destroy');
+
+// PERIODE KARYAWAN
+Route::get('/periode', [PeriodeKaryawanController::class, 'index'])->name('periode_karyawan.index');
+Route::get('/slip_karyawan', [SlipKaryawanController::class, 'index'])->name('slip_karyawan.index');
+Route::get('/slip_karyawan/{id}', [SlipKaryawanController::class, 'show'])->name('slip_karyawan.show');
+Route::get('/slip_karyawan/{id}/pdf', [SlipKaryawanController::class, 'downloadPdf'])->name('slip_karyawan.pdf');
+
+// KOMPONEN GAJI
+Route::get('/komponen', [KomponenController::class, 'index'])->name('komponen.index');
+Route::get('/komponen/create', [KomponenController::class, 'create'])->name('komponen.create');
+Route::post('/komponen', [KomponenController::class, 'store'])->name('komponen.store');
+Route::get('/komponen/{kode}/edit', [KomponenController::class, 'edit'])->name('komponen.edit');
+Route::put('/komponen/{kode}', [KomponenController::class, 'update'])->name('komponen.update');
+Route::put('/komponen/{id}/aktif', [KomponenController::class, 'aktifkan'])->name('komponen.aktif');
+Route::put('/komponen/{id}/nonaktif', [KomponenController::class, 'nonaktifkan'])->name('komponen.nonaktif');
+Route::post('/komponen/import', [KomponenController::class, 'import'])->name('komponen.import');
+Route::delete('/komponen/{id}', [KomponenController::class, 'destroy'])->name('komponen.destroy');
+
+// DETAIL GAJI
+Route::get('/penggajian/{id}/detail', [DetailController::class, 'index'])->name('detail.index');
+Route::get('/penggajian/{id}/detail/create', [DetailController::class, 'create'])->name('detail.create');
+Route::post('/penggajian/{id}/detail', [DetailController::class, 'store'])->name('detail.store');
+Route::get('/detail/{id}/slip', [DetailController::class, 'show'])->name('detail.show');
+Route::get('/detail/{id}/pdf', [DetailController::class, 'downloadPdf'])->name('slip.pdf');
+Route::delete('/detail/{id}', [DetailController::class, 'destroy'])->name('detail.destroy');

@@ -74,7 +74,7 @@ class DetailController extends Controller
     {
         $penggajian = Penggajian::findOrFail($id);
         $karyawan = Karyawan::all();
-        $komponen = Komponen::all();
+        $komponen = Komponen::where('status', 1)->get();
         $detail = Detail::all();
 
         return view('detail.create', compact('penggajian', 'karyawan', 'komponen', 'detail'));
@@ -118,10 +118,13 @@ class DetailController extends Controller
             ]
         );
 
-        // Fetch Komponen details to know which are percentages
-        $allComponents = Komponen::whereIn('kode', $request->kode)->get()->keyBy('kode');
+        
+        $allComponents = Komponen::whereIn('kode', $request->kode)
+            ->where('status', 1)
+            ->get()
+            ->keyBy('kode');
 
-        // 2. First Pass: Process all Pendapatan (Earnings)
+        
         $newPendapatan = 0;
         $pendapatanIndices = [];
 
@@ -142,18 +145,18 @@ class DetailController extends Controller
             }
         }
 
-        // Update total_pendapatan in header so it can be used for percentage calculations
+        
         $detail->total_pendapatan += $newPendapatan;
         $currentTotalPendapatan = $detail->total_pendapatan;
 
-        // 3. Second Pass: Process all Potongan (Deductions)
+        
         $newPotongan = 0;
         foreach ($request->kode as $index => $kode) {
             $comp = $allComponents->get($kode);
             if ($comp && $comp->tipe == 'potongan') {
                 $nilai_komponen = $comp->nilai;
 
-                // Handle percentage calculation
+                
                 if ($comp->tipe_penghitungan == 'presentase') {
                     $nilai_komponen = ($nilai_komponen / 100) * $currentTotalPendapatan;
                 }
@@ -170,7 +173,7 @@ class DetailController extends Controller
             }
         }
 
-        // 4. Update Header Finals
+
         $detail->total_potongan += $newPotongan;
         $detail->gaji_bersih = $detail->total_pendapatan - $detail->total_potongan;
         $detail->save();

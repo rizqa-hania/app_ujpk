@@ -86,7 +86,9 @@
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
-                                            <a href="{{ route('penggajian.edit', $v->penggajian_id) }}" class="btn btn-success btn-sm">Edit</a>
+                                            <a href="{{ route('penggajian.edit', $v->penggajian_id) }}" class="btn btn-success btn-sm">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
                                         </form>
                                     </td>
                                 </tr>

@@ -1,5 +1,4 @@
-@extends('template.admin.layout')
-
+@extends('template.karyawan.layout')
 @section('content')
 <div class="row no-print">
     <div class="col-md-10 offset-md-1">
@@ -74,10 +73,10 @@
                 </div>
             </div>
             <div class="card-footer text-right p-3">
-                <a href="{{ route('detail.index', $detail->penggajian_id) }}" class="btn btn-outline-secondary btn-sm mr-2">
+                <a href="{{ route('periode_karyawan.index') }}" class="btn btn-outline-secondary btn-sm mr-2">
                     <i class="fas fa-arrow-left mr-1"></i> Kembali
                 </a>
-                <a href="{{ route('slip.pdf', $detail->detail_id) }}"  class="btn btn-danger btn-sm">
+                <a href="{{ route('slip_karyawan.pdf', $detail->penggajian_id) }}" class="btn btn-danger btn-sm">
                     <i class="fas fa-download mr-1"></i> Download PDF
                 </a>
             </div>
