@@ -78,7 +78,7 @@ Route::get('/auth/google/callback', function () {
 
     return redirect('/dashboard');
 });
-
+// ucapan
 // tambah admin 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
