@@ -1,4 +1,7 @@
-<title>Step Data Karyawan</title>
+<head>
+    <title>Step Data Karyawan</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logojya-removebg-preview.png') }}">>
+</head>
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;

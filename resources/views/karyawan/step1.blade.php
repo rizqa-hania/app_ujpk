@@ -1,5 +1,7 @@
-
+<head>
     <title>Step Data Karyawan</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logojya-removebg-preview.png') }}">>
+</head>
     
 <style>
     body {
@@ -133,6 +135,7 @@
             <h5>Step 1 - Data Kerja</h5>
         </div>
 
+        
         <form action="{{ route('karyawan.storestep1') }}" method="POST">
             @csrf
 

@@ -217,7 +217,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('penggajian.index') }}" class="nav-link">
+                                <a href="{{ route('penggajian
+                                .index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-wallet"></i>
                                     <p>Slip Gaji</p>
                                 </a>
